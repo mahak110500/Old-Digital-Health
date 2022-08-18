@@ -1,0 +1,105 @@
+<div class="two-column-layout">
+    <div class="language-sidebar">
+        <div class="example-sidenav-content">
+            <!-- <div class="tooltip-main">
+                <div class="tooltip-option left">
+                    <span class="arrow is-triangle is-left"></span>
+                    <div class="tooltip-inner">
+                        <h5>Check out our new feature</h5>
+                        <p>You can display comparison results by selecting two countries from the list of countries.</p>
+                        <a href="#">Got it!</a>
+                    </div>
+                </div>
+            </div> -->
+            <button type="button" mat-button disableRipple>
+                <div class="selected-language">
+                    <mat-icon>arrow_left</mat-icon><img src="assets/flags/in.png" />
+                    <!-- {{ country_name }} -->
+                </div>
+            </button>
+        </div>
+        <mat-drawer-container class="example-container" autosize>
+            <mat-drawer #drawer class="example-sidenav" mode="side">
+                <div class="search-content">
+                    <div class="mat-search">
+                        <a >
+                            <mat-icon>arrow_right</mat-icon>
+                        </a>
+                        <div class="mat-serach-input">
+                            <input type="text" placeholder="search" />
+                        </div>
+                    </div>
+                    <div class="country-list">
+                        <ul>
+                            <li>
+                                <div class="selected-language" style="cursor: pointer;"
+                                    >
+                                    <img src="assets/flags/in.png" />
+                                    <!-- {{country.country_name}} -->
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <p >
+                    Lorem, ipsum dolor sit amet consectetur.
+                </p>
+            </mat-drawer>
+        </mat-drawer-container>
+    </div>
+    <div class="container-fluid">
+        <div class="tab-section" >
+            <div class="panel">
+                <div class="panel-heading d-flex">
+                    <h2>Present Development</h2>
+                    <button mat-stroked-button color="primary" [routerLink]="['/present-development']">
+                        View Data
+                    </button>
+                </div>
+                <div class="panel-content">
+                    <pie-chart-card ></pie-chart-card>
+                </div>
+            </div>
+            <!-- panel one End -->
+            <!-- panel one start -->
+            <div class="panel">
+                <div class="panel-heading d-flex">
+                    <h2>Prospective Development</h2>
+                    <button mat-stroked-button color="primary" [routerLink]="['/prospective-development']">
+                        View Data
+                    </button>
+                </div>
+                <div class="panel-content">
+                    <pie-chart-card ></pie-chart-card>
+                </div>
+            </div>
+        </div>
+        <div class="tab-section">
+            <div class="panel">
+                <div class="panel-heading d-flex">
+                    <h2>Present Development</h2>
+                    <button mat-stroked-button color="primary" [routerLink]="['/present-development']">
+                        View Data
+                    </button>
+                </div>
+                <div class="panel-content">
+                    <pie-chart-card></pie-chart-card>
+                </div>
+            </div>
+            <!-- panel one End -->
+            <!-- panel one start -->
+            <div class="panel">
+                <div class="panel-heading d-flex">
+                    <h2>Prospective Development</h2>
+                    <button mat-stroked-button color="primary" [routerLink]="['/prospective-development']">
+                        View Data
+                    </button>
+                </div>
+                <div class="panel-content">
+                    <pie-chart-card></pie-chart-card>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

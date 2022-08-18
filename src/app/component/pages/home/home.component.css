@@ -1,0 +1,147 @@
+div#home-content-header {
+    margin-top: 5rem;
+    border-bottom: 1px solid #ccc;
+}
+
+::ng-deep .mat-toolbar-single-row {
+    height: 95px;
+}
+
+.home-heading h1:before {
+    position: absolute;
+    width: 100px;
+    height: 4px;
+    background: #64D3BB;
+    content: '';
+    bottom: -16px;
+}
+
+.home-heading h1 {
+    color: #5380CD;
+    font-weight: 600;
+    font-size: 28px;
+    position: relative;
+}
+
+.home-content h1 {
+    font-size: 28px;
+    color: #5380CD;
+}
+
+.home-content p {
+    color: #5380CD;
+    font-size: 16px;
+    line-height: 30px;
+}
+
+.home-content {
+    max-width: 900px;
+    margin: 2rem auto;
+}
+
+div#home-content-header .content-area {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+a.link {
+    text-decoration: underline !important;
+    font-weight: 500;
+    color: #5380CD;
+}
+
+.card.image-card h2 {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    font-size: 32px;
+    color: #fff;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    line-height: 40px;
+}
+
+/* .card.image-card:before {
+    position: absolute;
+    background: rgb(0 0 0 / 35%);
+    width: 100%;
+    height: 100%;
+    content: '';
+    z-index: 1;
+} */
+.card.image-card img {
+    position: relative;
+}
+
+.home-content button {
+    background: #64D3BB;
+    color: #fff;
+    margin-bottom: 30px;
+    font-size: 16px;
+    border-radius: 7px;
+    padding: 5px 30px;
+}
+
+.nametag{
+  position: absolute;
+}
+
+.nametag:nth-child(1){
+  animation-name: fade;
+  animation-fill-mode: both;
+  animation-iteration-count: infinite;
+  animation-duration: 5s;
+  animation-direction: alternate-reverse;  
+}
+
+.nametag:nth-child(2), .chat.icon{
+  animation-name: fade;
+  animation-fill-mode: both;
+  animation-iteration-count: infinite;
+  animation-duration: 5s;
+  animation-direction: alternate;
+}
+
+@keyframes fade{
+    0%,45% {
+      opacity: 0;
+}
+    100%{
+      opacity: 1;
+  }
+}
+span.rest-txt {
+    margin-left: 87px;
+}
+.chat.icon {
+    position: absolute;
+    margin-left: 0;
+    margin-top: 0;
+    width: 40px;
+    height: 17px;
+    border: none;
+    border-radius: 3px;
+    background: red;
+    font-size: 9px;
+    color: #fff;
+    line-height: 2;
+    text-align: center;
+    font-weight: normal;
+    top: -16px;
+    left: 12px;
+  }
+  
+  .chat.icon:before {
+    content: '';
+    position: absolute;
+    left: 17px;
+    top: 14px;
+    width: 5px;
+    height: 5px;
+    transform: rotate(45deg);
+    background-color: red;
+    border-bottom: solid 3px red;
+    border-right: solid 3px red;
+  }

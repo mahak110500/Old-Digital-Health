@@ -1,0 +1,12 @@
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+    background: #f5f5f5;
+}
+span.copyright-text {
+    color: #74A7BA;
+    font-size: 12px;
+    line-height: 30px;
+}

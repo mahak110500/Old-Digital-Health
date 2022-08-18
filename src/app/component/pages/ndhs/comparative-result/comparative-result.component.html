@@ -1,0 +1,231 @@
+<div class="two-column-layout">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8 col-sm-7 col-xs-12">
+                <!-- panel one start -->
+                <div class="panel country-selector">
+                    <div class="panel-content">
+                        <div class="select-country-area">
+                            <div class="country-label">Select two countries for comparison.</div>
+                            <!-- country dropdown start -->
+                            <div class="country-dropdown">
+                                <mat-form-field appearance="fill" disableRipple for="flexCheckChecked" mat-raised-button
+                                    #tooltip="matTooltip"
+                                    matTooltip="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                                    matTooltipPosition="left"
+                                    aria-tooltip="Button that displays and hides a tooltip triggered by other buttons">
+                                    <mat-label>Search Country</mat-label>
+                                    <mat-select #mySelect multiple>
+                                        <mat-option #selectedMapData>
+                                            <!-- {{country.country_name}} -->
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <!-- country dropdown End -->
+                        </div>
+                    </div>
+                </div>
+                <!-- panel one End -->
+                <!-- panel one start -->
+                <div class="panel country-selector">
+                    <div class="panel-content">
+                        <div class="map-area">
+                            <div id="chartdiv" style="width: 100%; height: 70vh"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- panel one End -->
+            </div>
+            <div class="col-md-4 col-sm-5 col-xs-12">
+                <!-- panel one start -->
+                <div class="panel comparative-details">
+                    <div class="panel-content">
+                        <div class="detail-btn">
+                            <a mat-stroked-button routerLink="/comparative-result-detail">More details</a>
+                        </div>
+                        <div class="compartive-table-details">
+                            <div class="table-details-heading">
+                                <h5>Comparative table</h5>
+                                <div class="status-badge">
+                                    <ul>
+                                        <li><span class="circle_badge success"></span>
+                                            <!-- {{ comparitive_countries[0] }} -->
+                                        </li>
+                                        <li><span class="circle_badge danger"></span>
+                                            <!-- {{ comparitive_countries[1] }} -->
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="table-com">
+                                <div class="table-responsive">
+                                    <table class="table align-middle">
+                                        <thead>
+                                            <tr>
+                                                <th style="width:38%"></th>
+                                                <th style="width:35%">Health & IT</th>
+                                                <th style="width:38%">Digital Health</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="3" class="com-data-heading">Present Development</td>
+                                            </tr>
+                                            <tr class="border-less">
+                                                <td style="width:39%"><span
+                                                        class="circle_badge success"></span>Availability</td>
+                                                <td style="width:35%">
+                                                    <ng-container>
+                                                        <span class="square-badge success">
+                                                            <!-- {{availability.percentage}}% -->
+                                                        </span>
+                                                        <span class="square-badge danger">
+                                                            <!-- {{availability.percentage}}% -->
+                                                        </span>
+                                                    </ng-container>
+                                                </td>
+                                                <td style="width:38%">
+                                                    <ng-container >
+                                                        <span
+                                                           
+                                                            class="square-badge success">
+                                                            <!-- {{availability.percentage}}% -->
+                                                        </span>
+                                                        <span
+                                                           
+                                                            class="square-badge danger">
+                                                            <!-- {{availability.percentage}}% -->
+                                                        </span>
+                                                    </ng-container>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:39%"><span
+                                                        class="circle_badge success"></span>Readiness</td>
+                                                <td style="width:35%">
+                                                    <ng-container >
+                                                        <span
+                                                          
+                                                            class="square-badge success">
+                                                            <!-- {{readiness.percentage}}% -->
+                                                        </span>
+                                                        <span
+                                                            class="square-badge danger">
+                                                            <!-- {{readiness.percentage}}% -->
+                                                        </span>
+                                                    </ng-container>
+                                                </td>
+                                                <td style="width:38%">
+                                                    <ng-container >
+                                                        <span
+                                                            
+                                                            class="square-badge success">
+                                                            <!-- {{readiness.percentage}}% -->
+                                                        </span>
+                                                        <span
+                                                            
+                                                            class="square-badge danger">
+                                                            <!-- {{readiness.percentage}}% -->
+                                                        </span>
+                                                    </ng-container>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="3" class="com-data-heading">Prospective Development</td>
+                                            </tr>
+                                            <tr class="border-less">
+                                                <td style="width:39%"><span class="circle_badge success"></span>Capacity
+                                                    Building</td>
+                                                <td style="width:35%">
+                                                    <ng-container >
+                                                        <span
+                                                            
+                                                            class="square-badge success">
+                                                            <!-- {{capacity_building.percentage}}% -->
+                                                        </span>
+                                                        <span
+                                                           
+                                                            class="square-badge danger">
+                                                            <!-- {{capacity_building.percentage}}% -->
+                                                        </span>
+                                                    </ng-container>
+                                                </td>
+                                                <td style="width:38%">
+                                                    <ng-container >
+                                                        <span
+                                                          
+                                                            class="square-badge success">
+                                                            <!-- {{capacity_building.percentage}}% -->
+                                                        </span>
+                                                        <span
+                                                            
+                                                            class="square-badge danger">
+                                                            <!-- {{capacity_building.percentage}}% -->
+                                                        </span>
+                                                    </ng-container>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:39%"><span
+                                                        class="circle_badge success"></span>Development Strategy</td>
+                                                <td style="width:35%">
+                                                    <ng-container
+                                                       >
+                                                        <span
+                                                           
+                                                            class="square-badge success">
+                                                            <!-- {{development_strategy.percentage}}% -->
+                                                        </span>
+                                                        <span
+                                                           
+                                                            class="square-badge danger">
+                                                            <!-- {{development_strategy.percentage}}% -->
+                                                        </span>
+                                                    </ng-container>
+                                                </td>
+                                                <td style="width:38%">
+                                                    <ng-container
+                                                        >
+                                                        <span
+                                                           
+                                                            class="square-badge success">
+                                                            <!-- {{development_strategy.percentage}}% -->
+                                                        </span>
+                                                        <span
+                                                           
+                                                            class="square-badge danger">
+                                                            <!-- {{development_strategy.percentage}}% -->
+                                                        </span>
+                                                    </ng-container>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- panel one End -->
+                <!-- panel three start -->
+                <div class="panel comparative-details butterfly-map">
+                    <div class="panel-content">
+                        <div class="detail-btn">
+                            <a mat-stroked-button routerLink="/comparative-overview">Over View</a>
+                        </div>
+                        <div class="compartive-table-details">
+                            <div #main style="width: 100%;height: 60vh;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- panel three End -->
+            </div>
+        </div>
+    </div>
+</div>

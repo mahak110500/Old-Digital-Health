@@ -1,0 +1,15 @@
+.filter-area {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.language-filter a {
+    text-decoration: underline !important;
+    color: #128FFE !important;
+    font-weight: 500;
+}
+
+.sidebar-toggle.toggleMenubar button .mat-icon {
+    color: #5380CD;
+}

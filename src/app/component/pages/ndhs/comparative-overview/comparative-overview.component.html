@@ -1,0 +1,206 @@
+<div class="two-column-layout">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-7 col-sm-12 col-xs-12">
+                <!-- panel one start -->
+                <div class="panel country-selector">
+                    <div class="panel-content">
+                        <div #main style="width: 100%;height: 80vh;"></div>
+                    </div>
+                    <!-- panel one End -->
+                </div>
+            </div>
+            <div class="col-md-5 col-sm-12 col-xs-12">
+                <div class="back-btn">
+                    <a mat-stroked-button><svg xmlns="http://www.w3.org/2000/svg" width="24" height="20"
+                            viewBox="0 0 24 20" fill="none">
+                            <path
+                                d="M6 10L5.35982 10.7682L4.43795 10L5.35982 9.23178L6 10ZM11.3598 15.7682L5.35982 10.7682L6.64018 9.23178L12.6402 14.2318L11.3598 15.7682ZM5.35982 9.23178L11.3598 4.23178L12.6402 5.76822L6.64018 10.7682L5.35982 9.23178Z"
+                                fill="#C4C4C4" />
+                            <path
+                                d="M12 10L11.3598 10.7682L10.438 10L11.3598 9.23178L12 10ZM17.3598 15.7682L11.3598 10.7682L12.6402 9.23178L18.6402 14.2318L17.3598 15.7682ZM11.3598 9.23178L17.3598 4.23178L18.6402 5.76822L12.6402 10.7682L11.3598 9.23178Z"
+                                fill="#C4C4C4" />
+                        </svg>&nbsp;&nbsp;&nbsp;Go Back</a>
+                </div>
+
+                <!-- panel one start -->
+                <div class="panel comparative-details">
+                    <div class="panel-content">
+                        <div class="compartive-table-details">
+                            <div class="table-details-heading">
+                                <!-- <h5 *ngIf="governance_name">{{governance_name}}</h5> -->
+                                <button >Bar Chart</button>
+                                
+                                <!-- <button mat-raised-button (click)="ToggleChart()">{{chartTitle}}</button> -->
+                            </div>
+                            <div class="table-com">
+                                <div>
+                                <!-- <div [class]="showBarChart ? 'showChart' : 'hideChart'"> -->
+                                    <div id="chartdiv2" style="width: 500px; height: 250px;margin: 0 auto;"></div>
+                                </div>
+                                <div>
+                                <!-- <div [class]="showBarChart ? 'hideChart' : 'showChart'"> -->
+                                    <div id="chartdiv1" style="width: 400px; height: 250px;margin: 0 auto;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- panel one End -->
+                <!-- panel one start -->
+                <div class="panel comparative-details">
+                    <div class="panel-content">
+                        <div class="table-details-heading">
+                            <div class="status-table">
+                                <!-- <h5 *ngIf="taxonomy_overviews && taxonomy_overviews[0] && taxonomy_overviews[0].governance_name">{{taxonomy_overviews[0].governance_name}}</h5> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-content">
+                        <div class="select-country-area">
+                            <div class="country-label table-details-heading">
+                                <!-- <h5>{{this.bar_chart ? this.bar_chart[0].development_type : ''}}</h5>
+                                <h6>{{this.bar_chart ? this.bar_chart[0].ultimate_field : ''}}</h6> -->
+                            </div>
+                            <!-- <div class="country-label">
+                                <h1 *ngIf="taxonomy_overviews && taxonomy_overviews[0] && taxonomy_overviews[0].development_type">{{taxonomy_overviews[0].development_type}}</h1>
+                                <span *ngIf="taxonomy_overviews && taxonomy_overviews[0] && taxonomy_overviews[0].ultimate_field">{{taxonomy_overviews[0].ultimate_field}}</span>
+                            </div> -->
+                            <!-- country dropdown start -->
+                            <div class="detail-btn">
+                                <a mat-stroked-button routerLink="/comparative-result-detail">More details</a>
+                            </div>
+
+                            <!-- country dropdown End -->
+                        </div>
+                        <div class="compartive-table-details">
+                            <div class="table-com">
+                                <div class="vertical-tab-content">
+                                    <div id="container">
+                                        <div class="list" id="one">
+                                            <div class="data-vertical-label">
+                                                <h3>Indicators</h3>
+                                                <h3>Comparison</h3>
+                                            </div>
+                                            <mat-accordion>
+                                                <mat-expansion-panel
+                                                    hideToggle>
+                                                    <mat-expansion-panel-header>
+                                                        <mat-panel-title>
+                                                          
+                                                        </mat-panel-title>
+                                                        <mat-panel-description>
+                                                            <!-- <mat-icon>arrow_drop_down</mat-icon> -->
+                                                        </mat-panel-description>
+                                                    </mat-expansion-panel-header>
+
+
+                                                    <div class="accordion-content">
+                                                        <div class="content-row">
+                                                            <mat-accordion>
+                                                                <div class="content-inner">
+                                                                    <mat-expansion-panel 
+                                                                         hideToggle>
+                                                                        <mat-expansion-panel-header>
+                                                                            <div class="left-content col-md-7">
+                                                                                <mat-panel-title>
+                                                                                    <!-- {{indicator[0]}} -->
+                                                                                </mat-panel-title>
+                                                                            </div>
+                                                                            <div class="right-content col-md-4">
+                                                                                <div class="country-1">
+                                                                                    <Span> <mat-icon>arrow_drop_up</mat-icon>
+                                                                                    </Span>
+                                                                                    <div class="rating">
+
+                                                                                        <!-- <ng-container *ngFor="let dash of dash_array;let i=index">
+                                                                                            <span *ngIf=" dash <= (((indicator[1][0].actual_score/indicator[1][0].indicator_score) * 100)/20)" class="green"></span>
+                                                                                            <span *ngIf=" dash > (((indicator[1][0].actual_score/indicator[1][0].indicator_score) * 100)/20)" class="gray"></span>
+                                                                                        </ng-container> -->
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="country-2">
+                                                                                    <Span><mat-icon>arrow_drop_up</mat-icon>
+                                                                                    </Span>
+                                                                                    <div class="rating">
+                                                                                        <!-- <ng-container *ngFor="let dash of dash_array;let i=index">
+                                                                                            <span *ngIf=" dash <= (((indicator[1][1].actual_score/indicator[1][1].indicator_score) * 100)/20)" class="green"></span>
+                                                                                            <span *ngIf=" dash > (((indicator[1][1].actual_score/indicator[1][1].indicator_score) * 100)/20)" class="gray"></span>
+                                                                                        </ng-container> -->
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <mat-panel-description>
+                                                                                <mat-icon>arrow_drop_down</mat-icon>
+                                                                            </mat-panel-description>
+                                                                        </mat-expansion-panel-header>
+                                                                        <div class="content-row">
+                                                                            <div class="query-right-content col-md-12">
+                                                                                <div class="query-name col-md-7">
+                                                                                    <!-- {{indicator[1][0].question}} -->
+                                                                                </div>
+                                                                                <div class="country-1 col-md-2">
+                                                                                    <div class="rating">
+                                                                                        <span
+                                                                                           
+                                                                                            class="green success"></span>
+                                                                                        <span
+                                                                                          
+                                                                                            class="alert-red danger"></span>
+                                                                                        <span
+                                                                                           
+                                                                                            class="gray disable-status"></span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="country-2 col-md-2">
+                                                                                    <div class="rating">
+                                                                                        <span
+                                                                                           
+                                                                                            class="green success"></span>
+                                                                                        <span
+                                                                                            
+                                                                                            class="alert-red danger"></span>
+                                                                                        <span
+                                                                                            
+                                                                                            class="gray disable-status"></span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </mat-expansion-panel>
+                                                                </div>
+                                                            </mat-accordion>
+                                                        </div>
+                                                    </div>
+                                                </mat-expansion-panel>
+                                            </mat-accordion>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- panel one End -->
+                <!-- panel one start -->
+                <div class="panel comparative-details">
+                    <div class="panel-content">
+                        <div class="compartive-table-details">
+                            <div class="table-details-heading">
+                                <div class="status-table">
+                                    <h5>Availability - Readiness</h5>
+                                </div>
+                            </div>
+                            <div class="table-com">
+                                <div echarts  class="demo-chart" style="width:100%;height:300px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- panel one End -->
+            </div>
+        </div>
+    </div>
+</div>
