@@ -11,7 +11,7 @@
                     </div>
                 </div>
             </div> -->
-            <button type="button" mat-button disableRipple>
+            <button type="button" mat-button  (click)="drawer.open()" disableRipple>
                 <div class="selected-language">
                     <mat-icon>arrow_left</mat-icon><img src="assets/flags/in.png" />
                     <!-- {{ country_name }} -->
@@ -22,7 +22,7 @@
             <mat-drawer #drawer class="example-sidenav" mode="side">
                 <div class="search-content">
                     <div class="mat-search">
-                        <a >
+                        <a>
                             <mat-icon>arrow_right</mat-icon>
                         </a>
                         <div class="mat-serach-input">
@@ -31,53 +31,58 @@
                     </div>
                     <div class="country-list">
                         <ul>
-                            <li>
+                            <li *ngFor="let country of country_list" (click)="drawer.close()">
                                 <div class="selected-language" style="cursor: pointer;"
-                                    >
-                                    <img src="assets/flags/in.png" />
-                                    <!-- {{country.country_name}} -->
+                                    [ngClass]="{ 'active' : country_id == country.country_id }">
+                                    <img src="assets/flags/{{country.flag}}" />{{country.country_name}}
                                 </div>
                             </li>
                         </ul>
                     </div>
                 </div>
-                <p >
+                <p>
                     Lorem, ipsum dolor sit amet consectetur.
                 </p>
             </mat-drawer>
         </mat-drawer-container>
     </div>
+
+    <!-- panel one start -->
     <div class="container-fluid">
-        <div class="tab-section" >
-            <div class="panel">
-                <div class="panel-heading d-flex">
-                    <h2>Present Development</h2>
-                    <button mat-stroked-button color="primary" [routerLink]="['/present-development']">
-                        View Data
-                    </button>
-                </div>
-                <div class="panel-content">
-                    <pie-chart-card ></pie-chart-card>
-                </div>
-            </div>
-            <!-- panel one End -->
-            <!-- panel one start -->
-            <div class="panel">
-                <div class="panel-heading d-flex">
-                    <h2>Prospective Development</h2>
-                    <button mat-stroked-button color="primary" [routerLink]="['/prospective-development']">
-                        View Data
-                    </button>
-                </div>
-                <div class="panel-content">
-                    <pie-chart-card ></pie-chart-card>
-                </div>
-            </div>
-        </div>
         <div class="tab-section">
             <div class="panel">
                 <div class="panel-heading d-flex">
                     <h2>Present Development</h2>
+                    <div id="chartdiv_health_present" style="width: 45%; height: 32vh"></div>
+                    <button mat-stroked-button color="primary" [routerLink]="['/present-development']">
+                        View Data
+                    </button>
+                </div>
+                <div class="panel-content">
+                    <pie-chart-card>[taxonomies]="health_taxonomies_prospective"</pie-chart-card>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-heading d-flex">
+                    <h2>Prospective Development</h2>
+                    <div id="chartdiv_health_prospective" style="width: 45%; height: 32vh"></div>
+                    <button mat-stroked-button color="primary" [routerLink]="['/prospective-development']">
+                        View Data
+                    </button>
+                </div>
+                <div class="panel-content">
+                    <pie-chart-card>[taxonomies]="health_taxonomies_prospective"</pie-chart-card>
+                </div>
+            </div>
+        </div>
+        <!-- panel one End -->
+
+        <!-- panel two Start -->
+        <!-- <div class="tab-section">
+            <div class="panel">
+                <div class="panel-heading d-flex">
+                    <h2>Present Development</h2>
                     <button mat-stroked-button color="primary" [routerLink]="['/present-development']">
                         View Data
                     </button>
@@ -85,10 +90,9 @@
                 <div class="panel-content">
                     <pie-chart-card></pie-chart-card>
                 </div>
-            </div>
-            <!-- panel one End -->
-            <!-- panel one start -->
-            <div class="panel">
+            </div>  -->
+
+        <!-- <div class="panel">
                 <div class="panel-heading d-flex">
                     <h2>Prospective Development</h2>
                     <button mat-stroked-button color="primary" [routerLink]="['/prospective-development']">
@@ -99,7 +103,9 @@
                     <pie-chart-card></pie-chart-card>
                 </div>
             </div>
-        </div>
+        </div> -->
+      <!-- panel two End -->
+
 
     </div>
 </div>

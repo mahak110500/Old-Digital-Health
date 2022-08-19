@@ -78,3 +78,8 @@
         padding: 0 5px;
     }
 }
+
+.togglebtn{
+    font-size: 15px;
+    border-radius: 0%;
+}

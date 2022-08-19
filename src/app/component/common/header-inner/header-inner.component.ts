@@ -6,7 +6,18 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: ['./header-inner.component.css'],
 })
 export class HeaderInnerComponent implements OnInit {
+
+    routeSubscription: any;
+    currentRoute: any;
+    showHeaderMenu: boolean = false;
+
+    governance_id:any;
+
+    constructor(){}
+    
     ngOnInit(): void {
+
+       
        
     }
 }

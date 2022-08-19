@@ -20,6 +20,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDialogModule } from '@angular/material/dialog';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatButtonToggleModule } from "@angular/material/button-toggle";
 
 
 import { AppComponent } from './app.component';
@@ -74,6 +75,7 @@ import { DataModalComponent } from './component/pages/ndhs/countries/ndhs-countr
         MatToolbarModule,
         MatIconModule,
         MatButtonModule,
+        MatButtonToggleModule,
         MatCheckboxModule,
         MatFormFieldModule,
         MatTabsModule,
