@@ -8,15 +8,15 @@
             <div class="panel-content">
                 <div class="list-year">
                     <div class="form-check">
-                        <input #checkbox1  class="form-check-input" type="checkbox"
-                            value="2021" id="flexCheckChecked">
+                        <input #checkbox1 (click)="handleClick('2021','1')" class="form-check-input" type="checkbox"
+                            value="2021" id="flexCheckChecked" [checked]="selected_years.includes('2021')">
                         <label class="form-check-label" for="flexCheckChecked" mat-raised-button>
                             2021
                         </label>
                     </div>
                     <div class="form-check">
-                        <input #checkbox2  class="form-check-input" type="checkbox"
-                            value="2022" id="flexCheckDefault">
+                        <input #checkbox2 (click)="handleClick('2022','1')" class="form-check-input" type="checkbox"
+                            value="2022" id="flexCheckDefault" [checked]="selected_years.includes('2022')">
                         <label class="form-check-label" for="flexCheckDefault" for="flexCheckChecked" mat-raised-button>
                             2022
                         </label>
@@ -34,18 +34,17 @@
                     </div>
                 </div>
                 <div class="map-legends">
-                    <span class="material-icons blue-legend">
+                    <span *ngIf="year.includes('2021')" class="material-icons blue-legend">
                         fiber_manual_record
-                    </span><span >&nbsp;2021</span>&nbsp;&nbsp;&nbsp;
-                    <span class="material-icons text-danger" >
+                    </span><span *ngIf="year.includes('2021')">&nbsp;2021</span>&nbsp;&nbsp;&nbsp;
+                    <span class="material-icons text-danger" *ngIf="year.includes('2022')">
                         fiber_manual_record
-                    </span><span >&nbsp;2022</span>
+                    </span><span *ngIf="year.includes('2022')">&nbsp;2022</span>
                 </div>
                 <div class="countries-map">
                     <div id="chartdiv" style="width: 100%; height: 70vh"></div>
                 </div>
             </div>
         </div>
-
     </div>
 </div>
