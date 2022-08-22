@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Inject, NgZone, OnInit, PLATFORM_ID } from '@angular/core';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
@@ -6,6 +6,8 @@ import { PieChart3D } from '@amcharts/amcharts4/charts';
 import { CommonService } from 'src/app/services/common.service';
 import { any } from '@amcharts/amcharts4/.internal/core/utils/Array';
 import { Observable } from 'rxjs';
+import { UtilitiesService } from 'src/app/services/utilities.service';
+import { isPlatformBrowser } from '@angular/common';
 
 
 am4core.useTheme(am4themes_animated);
@@ -16,11 +18,18 @@ am4core.useTheme(am4themes_animated);
     styleUrls: ['./ndhs-countries.component.css'],
 })
 export class NdhsCountriesComponent implements OnInit, AfterViewInit {
+    dataNew: any = [];
+    digital_taxonomies_present: any = [];
+    digital_taxonomies_prospective: any = [];
     health_taxonomies_prospective: any = [];
     health_taxonomies_present: any = [];
+    ndhsDetails: any;
+    triggerInit: boolean = true;
+
+
     public chart: am4charts.PieChart3D = new PieChart3D;
     title: any;
-    series:any;
+    series: any;
     countries: any = [];
     country_list: any;
     currentYear: any;
@@ -33,143 +42,610 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
 
     capacity_building_score: any;
     development_strategy_score: any;
+    governance_id: any;
 
     // countries!: Observable<Country[]>;
 
-    constructor(private common: CommonService,){}
+    constructor(private common: CommonService,
+        private utilities: UtilitiesService,
+        @Inject(PLATFORM_ID) private platformId: Object,
+        private zone: NgZone
+    ) { }
+
+    browserOnly(f: () => void) {
+        if (isPlatformBrowser(this.platformId)) {
+            this.zone.runOutsideAngular(() => {
+                f();
+            });
+        }
+    }
 
     ngOnInit(): void {
 
+        this.utilities.showHeaderMenu.next(true);
+        
+
+        this.utilities.governanceTypeSource.subscribe((governanceId) => {
+            this.dataNew = [];
+            this.health_taxonomies_prospective = [];
+            this.health_taxonomies_present = [];
+            this.digital_taxonomies_present = [];
+            this.digital_taxonomies_prospective = [];
+
+            // if (this.triggerInit) {
+                this.getNdhsCountriesDetails(governanceId);
+            // }
+        });
+
+
+        //to get all countries name and flag
         this.common.getAllCountries().subscribe((res) => {
-             console.log(res);
+            //  console.log(res);
             this.country_list = res;
-            console.log(this.country_list);
-            
         })
+
+
     }
 
-    getNDHsDeatils(governanceId: any){
+    getNdhsCountriesDetails(governanceId: any) {
+        console.log(governanceId);
+
+        this.dataNew = [];
+        this.health_taxonomies_prospective = [];
+        this.health_taxonomies_present = [];
+
+        this.digital_taxonomies_present = [];
+        this.digital_taxonomies_prospective = [];
+
         this.country_id = JSON.parse(localStorage.getItem('country_id') || '');
+        this.governance_id = JSON.parse(localStorage.getItem('governance_id') || '');
+        this.currentYear = JSON.parse(localStorage.getItem('year') || '');
+
+        this.common.getNdhsCountriesDetails(governanceId, this.country_id, this.currentYear)
+            .subscribe((result) => {
+                // console.log(result);
+                this.ndhsDetails = result;
+                // console.log(result);  //array for present and prospective development
+
+                if (governanceId == 1) {
+                    this.ndhsDetails['Present Development'].forEach(
+                        (element: any) => {
+                            Object.keys(element).forEach((key) => {
+                                let readiness_score = parseInt(
+                                    element[key][0].score
+                                );
+                                let availability_score = parseInt(
+                                    element[key][1].score
+                                );
+                                let readiness_percentage = Math.round(
+                                    this.getPercantage(readiness_score)
+                                );
+                                let availability_percentage = Math.round(
+                                    this.getPercantage(availability_score)
+                                );
+                                let total_percentage =
+                                    readiness_percentage +
+                                    availability_percentage;
+                                let remaining_percentage =
+                                    100 - total_percentage;
+                                let details = {
+                                    title: element[key][0].taxonomy_name,
+                                    governance_type: 'health',
+                                    developement_type: 'present',
+                                    readiness_score: readiness_score,
+                                    availability_score: availability_score,
+                                    readiness_percentage: readiness_percentage,
+                                    availability_percentage:
+                                        availability_percentage,
+                                    remaining_percentage: remaining_percentage,
+                                    taxonomy_id: element[key][0].taxonomy_id,
+                                    development_id:
+                                        element[key][0].development_id,
+                                    governance_id:
+                                        element[key][0].governance_id,
+                                    prefix: 'health_present',
+                                };
+                                this.dataNew.push(details);
+                                // console.log(this.dataNew);
+
+                                this.health_taxonomies_present.push(details);
+                                // console.log(this.health_taxonomies_present);
+
+                            });
+                        }
+                    );
+
+                    this.ndhsDetails['Prospective Development'].forEach(
+                        (element: any) => {
+                            Object.keys(element).forEach((key) => {
+                                let capacity_building_score = parseInt(
+                                    element[key][0].score
+                                );
+                                let development_strategy_score = parseInt(
+                                    element[key][1].score
+                                );
+                                let capacity_building_percentage = Math.round(
+                                    this.getPercantage(capacity_building_score)
+                                );
+                                let development_strategy_percentage = Math.round(
+                                    this.getPercantage(development_strategy_score)
+                                );
+                                let total_percentage =
+                                    capacity_building_percentage +
+                                    development_strategy_percentage;
+                                let remaining_percentage =
+                                    100 - total_percentage;
+                                let details = {
+                                    title: element[key][0].taxonomy_name,
+                                    governance_type: 'health',
+                                    developement_type: 'prospective',
+                                    capacity_building_score: capacity_building_score,
+                                    development_strategy_score: development_strategy_score,
+                                    capacity_building_percentage: capacity_building_percentage,
+                                    development_strategy_percentage:
+                                        development_strategy_percentage,
+                                    remaining_percentage: remaining_percentage,
+                                    taxonomy_id: element[key][0].taxonomy_id,
+                                    development_id:
+                                        element[key][0].development_id,
+                                    governance_id:
+                                        element[key][0].governance_id,
+                                    prefix: 'health_prospective',
+                                };
+                                this.dataNew.push(details);
+                                this.health_taxonomies_prospective.push(
+                                    details
+                                );
+                            });
+                        }
+                    );
+
+                } else {
+                    this.ndhsDetails['Present Development'].forEach(
+                        (element: any) => {
+                            Object.keys(element).forEach((key) => {
+                                let readiness_score = parseInt(
+                                    element[key][0].score
+                                );
+                                let availability_score = parseInt(
+                                    element[key][1].score
+                                );
+                                let readiness_percentage = Math.round(
+                                    this.getPercantage(readiness_score)
+                                );
+                                let availability_percentage = Math.round(
+                                    this.getPercantage(availability_score)
+                                );
+                                let total_percentage =
+                                    readiness_percentage +
+                                    availability_percentage;
+                                let remaining_percentage =
+                                    100 - total_percentage;
+                                let details = {
+                                    title: element[key][0].taxonomy_name,
+                                    governance_type: 'health',
+                                    developement_type: 'present',
+                                    readiness_score: readiness_score,
+                                    availability_score: availability_score,
+                                    readiness_percentage: readiness_percentage,
+                                    availability_percentage:
+                                        availability_percentage,
+                                    remaining_percentage: remaining_percentage,
+                                    taxonomy_id: element[key][0].taxonomy_id,
+                                    development_id:
+                                        element[key][0].development_id,
+                                    governance_id:
+                                        element[key][0].governance_id,
+                                    prefix: 'digital_present',
+                                };
+                                this.dataNew.push(details);
+                                // console.log(this.dataNew);
+                                
+                                this.digital_taxonomies_present.push(details);
+                                // console.log(this.digital_taxonomies_present);
+                                
+                            });
+                        }
+                    );
+
+                    this.ndhsDetails['Prospective Development'].forEach(
+                        (element: any) => {
+                            Object.keys(element).forEach((key) => {
+                                let capacity_building_score = parseInt(
+                                    element[key][0].score
+                                );
+                                let development_strategy_score = parseInt(
+                                    element[key][1].score
+                                );
+                                let capacity_building_percentage = Math.round(
+                                    this.getPercantage(capacity_building_score)
+                                );
+                                let development_strategy_percentage = Math.round(
+                                    this.getPercantage(development_strategy_score)
+                                );
+                                let total_percentage =
+                                    capacity_building_percentage +
+                                    development_strategy_percentage;
+                                let remaining_percentage =
+                                    100 - total_percentage;
+                                let details = {
+                                    title: element[key][0].taxonomy_name,
+                                    governance_type: 'health',
+                                    developement_type: 'prospective',
+                                    capacity_building_score: capacity_building_score,
+                                    development_strategy_score: development_strategy_score,
+                                    capacity_building_percentage: capacity_building_percentage,
+                                    development_strategy_percentage:
+                                        development_strategy_percentage,
+                                    remaining_percentage: remaining_percentage,
+                                    taxonomy_id: element[key][0].taxonomy_id,
+                                    development_id:
+                                        element[key][0].development_id,
+                                    governance_id:
+                                        element[key][0].governance_id,
+                                    prefix: 'digital_prospective',
+                                };
+                                this.dataNew.push(details);
+                                this.digital_taxonomies_prospective.push(
+                                    details
+                                );
+                            });
+                        }
+                    );
+                }
+
+            })
+    }
+
+    getPercantage(value: number) {
+        let per = (value / 200) * 100;
+        return per;
     }
 
 
     ngAfterViewInit() {
 
-        //HEALTH TEXANOMY PRESENT
-        this.chart = am4core.create("chartdiv_health_present", am4charts.PieChart3D);
-        this.chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
 
-        this.chart.legend = new am4charts.Legend();
+        if (this.governance_id == 1) {
+            setTimeout(() => {
+                console.log(this.health_taxonomies_present);
 
-        this.chart.data = [
-            {
-                taxonomy: "Readiness",
-                percentage: 40
-            },
-            {
-                taxonomy: "Availability",
-                percentage: 60
-            },
-            {
-                percentage: 10
-            }
-        ];
+                //HEALTH TEXANOMY PRESENT
+                this.health_taxonomies_present.forEach((taxonomy: any, index: number) => {
+                    console.log(taxonomy);
+                    console.log(index);
 
-        this.chart.innerRadius = 100;
+                    let i = 1;
+                    this.chart = am4core.create(
+                        'chartdiv_health_present' + (i + index),
+                        am4charts.PieChart3D
+                    );
+                    this.chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
 
-        this.series = this.chart.series.push(new am4charts.PieSeries3D());
-        this.series.dataFields.value = "percentage";
-        this.series.dataFields.category = "taxonomy";
+                    this.chart.data = [
+                        {
+                            taxonomy: "Readiness",
+                            percentage: taxonomy.readiness_percentage
+                        },
+                        {
+                            taxonomy: "Availability",
+                            percentage: taxonomy.availability_percentage
+                        },
+                        {
+                            percentage: 10
+                        }
+                    ];
 
-        //for setting the color
-        this.series.colors.list = [
-            '#1181B2',
-            '#05D5AA',
-            '#E2E2E4',
-        ].map(function (color) {
-            return new (am4core.color as any)(color);
-        });
+                    this.chart.innerRadius = 38;
+                    this.chart.depth = 10;
 
-        //for the middle text
-        var label = this.series.createChild(am4core.Label);
-        label.text = '67%';
-        label.horizontalCenter = 'middle';
-        label.verticalCenter = 'middle';
-        label.fontSize = 50;
-        label.fontWeight = 'normal';
+                    this.series = this.chart.series.push(new am4charts.PieSeries3D());
+                    this.series.dataFields.value = "percentage";
+                    this.series.dataFields.category = "taxonomy";
 
-        //to display only taxonomy and hide the percentage
-        this.series.labels.template.text = '{taxonomy}';
-        this.series.slices.template.tooltipText = '{category}'; //hides percentage
-        this.series.fontSize = '20';
-        this.series.fontWeight = 'bold';
+                    //for setting the color
+                    this.series.colors.list = [
+                        '#1181B2',
+                        '#05D5AA',
+                        '#E2E2E4',
+                    ].map(function (color) {
+                        return new (am4core.color as any)(color);
+                    });
+
+                    //for the middle text
+                    var label = this.series.createChild(am4core.Label);
+                    label.text = taxonomy.readiness_percentage +taxonomy.availability_percentage +'%';
+                    label.horizontalCenter = 'middle';
+                    label.verticalCenter = 'middle';
+                    label.fontSize = 25;
+                    label.fontWeight = 'normal';
+
+                    //to hide the tick of last splice
+                    this.series.ticks.template.events.on('ready', hideSmall);
+                    this.series.ticks.template.events.on('visibilitychanged', hideSmall);
+
+                    this.series.labels.template.events.on('ready', hideSmall);
+                    this.series.labels.template.events.on('visibilitychanged', hideSmall);
+                    this.series.labels.template.maxWidth = 70;
+                    this.series.labels.template.wrap = true;
+
+                    function hideSmall(ev: any) {
+                        if (ev.target.dataItem.hasProperties == false || ev.target.dataItem.dataContext.percentage == 0) {
+                            ev.target.hide();
+                        } else {
+                            ev.target.show();
+                        }
+                    }
+
+                    //to display only taxonomy and hide the percentage
+                    this.series.labels.template.text = '{taxonomy}';
+                    this.series.slices.template.tooltipText = '{category}'; //hides percentage
+                    this.series.fontSize = '10';
+                    this.series.fontWeight = 'bold';
+
+                });
+
+                //HEALTH TEXANOMY PROSPECTIVE
+                this.health_taxonomies_prospective.forEach(
+                    (taxonomy: any, index: number) => {
+                        let i = 1;
+                        this.chart = am4core.create(
+                            'chartdiv_health_prospective' + (i + index),
+                            am4charts.PieChart3D
+                        );
+                        this.title = taxonomy.title;
+                        this.capacity_building_score = taxonomy.capacity_building_score;
+                        this.development_strategy_score = taxonomy.development_strategy_score;
+
+                        this.chart.data = [
+                            {
+                                taxonomy: 'Capacity Building',
+                                percentage: taxonomy.capacity_building_percentage,
+                            },
+                            {
+                                taxonomy: 'Development Strategy',
+                                percentage: taxonomy.development_strategy_percentage,
+                            },
+                            {
+                                percentage: taxonomy.remaining_percentage,
+                            },
+                        ];
+
+                        this.chart.innerRadius = 40;
+                        this.chart.depth = 10;
+
+                        let series = this.chart.series.push(
+                            new am4charts.PieSeries3D()
+                        );
+                        series.dataFields.value = 'percentage';
+                        series.dataFields.category = 'taxonomy';
+
+                        series.colors.list = [
+                            '#2F4770',
+                            '#0860FE',
+                            '#E2E2E4',
+                        ].map(function (color) {
+                            return new (am4core.color as any)(color);
+                        });
+
+                        var label = series.createChild(am4core.Label);
+                        label.text =
+                            taxonomy.development_strategy_percentage +
+                            taxonomy.capacity_building_percentage +
+                            '%';
+                        label.horizontalCenter = 'middle';
+                        label.verticalCenter = 'middle';
+                        label.fontSize = 26;
+                        label.fontWeight = 'normal';
+
+                        series.ticks.template.events.on('ready', hideSmall);
+                        series.ticks.template.events.on(
+                            'visibilitychanged',
+                            hideSmall
+                        );
+                        series.labels.template.events.on('ready', hideSmall);
+                        series.labels.template.events.on(
+                            'visibilitychanged',
+                            hideSmall
+                        );
+                        series.labels.template.maxWidth = 70;
+                        series.labels.template.wrap = true;
+
+                        function hideSmall(ev: any) {
+                            if (ev.target.dataItem.hasProperties == false || ev.target.dataItem.dataContext.percentage == 0) {
+                                ev.target.hide();
+                            } else {
+                                ev.target.show();
+                            }
+                        }
+
+                        series.labels.template.text = '{taxonomy}';
+
+                        series.slices.template.tooltipText = '{category}';
+                        series.fontSize = '9';
+                        series.fontWeight = 'bold';
+                    }
+                );
+
+            }, 2000);
+        } else {
+            setTimeout(() => {
+
+                //DIGITAL TEXANOMY PRESENT
+                console.log(this.health_taxonomies_present);
+                
+
+                 this.health_taxonomies_present.forEach((taxonomy: any, index: number) => {
+                    console.log(taxonomy);
+                    console.log(index);
+                    
+                    let i = 1;
+                    this.chart = am4core.create(
+                        'chartdiv_health_present' + (i + index),
+                        am4charts.PieChart3D
+                    );
+                    this.chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
+
+                    this.chart.data = [
+                        {
+                            taxonomy: "Readiness",
+                            percentage: taxonomy.readiness_percentage
+                        },
+                        {
+                            taxonomy: "Availability",
+                            percentage: taxonomy.availability_percentage
+                        },
+                        {
+                            percentage: 10
+                        }
+                    ];
+
+                    this.chart.innerRadius = 38;
+                    this.chart.depth = 10;
+
+                    this.series = this.chart.series.push(new am4charts.PieSeries3D());
+                    this.series.dataFields.value = "percentage";
+                    this.series.dataFields.category = "taxonomy";
+
+                    //for setting the color
+                    this.series.colors.list = [
+                        '#71ADB5',
+                        '#1F914F',
+                        '#E2E2E4'
+                    ].map(function (color) {
+                        return new (am4core.color as any)(color);
+                    });
+
+                    //for the middle text
+                    var label = this.series.createChild(am4core.Label);
+                    label.text = taxonomy.readiness_percentage + taxonomy.availability_percentage +'%';
+                    label.horizontalCenter = 'middle';
+                    label.verticalCenter = 'middle';
+                    label.fontSize = 25;
+                    label.fontWeight = 'normal';
+
+                    //to hide the tick of last splice
+                    this.series.ticks.template.events.on('ready', hideSmall);
+                    this.series.ticks.template.events.on('visibilitychanged', hideSmall);
+
+                    this.series.labels.template.events.on('ready', hideSmall);
+                    this.series.labels.template.events.on('visibilitychanged', hideSmall);
+                    this.series.labels.template.maxWidth = 70;
+                    this.series.labels.template.wrap = true;
+
+                    function hideSmall(ev: any) {
+                        if (ev.target.dataItem.hasProperties == false || ev.target.dataItem.dataContext.percentage == 0) {
+                            ev.target.hide();
+                        } else {
+                            ev.target.show();
+                        }
+                    }
+
+                    //to display only taxonomy and hide the percentage
+                    this.series.labels.template.text = '{taxonomy}';
+                    this.series.slices.template.tooltipText = '{category}'; //hides percentage
+                    this.series.fontSize = '10';
+                    this.series.fontWeight = 'bold';
+
+                });
+                //DIGITAL TEXANOMY PROSPECTIVE
+
+                this.digital_taxonomies_prospective.forEach(
+                    (taxonomy: any, index: number) => {
+                        let i = 6;
+                        this.chart = am4core.create(
+                            'chartdiv_digital_prospective' + (i + index),
+                            am4charts.PieChart3D
+                        );
+                        this.title = taxonomy.title;
+                        this.capacity_building_score = taxonomy.capacity_building_score;
+                        this.development_strategy_score = taxonomy.development_strategy_score;
+
+                        //this.chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
+
+                        this.chart.data = [
+                            {
+                                taxonomy: 'Capacity Building',
+                                percentage: taxonomy.capacity_building_percentage,
+                            },
+                            {
+                                taxonomy: 'Development Strategy',
+                                percentage: taxonomy.development_strategy_percentage,
+                            },
+                            {
+                                percentage: taxonomy.remaining_percentage,
+                            },
+                        ];
+
+                        this.chart.innerRadius = 40;
+                        this.chart.depth = 10;
+
+                        let series = this.chart.series.push(
+                            new am4charts.PieSeries3D()
+                        );
+                        series.dataFields.value = 'percentage';
+                        series.dataFields.category = 'taxonomy';
+
+                        series.colors.list = [
+                            '#14CCAA',
+                            '#41565A',
+                            '#E2E2E4',
+                        ].map(function (color) {
+                            return new (am4core.color as any)(color);
+                        });
+
+                        var label = series.createChild(am4core.Label);
+                        label.text =
+                            taxonomy.capacity_building_percentage +
+                            taxonomy.development_strategy_percentage +
+                            '%';
+                        label.horizontalCenter = 'middle';
+                        label.verticalCenter = 'middle';
+                        label.fontSize = 26;
+                        label.fontWeight = 'normal';
+
+                        series.ticks.template.events.on('ready', hideSmall);
+                        series.ticks.template.events.on(
+                            'visibilitychanged',
+                            hideSmall
+                        );
+                        series.labels.template.events.on('ready', hideSmall);
+                        series.labels.template.events.on(
+                            'visibilitychanged',
+                            hideSmall
+                        );
+                        series.labels.template.maxWidth = 70;
+                        series.labels.template.wrap = true;
+
+                        function hideSmall(ev: any) {
+                            if (ev.target.dataItem.hasProperties == false || ev.target.dataItem.dataContext.percentage == 0) {
+                                ev.target.hide();
+                            } else {
+                                ev.target.show();
+                            }
+                        }
+
+                        series.labels.template.text = '{taxonomy}';
+
+                        series.slices.template.tooltipText = '{category}';
+                        series.fontSize = '9';
+                        series.fontWeight = 'bold';
+                    }
+                );
+            }, 2000);
+        }
 
 
 
-        //HEALTH TEXANOMY PROSPECTIVE
-        this.chart = am4core.create("chartdiv_health_prospective", am4charts.PieChart3D);
-        this.chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
-
-        this.chart.legend = new am4charts.Legend();
-
-        this.chart.data = [
-            {
-                taxonomy: "Readiness",
-                percentage: 20
-            },
-            {
-                taxonomy: "Availability",
-                percentage: 50
-            },
-            {
-                percentage: 30
-            }
-        ];
-
-        this.chart.innerRadius = 100;
-
-        this.series = this.chart.series.push(new am4charts.PieSeries3D());
-        this.series.dataFields.value = "percentage";
-        this.series.dataFields.category = "taxonomy";
-
-        //for setting the color
-        this.series.colors.list = [
-            '#2F4770',
-            '#0860FE',
-            '#E2E2E4',
-        ].map(function (color) {
-            return new (am4core.color as any)(color);
-        });
-
-        //for the middle text
-        var label = this.series.createChild(am4core.Label);
-        label.text = '98%';
-        label.horizontalCenter = 'middle';
-        label.verticalCenter = 'middle';
-        label.fontSize = 50;
-        label.fontWeight = 'normal';
-
-        //to display only taxonomy and hide the percentage
-        this.series.labels.template.text = '{taxonomy}';
-        this.series.slices.template.tooltipText = '{category}'; //hides percentage
-        this.series.fontSize = '20';
-        this.series.fontWeight = 'bold';
-        
 
 
     }
-
-    getExistedCountriesList() {
-        let data = {
-            year: this.currentYear,
-        };
-
-        this.common.getExistedCountries(data).subscribe((result) => {
-            this.country_list = result;
-        });
-    }
-    
 
 }
+
+
+
+
+
 
 

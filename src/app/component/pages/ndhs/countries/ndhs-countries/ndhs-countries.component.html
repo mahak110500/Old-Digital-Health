@@ -49,37 +49,38 @@
 
     <!-- panel one start -->
     <div class="container-fluid">
-        <div class="tab-section">
+        <div class="tab-section" [ngClass]="governance_id == 1 ? 'showTab' : 'hideTtab'">
             <div class="panel">
                 <div class="panel-heading d-flex">
                     <h2>Present Development</h2>
-                    <div id="chartdiv_health_present" style="width: 45%; height: 32vh"></div>
+                    <!-- <div id="chartdiv_health_present" style="width: 45%; height: 32vh"></div> -->
                     <button mat-stroked-button color="primary" [routerLink]="['/present-development']">
                         View Data
                     </button>
                 </div>
                 <div class="panel-content">
-                    <pie-chart-card>[taxonomies]="health_taxonomies_prospective"</pie-chart-card>
+                    <pie-chart-card [chartdiv]="health_taxonomies_present"></pie-chart-card>
                 </div>
             </div>
 
             <div class="panel">
                 <div class="panel-heading d-flex">
                     <h2>Prospective Development</h2>
-                    <div id="chartdiv_health_prospective" style="width: 45%; height: 32vh"></div>
+                    <!-- <div id="chartdiv_health_prospective" style="width: 45%; height: 32vh"></div> -->
                     <button mat-stroked-button color="primary" [routerLink]="['/prospective-development']">
                         View Data
                     </button>
                 </div>
                 <div class="panel-content">
-                    <pie-chart-card>[taxonomies]="health_taxonomies_prospective"</pie-chart-card>
+                    <pie-chart-card [chartdiv]="health_taxonomies_prospective"></pie-chart-card>
                 </div>
             </div>
         </div>
         <!-- panel one End -->
 
         <!-- panel two Start -->
-        <!-- <div class="tab-section">
+
+        <div class="tab-section" [ngClass]="governance_id == 2 ? 'showTab' : 'hideTtab'">
             <div class="panel">
                 <div class="panel-heading d-flex">
                     <h2>Present Development</h2>
@@ -88,11 +89,11 @@
                     </button>
                 </div>
                 <div class="panel-content">
-                    <pie-chart-card></pie-chart-card>
+                    <pie-chart-card [chartdiv]="digital_taxonomies_present"></pie-chart-card>
                 </div>
-            </div>  -->
+            </div> 
 
-        <!-- <div class="panel">
+        <div class="panel">
                 <div class="panel-heading d-flex">
                     <h2>Prospective Development</h2>
                     <button mat-stroked-button color="primary" [routerLink]="['/prospective-development']">
@@ -100,10 +101,10 @@
                     </button>
                 </div>
                 <div class="panel-content">
-                    <pie-chart-card></pie-chart-card>
+                    <pie-chart-card [chartdiv]="digital_taxonomies_present"></pie-chart-card>
                 </div>
             </div>
-        </div> -->
+        </div>
       <!-- panel two End -->
 
 
