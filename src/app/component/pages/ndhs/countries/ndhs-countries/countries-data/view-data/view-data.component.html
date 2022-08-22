@@ -1,7 +1,8 @@
+
 <div class="two-column-layout">
     <div class="container-fluid">
         <div class="row">
-            <div class="print-btn" >
+            <div class="print-btn">
                 <a mat-raised-button><svg xmlns="http://www.w3.org/2000/svg" width="13" height="17" viewBox="0 0 13 17"
                         fill="none">
                         <path
@@ -12,16 +13,12 @@
             <!-- panel one start -->
             <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
                 <div class="panel">
-                    <div class="table-layout-main" >
-                        <ng-container >
-                            <div class="panel-heading">
-                                <h2 >
-                                    <!-- {{ndhsDetails.development_type}}-->
-                                </h2> 
+                    <div class="table-layout-main" *ngFor="let data of data1; let i=index; ">
+                        <ng-container>
+                            <div class="panel-heading" >
+                              <h2>{{ development_type[0]}}</h2>
                                 <div class="data-heading">
-                                    <h3>
-                                        <!-- {{taxonomy.name}} -->
-                                    </h3>
+                                    <h3>{{data[0]}}</h3>
                                     <div class="status-badge">
                                         <div class="divider-vertical"></div>
                                         <ul>
@@ -32,9 +29,8 @@
                                     </div>
                                 </div>
                                 <div class="data-status">
-                                    <h2>
-                                        <!-- {{ndhsDetails.ultimates[0].name}} -->
-                                    </h2>
+                                    <h2>{{data}}</h2>
+                                    
                                 </div>
                             </div>
                             <div class="panel-content">
@@ -45,21 +41,17 @@
                                                 <tr>
                                                     <th scope="col" style="width: 30%;">Indicators</th>
                                                     <th scope="col" style="width: 50%;">Questions</th>
-                                                    <th scope="col" class="text-end" style="width: 20%;">
-                                                        <!-- {{ndhsDetails.country_name}} -->
-                                                    </th>
+                                                    <!-- <th scope="col" class="text-end" style="width: 20%;">
+                                                        {{ndhsDetails.country_name}}</th> -->
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <ng-container >
+                                                <ng-container>
                                                     <tr class="border-less"
-                                                      >
-                                                        <td style="width: 30%;"><span
-                                                               >
-                                                               <!-- {{question.indicator_name}} -->
-                                                            </span></td>
+                                                    >
+                                                        <td style="width: 30%;"><span></span>
+                                                             </td>
                                                         <td style="width: 50%;">
-                                                            <!-- {{question.question_name}} -->
                                                         </td>
                                                         <td style="width: 20%;">
                                                             <div class="table-badge">
@@ -87,16 +79,12 @@
             <!-- panel one start -->
             <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
                 <div class="panel">
-                    <div class="table-layout-main" >
-                        <ng-container >
+                    <div class="table-layout-main" *ngFor="let value of data1">
+                        <ng-container>
                             <div class="panel-heading">
-                                <h2>
-                                    <!-- {{ndhsDetails.development_type}} -->
-                                </h2>
+                                <h2 >{{ development_type[0]}}</h2>
                                 <div class="data-heading">
-                                    <h3>
-                                        <!-- {{taxonomy.name}} -->
-                                    </h3>
+                                    <h3>{{ value[0] }}</h3>
                                     <div class="status-badge">
                                         <div class="divider-vertical"></div>
                                         <ul>
@@ -107,12 +95,10 @@
                                     </div>
                                 </div>
                                 <div class="data-status">
-                                    <h2>
-                                        <!-- {{ndhsDetails.ultimates[1].name}} -->
-                                    </h2>
+                                    <h2>{{ value }}</h2>
                                 </div>
                             </div>
-                            <div class="panel-content">
+                            <div class="panel-content" >
                                 <div class="data-table">
                                     <div class="table-responsive">
                                         <table class="table">
@@ -121,20 +107,16 @@
                                                     <th scope="col" style="width: 30%;">Indicators</th>
                                                     <th scope="col" style="width: 50%;">Questions</th>
                                                     <th scope="col" class="text-end" style="width: 20%;">
-                                                        <!-- {{ndhsDetails.country_name}} -->
-                                                    </th>
+                                                       India</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <ng-container >
+                                                <ng-container  *ngFor="let val of details">
                                                     <tr class="border-less"
-                                                       >
+                                                        >
                                                         <td style="width: 30%;"><span
-                                                               >
-                                                               <!-- {{question.indicator_name}} -->
-                                                            </span></td>
+                                                               >{{ val[1]}}</span></td>
                                                         <td style="width: 50%;">
-                                                            <!-- {{question.question_name}} -->
                                                         </td>
                                                         <td style="width: 20%;">
                                                             <div class="table-badge">

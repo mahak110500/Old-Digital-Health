@@ -1,167 +1,112 @@
-// import { Component, OnInit } from '@angular/core';
-// @Component({
-//     selector: 'app-view-data',
-//     templateUrl: './view-data.component.html',
-//     styleUrls: ['./view-data.component.css'],
-// })
-// export class ViewDataComponent implements OnInit {
-//     ngOnInit(): void {
-//     }
-   
-// }
-
-
+import { object } from '@amcharts/amcharts5';
 import { Component, OnInit } from '@angular/core';
-// import { UtilitiesService } from 'src/app/services/utilities.service';
-// import { CommonService } from 'src/app/services/common.service';
+import { ViewDataService } from 'src/app/services/view-data.service';
 @Component({
     selector: 'app-view-data',
     templateUrl: './view-data.component.html',
     styleUrls: ['./view-data.component.css'],
 })
 export class ViewDataComponent implements OnInit {
-    ndhs_details:any=[];
+    country_id:any;
+    currentYear:any;
+    governance_id:any;
     entries:any;
-    governance_id: any;
-    country_id: any;
-    currentYear: any;
-    triggerInit: boolean = true;
-    constructor() {}
-
+    data1:any;
+    data2:any;
+    ndhs_details:any=[];
+    development_type :any;
+    details:any;
+    constructor(private viewdataService : ViewDataService){}
     ngOnInit(): void {
-      
+        this.ViewData();
     }
-    
-    getViewData(governanceId:any) {
-
+    ViewData(){
         this.country_id = JSON.parse(localStorage.getItem("country_id") || '');
         this.currentYear = JSON.parse(localStorage.getItem('year') || '');
         this.governance_id = JSON.parse(localStorage.getItem('governance_id') || '');
-
-        // this._common.getViewData(governanceId, 1, this.country_id, this.currentYear).subscribe((result) => {
-
-        //     this.entries = Object.entries(result);
-        //     let viewDeatils :any;
-        //     let development_type :any;
-        //     let country_name :any;
-        //     let ultimate_type :any;
-        //     let ultimates :any = [];
-        //     let taxonomy :any=[];
-        //     let taxonomy1 :any=[];
-        //     let indicator :any;
-        //     let indicators :any=[];
-        //     let taxonomyName:any;
-        //     let questions:any=[];
-        //     this.entries.forEach(function (element: any, index: any) {
-        //         element.forEach(function (element1: any, index1: any) {
-        //             if(index1 ==  0){
-        //                 development_type = element1;
-        //             }else{
-        //                 Object.entries(element1).forEach(function (element2: any, index2: any) {
-        //                     if(index2 == 0){
-        //                         element2.forEach(function (element3: any, index3: any) {
-        //                             if(index3 ==  0){
-        //                                 ultimate_type = element3;
-        //                                 viewDeatils = {...viewDeatils,development_type: development_type}
-        //                             }else{
-        //                                 Object.entries(element3).forEach(function (element4: any, index4: any) {
-        //                                     element4.forEach(function (element5: any, index5: any) {
-        //                                         if(index5 ==  0){
-        //                                             taxonomyName = element5;
-        //                                         }else{
-        //                                             indicators = [];
-        //                                             Object.entries(element5).forEach(function (element6: any, index6: any) {
-        //                                                 questions = [];
-        //                                                 indicator = element6[0];
-        //                                                 element6[1].forEach(function (element7: any, index7: any) {
-        //                                                     country_name = element7.countries_name;
-        //                                                     questions.push(element7)
-        //                                                 });
-        //                                                 indicators.push({
-        //                                                     name:indicator,
-        //                                                     questions:questions
-        //                                                 })
-        //                                             });
-        //                                         }
-        //                                         if(index5 == 1 ){
-        //                                             taxonomy.push({
-        //                                                 name:taxonomyName,
-        //                                                 indicator:indicators
-        //                                             })
-        //                                         }
-        //                                     })
-        //                                 });
-        //                             }
-        //                             if(index3 ==  0){
-        //                                 ultimates.push({
-        //                                     name:ultimate_type,
-        //                                     taxonomy:taxonomy
-        //                                 })
-        //                             }
-        //                             ultimates.sort(function(a:any,b:any) {return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0);} );
-        //                             viewDeatils = {...viewDeatils,ultimates, country_name:country_name}
-        //                         })
-        //                     }else if(index2 == 1){
-        //                         element2.forEach(function (element3: any, index3: any) {
-        //                             if(index3 ==  0){
-        //                                 ultimate_type = element3;
-        //                                 viewDeatils = {...viewDeatils,development_type: development_type}
-        //                             }else{
-        //                                 Object.entries(element3).forEach(function (element4: any, index4: any) {
-        //                                     element4.forEach(function (element5: any, index5: any) {
-        //                                         if(index5 ==  0){
-        //                                             taxonomyName = element5;
-        //                                         }else{
-        //                                             indicators = [];
-        //                                             Object.entries(element5).forEach(function (element6: any, index6: any) {
-        //                                                 questions = [];
-        //                                                 indicator = element6[0];
-        //                                                 element6[1].forEach(function (element7: any, index7: any) {
-        //                                                     country_name = element7.countries_name;
-        //                                                     questions.push(element7)
-        //                                                 });
-        //                                                 indicators.push({
-        //                                                     name:indicator,
-        //                                                     questions:questions
-        //                                                 })
-        //                                             });
-        //                                         }
-        //                                         if(index5 == 1 ){
-        //                                             taxonomy1.push({
-        //                                                 name:taxonomyName,
-        //                                                 indicator:indicators
-        //                                             })
-        //                                         }
-        //                                     })
-        //                                 });
-        //                             }
-        //                             if(index3 ==  0){
-        //                                 ultimates.push({
-        //                                     name:ultimate_type,
-        //                                     taxonomy:taxonomy1
-        //                                 })
-        //                             }
-        //                             ultimates.sort(function(a:any,b:any) {return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0);} );
-        //                             viewDeatils = {...viewDeatils,ultimates, country_name:country_name}
-        //                         })
-        //                     }
-        //                 });
-        //             }
-        //         });
-        //     });
-        //     this.ndhs_details.push(viewDeatils);
-        // });
+     this.viewdataService.getViewData(this.governance_id, 1, this.country_id, this.currentYear).subscribe(result =>{
+      
+        this.entries = Object.entries(result);
+        console.log(this.entries);
+        
+        this.entries.forEach((element:any, index:any) => {
+            if(index == 0){
+                this.development_type = element
+            }
+        });  
+        let data = Object.entries(this.development_type)
+        data.forEach((element1:any, index1:any) => {
+            
+            if(index1 == 1){ 
+                // console.log(element1);
+                   
+                 Object.entries(element1).forEach((element2:any, index2:any) =>{
+                    
+                    
+                    if(index2 == 1){
+                        // console.log(element2);
+                        
+                        element2.forEach((element3:any, index3:any)=> {
+                            if(index3 == 1){
+                                console.log(element3);
+                                
+                                this.data1 = element3.Availability;
+                                this.data1 = Object.entries(this.data1);
+                                
+                                this.data2 = element3.Readiness;
+                                this.data2 = Object.entries(this.data2);
+                                console.log(this.data1);
+                                console.log(this.data2);
+                               let datamain = Object.entries(element3);
+                               this.data1.forEach((element4:any, index4:any) => {
+                                let data = Object.entries(element4);
+                                this.details = data[1];
+                                console.log(this.details);
+                                
+                                
+                               })
+                               datamain.forEach((element4:any, index4:any)=>{
+                                if(index4 == 0){
+                                    element4 = Object.entries(element4);
+                                    element4.forEach((element5:any, index5:any)=> {
+                                        if(index5 == 1){
+                                            //  this.data1 = element5                                                                                        
+                                        }
+                                        
+                                    })
+                                    
+                                }
+                                if(index4 == 1){
+                                    element4 = Object.entries(element4);
+                                    element4.forEach((element5:any, index5:any)=> {
+                                        if(index5 == 1){    
+                                            if(element5 != 1 )    {
+                                                this.data2 = element5
+                                                // console.log(this.data2); 
+                                            }                                    
+                                                                                       
+                                        }
+                                        
+                                    })
+                                    
+                                }
+                                
+                               })
+                            }
+                            
+                        })
+                        
+                    }
+                    
+                 })
+                         
+            
+            }
+           
+        });       
+     });
+     
     }
-
-    handlePrint() {
-        window.print();
-    }
-
-    ngOnDestroy(): void {
-        // this._utilities.showHeaderMenu.next(false);
-        // // this._utilities.governanceTypeSource.next(this.governance_id);
-        // this._utilities.governanceTypeSource.unsubscribe;
-        this.triggerInit = false;
-    }
-
+   
 }
+
