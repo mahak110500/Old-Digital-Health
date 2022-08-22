@@ -10,8 +10,8 @@ export class CountriesService {
     constructor(private http: HttpClient) {}
 
     // public baseUrl = environment.baseUrl;
-public baseUrl = "http://3.95.161.176:4000/";
-    public getCountries(): Observable<any> {
+     public baseUrl = "http://3.95.161.176:4000/";
+   getCountries(): Observable<any> {
        return this.http.get(this.baseUrl + 'ndhs-master/countryList');
     }
 }
