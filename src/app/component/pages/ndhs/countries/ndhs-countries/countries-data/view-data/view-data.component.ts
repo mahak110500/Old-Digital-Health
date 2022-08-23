@@ -41,8 +41,6 @@ export class ViewDataComponent implements OnInit {
                 // console.log(element1);
                    
                  Object.entries(element1).forEach((element2:any, index2:any) =>{
-                    
-                    
                     if(index2 == 1){
                         // console.log(element2);
                         
