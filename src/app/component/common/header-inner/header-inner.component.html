@@ -29,14 +29,18 @@
         </div>
         <span class="example-spacer"></span>
         <div class="togglebtn">
-            <mat-button-toggle-group #toggleGroup1="matButtonToggleGroup">
+            <div class="header-tabs" *ngIf="showHeaderMenu" >
+                <button class="active" (click)="toggle(1)" [ngClass]="{ 'active' : governance_id == 1 }" mat-button>Health & IT</button>
+                <button (click)="toggle(2)" [ngClass]="{ 'active' : governance_id == 2 }" mat-button>Digital Health</button>
+            </div>
+            <!-- <mat-button-toggle-group #toggleGroup1="matButtonToggleGroup">
                 <mat-button-toggle value="Angular Material UI">
                     Health & IT
                 </mat-button-toggle>
                 <mat-button-toggle value="React Material UI">
                     Digital Health
                 </mat-button-toggle>
-            </mat-button-toggle-group>
+            </mat-button-toggle-group> -->
         </div>
     </mat-toolbar>
 

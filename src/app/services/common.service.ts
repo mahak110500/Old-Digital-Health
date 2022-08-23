@@ -12,7 +12,7 @@ export class CommonService{
 
     public baseUrl = environment.baseUrl;
 
-    public getNdhsDetails(
+    public getNdhsCountriesDetails(
         governance_id: number,
         country_id: number,
         year: number
@@ -30,17 +30,17 @@ export class CommonService{
     }
 
 
-    public getExistedCountries(data: any): Observable<any> {       
-        let selected_years = JSON.parse(localStorage.getItem("selected_years") || "")
-        if(selected_years && selected_years.length == 2){
-            return this.http.get(this.baseUrl + 'ndhs-master/existed-countries-list' );
-        }else{
-            return this.http.post(
-                this.baseUrl + 'ndhs-master/existed-countries-list',
-                data
-            );
-        }        
-    }
+    // public getExistedCountries(data: any): Observable<any> {       
+    //     let selected_years = JSON.parse(localStorage.getItem("selected_years") || "")
+    //     if(selected_years && selected_years.length == 2){
+    //         return this.http.get(this.baseUrl + 'ndhs-master/existed-countries-list' );
+    //     }else{
+    //         return this.http.post(
+    //             this.baseUrl + 'ndhs-master/existed-countries-list',
+    //             data
+    //         );
+    //     }        
+    // }
 
     public getAllCountries(): Observable<any> {
         return this.http.get(this.baseUrl + 'ndhs-master/existed-countries-list' );
