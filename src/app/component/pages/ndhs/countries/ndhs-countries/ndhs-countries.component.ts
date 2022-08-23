@@ -63,7 +63,7 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
     ngOnInit(): void {
 
         this.utilities.showHeaderMenu.next(true);
-        
+
 
         this.utilities.governanceTypeSource.subscribe((governanceId) => {
             this.dataNew = [];
@@ -73,7 +73,7 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
             this.digital_taxonomies_prospective = [];
 
             // if (this.triggerInit) {
-                this.getNdhsCountriesDetails(governanceId);
+            this.getNdhsCountriesDetails(governanceId);
             // }
         });
 
@@ -88,7 +88,7 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
     }
 
     getNdhsCountriesDetails(governanceId: any) {
-        console.log(governanceId);
+        // console.log(governanceId);
 
         this.dataNew = [];
         this.health_taxonomies_prospective = [];
@@ -201,98 +201,51 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
                     );
 
                 } else {
-                    this.ndhsDetails['Present Development'].forEach(
-                        (element: any) => {
-                            Object.keys(element).forEach((key) => {
-                                let readiness_score = parseInt(
-                                    element[key][0].score
-                                );
-                                let availability_score = parseInt(
-                                    element[key][1].score
-                                );
-                                let readiness_percentage = Math.round(
-                                    this.getPercantage(readiness_score)
-                                );
-                                let availability_percentage = Math.round(
-                                    this.getPercantage(availability_score)
-                                );
-                                let total_percentage =
-                                    readiness_percentage +
-                                    availability_percentage;
-                                let remaining_percentage =
-                                    100 - total_percentage;
-                                let details = {
-                                    title: element[key][0].taxonomy_name,
-                                    governance_type: 'health',
-                                    developement_type: 'present',
-                                    readiness_score: readiness_score,
-                                    availability_score: availability_score,
-                                    readiness_percentage: readiness_percentage,
-                                    availability_percentage:
-                                        availability_percentage,
-                                    remaining_percentage: remaining_percentage,
-                                    taxonomy_id: element[key][0].taxonomy_id,
-                                    development_id:
-                                        element[key][0].development_id,
-                                    governance_id:
-                                        element[key][0].governance_id,
-                                    prefix: 'digital_present',
-                                };
-                                this.dataNew.push(details);
-                                // console.log(this.dataNew);
-                                
-                                this.digital_taxonomies_present.push(details);
-                                // console.log(this.digital_taxonomies_present);
-                                
-                            });
-                        }
-                    );
+                    this.ndhsDetails['Present Development'].forEach((element: any) => {
+                        Object.keys(element).forEach((key) => {
+                            let readiness_score = parseInt(
+                                element[key][0].score
+                            );
+                            let availability_score = parseInt(
+                                element[key][1].score
+                            );
+                            let readiness_percentage = Math.round(
+                                this.getPercantage(readiness_score)
+                            );
+                            let availability_percentage = Math.round(
+                                this.getPercantage(availability_score)
+                            );
+                            let total_percentage = readiness_percentage + availability_percentage;
+                            let remaining_percentage = 100 - total_percentage;
+                            let details = {
+                                title: element[key][0].taxonomy_name,
+                                governance_type: 'digital',
+                                developement_type: 'present',
+                                readiness_score: readiness_score,
+                                availability_score: availability_score,
+                                readiness_percentage: readiness_percentage,
+                                availability_percentage:
+                                    availability_percentage,
+                                remaining_percentage: remaining_percentage,
+                                taxonomy_id: element[key][0].taxonomy_id,
+                                development_id:
+                                    element[key][0].development_id,
+                                governance_id:
+                                    element[key][0].governance_id,
+                                prefix: 'digital_present',
+                            };
+                            this.dataNew.push(details);
+                            console.log(this.dataNew);
 
-                    this.ndhsDetails['Prospective Development'].forEach(
-                        (element: any) => {
-                            Object.keys(element).forEach((key) => {
-                                let capacity_building_score = parseInt(
-                                    element[key][0].score
-                                );
-                                let development_strategy_score = parseInt(
-                                    element[key][1].score
-                                );
-                                let capacity_building_percentage = Math.round(
-                                    this.getPercantage(capacity_building_score)
-                                );
-                                let development_strategy_percentage = Math.round(
-                                    this.getPercantage(development_strategy_score)
-                                );
-                                let total_percentage =
-                                    capacity_building_percentage +
-                                    development_strategy_percentage;
-                                let remaining_percentage =
-                                    100 - total_percentage;
-                                let details = {
-                                    title: element[key][0].taxonomy_name,
-                                    governance_type: 'health',
-                                    developement_type: 'prospective',
-                                    capacity_building_score: capacity_building_score,
-                                    development_strategy_score: development_strategy_score,
-                                    capacity_building_percentage: capacity_building_percentage,
-                                    development_strategy_percentage:
-                                        development_strategy_percentage,
-                                    remaining_percentage: remaining_percentage,
-                                    taxonomy_id: element[key][0].taxonomy_id,
-                                    development_id:
-                                        element[key][0].development_id,
-                                    governance_id:
-                                        element[key][0].governance_id,
-                                    prefix: 'digital_prospective',
-                                };
-                                this.dataNew.push(details);
-                                this.digital_taxonomies_prospective.push(
-                                    details
-                                );
-                            });
-                        }
-                    );
+                            this.digital_taxonomies_present.push(details);
+                            console.log(this.digital_taxonomies_present);
+                        });
+
+                    });
                 }
+
+
+
 
             })
     }
@@ -308,19 +261,17 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
 
         if (this.governance_id == 1) {
             setTimeout(() => {
-                console.log(this.health_taxonomies_present);
 
                 //HEALTH TEXANOMY PRESENT
                 this.health_taxonomies_present.forEach((taxonomy: any, index: number) => {
-                    console.log(taxonomy);
-                    console.log(index);
+                    // console.log(taxonomy);
+                    // console.log(index);
 
                     let i = 1;
                     this.chart = am4core.create(
                         'chartdiv_health_present' + (i + index),
                         am4charts.PieChart3D
                     );
-                    this.chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
 
                     this.chart.data = [
                         {
@@ -354,7 +305,7 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
 
                     //for the middle text
                     var label = this.series.createChild(am4core.Label);
-                    label.text = taxonomy.readiness_percentage +taxonomy.availability_percentage +'%';
+                    label.text = taxonomy.readiness_percentage + taxonomy.availability_percentage + '%';
                     label.horizontalCenter = 'middle';
                     label.verticalCenter = 'middle';
                     label.fontSize = 25;
@@ -472,105 +423,29 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
             setTimeout(() => {
 
                 //DIGITAL TEXANOMY PRESENT
-                console.log(this.health_taxonomies_present);
+                console.log(this.digital_taxonomies_present);
                 
-
-                 this.health_taxonomies_present.forEach((taxonomy: any, index: number) => {
-                    console.log(taxonomy);
-                    console.log(index);
-                    
-                    let i = 1;
-                    this.chart = am4core.create(
-                        'chartdiv_health_present' + (i + index),
-                        am4charts.PieChart3D
-                    );
-                    this.chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
-
-                    this.chart.data = [
-                        {
-                            taxonomy: "Readiness",
-                            percentage: taxonomy.readiness_percentage
-                        },
-                        {
-                            taxonomy: "Availability",
-                            percentage: taxonomy.availability_percentage
-                        },
-                        {
-                            percentage: 10
-                        }
-                    ];
-
-                    this.chart.innerRadius = 38;
-                    this.chart.depth = 10;
-
-                    this.series = this.chart.series.push(new am4charts.PieSeries3D());
-                    this.series.dataFields.value = "percentage";
-                    this.series.dataFields.category = "taxonomy";
-
-                    //for setting the color
-                    this.series.colors.list = [
-                        '#71ADB5',
-                        '#1F914F',
-                        '#E2E2E4'
-                    ].map(function (color) {
-                        return new (am4core.color as any)(color);
-                    });
-
-                    //for the middle text
-                    var label = this.series.createChild(am4core.Label);
-                    label.text = taxonomy.readiness_percentage + taxonomy.availability_percentage +'%';
-                    label.horizontalCenter = 'middle';
-                    label.verticalCenter = 'middle';
-                    label.fontSize = 25;
-                    label.fontWeight = 'normal';
-
-                    //to hide the tick of last splice
-                    this.series.ticks.template.events.on('ready', hideSmall);
-                    this.series.ticks.template.events.on('visibilitychanged', hideSmall);
-
-                    this.series.labels.template.events.on('ready', hideSmall);
-                    this.series.labels.template.events.on('visibilitychanged', hideSmall);
-                    this.series.labels.template.maxWidth = 70;
-                    this.series.labels.template.wrap = true;
-
-                    function hideSmall(ev: any) {
-                        if (ev.target.dataItem.hasProperties == false || ev.target.dataItem.dataContext.percentage == 0) {
-                            ev.target.hide();
-                        } else {
-                            ev.target.show();
-                        }
-                    }
-
-                    //to display only taxonomy and hide the percentage
-                    this.series.labels.template.text = '{taxonomy}';
-                    this.series.slices.template.tooltipText = '{category}'; //hides percentage
-                    this.series.fontSize = '10';
-                    this.series.fontWeight = 'bold';
-
-                });
-                //DIGITAL TEXANOMY PROSPECTIVE
-
-                this.digital_taxonomies_prospective.forEach(
+                this.digital_taxonomies_present.array.forEach(
                     (taxonomy: any, index: number) => {
-                        let i = 6;
+
+                        let i = 1;
                         this.chart = am4core.create(
-                            'chartdiv_digital_prospective' + (i + index),
+                            'chartdiv_digital_present' + (i + index),
                             am4charts.PieChart3D
                         );
-                        this.title = taxonomy.title;
-                        this.capacity_building_score = taxonomy.capacity_building_score;
-                        this.development_strategy_score = taxonomy.development_strategy_score;
 
-                        //this.chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
+                        this.title = taxonomy.title;
+                        this.availability_score = taxonomy.availability_score;
+                        this.readiness_score = taxonomy.readiness_score;
 
                         this.chart.data = [
                             {
-                                taxonomy: 'Capacity Building',
-                                percentage: taxonomy.capacity_building_percentage,
+                                taxonomy: 'Readiness',
+                                percentage: taxonomy.readiness_percentage,
                             },
                             {
-                                taxonomy: 'Development Strategy',
-                                percentage: taxonomy.development_strategy_percentage,
+                                taxonomy: 'Avaliability',
+                                percentage: taxonomy.availability_percentage,
                             },
                             {
                                 percentage: taxonomy.remaining_percentage,
@@ -587,18 +462,15 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
                         series.dataFields.category = 'taxonomy';
 
                         series.colors.list = [
-                            '#14CCAA',
-                            '#41565A',
+                            '#71ADB5',
+                            '#1F914F',
                             '#E2E2E4',
                         ].map(function (color) {
                             return new (am4core.color as any)(color);
                         });
 
                         var label = series.createChild(am4core.Label);
-                        label.text =
-                            taxonomy.capacity_building_percentage +
-                            taxonomy.development_strategy_percentage +
-                            '%';
+                        label.text = taxonomy.readiness_percentage + taxonomy.availability_percentage + '%';
                         label.horizontalCenter = 'middle';
                         label.verticalCenter = 'middle';
                         label.fontSize = 26;
@@ -630,8 +502,10 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
                         series.slices.template.tooltipText = '{category}';
                         series.fontSize = '9';
                         series.fontWeight = 'bold';
+
                     }
                 );
+
             }, 2000);
         }
 
