@@ -2,7 +2,7 @@
 <div class="two-column-layout">
     <div class="container-fluid">
         <div class="row">
-            <div class="print-btn">
+            <div class="print-btn"  (click)="handlePrint()">
                 <a mat-raised-button><svg xmlns="http://www.w3.org/2000/svg" width="13" height="17" viewBox="0 0 13 17"
                         fill="none">
                         <path
@@ -10,13 +10,13 @@
                             fill="white" />
                     </svg>Print</a>
             </div>
-            <!-- panel one start -->
+           
             <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
                 <div class="panel">
-                    <div class="table-layout-main" *ngFor="let data of data1; let i=index; ">
-                        <ng-container>
+                    <div class="table-layout-main" >
+                        <ng-container   *ngFor="let data of Availability; let i=index;">
                             <div class="panel-heading" >
-                              <h2>{{ development_type[0]}}</h2>
+                              <h2 *ngIf="i==0">{{development_type[0]}}</h2>
                                 <div class="data-heading">
                                     <h3>{{data[0]}}</h3>
                                     <div class="status-badge">
@@ -29,7 +29,7 @@
                                     </div>
                                 </div>
                                 <div class="data-status">
-                                    <h2>{{data}}</h2>
+                                    <h2>{{ main }}</h2>
                                     
                                 </div>
                             </div>
@@ -41,28 +41,28 @@
                                                 <tr>
                                                     <th scope="col" style="width: 30%;">Indicators</th>
                                                     <th scope="col" style="width: 50%;">Questions</th>
-                                                    <!-- <th scope="col" class="text-end" style="width: 20%;">
-                                                        {{ndhsDetails.country_name}}</th> -->
+                                                    <th scope="col" class="text-end" style="width: 20%;">
+                                                        {{ country_name}}</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <ng-container>
-                                                    <tr class="border-less"
-                                                    >
-                                                        <td style="width: 30%;"><span></span>
-                                                             </td>
-                                                        <td style="width: 50%;">
-                                                        </td>
-                                                        <td style="width: 20%;">
-                                                            <div class="table-badge">
-                                                                <span 
-                                                                    class="circle_badge success"></span>
-                                                                <span 
-                                                                    class="circle_badge danger"></span>
-                                                                <span 
-                                                                    class="circle_badge disable-status"></span>
-                                                            </div>
-                                                        </td>
+                                                <ng-container *ngFor="let value of data4; let i=index">
+                                                    <tr class="border-less" *ngFor="let val of value[1]; let j=index" >
+                                                        <ng-container *ngIf="data[0]==val.taxonomy_name">
+                                                            <td style="width: 30%;">
+                                                                <span *ngIf="j==0">{{value[0]}}
+                                                            </span></td>
+                                                            <td style="width: 50%;" >
+                                                            {{val.question_name}}
+                                                            </td>
+                                                            <td style="width: 20%;">
+                                                                <div class="table-badge">
+                                                                    <span  *ngIf="val.ststus == 'Yes'" class="circle_badge success"></span>
+                                                                    <span  *ngIf="val.ststus == 'No'" class="circle_badge danger"></span>
+                                                                    <span *ngIf="val.ststus == 'Data not available'" class="circle_badge disable-status"></span>
+                                                                </div>
+                                                            </td>
+                                                            </ng-container>
                                                     </tr>
                                                     <tr class="with-boder"></tr>
                                                 </ng-container>
@@ -75,16 +75,15 @@
                     </div>
                 </div>
             </div>
-            <!-- panel one start -->
-            <!-- panel one start -->
+       
             <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
                 <div class="panel">
-                    <div class="table-layout-main" *ngFor="let value of data1">
-                        <ng-container>
+                    <div class="table-layout-main">
+                        <ng-container *ngFor="let data of Readiness; let i=index;">
                             <div class="panel-heading">
-                                <h2 >{{ development_type[0]}}</h2>
+                                <h2 *ngIf="i == 0" >{{ development_type[0]}}</h2>
                                 <div class="data-heading">
-                                    <h3>{{ value[0] }}</h3>
+                                    <h3>{{ data[0] }}</h3>
                                     <div class="status-badge">
                                         <div class="divider-vertical"></div>
                                         <ul>
@@ -95,7 +94,7 @@
                                     </div>
                                 </div>
                                 <div class="data-status">
-                                    <h2>{{ value }}</h2>
+                                    <h2>Readiness</h2>
                                 </div>
                             </div>
                             <div class="panel-content" >
@@ -107,27 +106,27 @@
                                                     <th scope="col" style="width: 30%;">Indicators</th>
                                                     <th scope="col" style="width: 50%;">Questions</th>
                                                     <th scope="col" class="text-end" style="width: 20%;">
-                                                       India</th>
+                                                       {{country_name}}</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                                <ng-container  *ngFor="let val of details">
-                                                    <tr class="border-less"
-                                                        >
-                                                        <td style="width: 30%;"><span
-                                                               >{{ val[1]}}</span></td>
-                                                        <td style="width: 50%;">
-                                                        </td>
-                                                        <td style="width: 20%;">
-                                                            <div class="table-badge">
-                                                                <span 
-                                                                    class="circle_badge success"></span>
-                                                                <span 
-                                                                    class="circle_badge danger"></span>
-                                                                <span 
-                                                                    class="circle_badge disable-status"></span>
-                                                            </div>
-                                                        </td>
+                                            <tbody >
+                                                <ng-container *ngFor="let value of data3; let i=index">
+                                                    <tr class="border-less" *ngFor="let val of value[1]; let j=index" >
+                                                        <ng-container *ngIf="data[0]==val.taxonomy_name">
+                                                            <td style="width: 30%;">
+                                                                <span *ngIf="j==0">{{value[0]}}
+                                                            </span></td>
+                                                            <td style="width: 50%;" >
+                                                            {{val.question_name}}
+                                                            </td>
+                                                            <td style="width: 20%;">
+                                                                <div class="table-badge">
+                                                                    <span  *ngIf="val.ststus == 'Yes'" class="circle_badge success"></span>
+                                                                    <span  *ngIf="val.ststus == 'No'" class="circle_badge danger"></span>
+                                                                    <span *ngIf="val.ststus == 'Data not available'" class="circle_badge disable-status"></span>
+                                                                </div>
+                                                            </td>
+                                                            </ng-container>
                                                     </tr>
                                                     <tr class="with-boder"></tr>
                                                 </ng-container>
@@ -140,7 +139,7 @@
                     </div>
                 </div>
             </div>
-            <!-- panel one start -->
+  
         </div>
     </div>
-</div>
+</div> 

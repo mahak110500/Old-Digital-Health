@@ -1,7 +1,7 @@
 <div class="two-column-layout">
     <div class="container-fluid">
         <div class="row">
-            <div class="print-btn">
+            <div class="print-btn"  (click)="handlePrint()">
                 <div class="print-btn-inner">
                 <a mat-raised-button><svg xmlns="http://www.w3.org/2000/svg" width="13" height="17" viewBox="0 0 13 17"
                         fill="none">
@@ -17,13 +17,13 @@
                     <div class=" col-md-12 col-xs-12">
                         <div class="panel">
                             <div class="table-layout-main">
-                                <ng-container >
-                                    <ng-container >
-                                        <div class="panel-heading">
+                                <ng-container>
+                                    <ng-container    *ngFor="let data of Availability" >
+                                        <div class="panel-heading" >
                                             <!-- <h2 *ngIf="i == 0">{{ndhsDetails.development_type}}</h2> -->
                                             <div class="data-heading">
                                                 <h3>
-                                                    <!-- {{taxonomy.name}} -->
+                                                    {{data[0]}}
                                                 </h3>
                                                 <div class="status-badge">
                                                     <div class="divider-vertical"></div>
@@ -36,9 +36,7 @@
                                                 </div>
                                             </div>
                                             <div class="data-status">
-                                                <h2>
-                                                    <!-- {{ndhsDetails.ultimates[0].name}} -->
-                                                </h2>
+                                                <h2>{{main}}  </h2>
                                             </div>
                                         </div>
                                         <div class="panel-content">
@@ -50,29 +48,32 @@
                                                                 <th scope="col" style="width: 30%;">Indicators</th>
                                                                 <th scope="col" style="width: 50%;">Questions</th>
                                                                 <th scope="col" class="text-end" style="width: 20%;">
-                                                                    <!-- {{ndhsDetails.country_name}} -->
+                                                                    {{country_name}}
                                                                 </th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody>
-                                                            <ng-container >
-                                                                <tr class="border-less">
-                                                                    <td style="width: 30%;"><span >
-                                                                        <!-- {{question.indicator_name}} -->
+                                                        <tbody  >
+                                                            <ng-container *ngFor="let value of data4;">
+                                                                <tr class="border-less" *ngFor="let val of value[1]; let j=index">
+                                                                    <ng-container *ngIf="data[0]==val.taxonomy_name">
+                                                                    <td style="width: 30%;">
+                                                                        <span *ngIf="j==0">{{value[0]}}
                                                                     </span></td>
-                                                                    <td style="width: 50%;">
-                                                                    <!-- {{question.question_name}} -->
+                                                                    <td style="width: 50%;" >
+                                                                    {{val.question_name}}
                                                                     </td>
                                                                     <td style="width: 20%;">
                                                                         <div class="table-badge">
-                                                                            <span class="circle_badge success"></span>
-                                                                            <span class="circle_badge danger"></span>
-                                                                            <span class="circle_badge disable-status"></span>
+                                                                            <span  *ngIf="val.ststus == 'Yes'" class="circle_badge success"></span>
+                                                                            <span  *ngIf="val.ststus == 'No'" class="circle_badge danger"></span>
+                                                                            <span *ngIf="val.ststus == 'Data not available'" class="circle_badge disable-status"></span>
                                                                         </div>
                                                                     </td>
+                                                                    </ng-container>
                                                                 </tr>
                                                                 <tr class="with-boder"></tr>
                                                             </ng-container>
+                                                  
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -91,12 +92,11 @@
                         <div class="panel">
                             <div class="table-layout-main">
                                 <ng-container >
-                                    <ng-container >
+                                    <ng-container  *ngFor="let data of Readiness" >
                                         <div class="panel-heading">
                                             <!-- <h2 *ngIf="i == 0">{{ndhsDetails.development_type}}</h2> -->
                                             <div class="data-heading">
-                                                <h3>
-                                                    <!-- {{taxonomy.name}} -->
+                                                <h3>{{data[0]}}
                                                 </h3>
                                                 <div class="status-badge">
                                                     <div class="divider-vertical"></div>
@@ -109,9 +109,7 @@
                                                 </div>
                                             </div>
                                             <div class="data-status">
-                                                <h2>
-                                                    <!-- {{ndhsDetails.ultimates[1].name}} -->
-                                                </h2>
+                                                <h2>Readiness</h2>
                                             </div>
                                         </div>
                                         <div class="panel-content">
@@ -123,26 +121,28 @@
                                                                 <th scope="col" style="width: 30%;">Indicators</th>
                                                                 <th scope="col" style="width: 50%;">Questions</th>
                                                                 <th scope="col" class="text-end" style="width: 20%;">
-                                                                    <!-- {{ndhsDetails.country_name}} -->
+                                                                    {{country_name}}                                      
                                                                 </th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <ng-container>
-                                                                <tr class="border-less" >
-                                                                    <td style="width: 30%;"><span>
-                                                                        <!-- {{question.indicator_name}} -->
-                                                                    </span></td>
-                                                                    <td style="width: 50%;">
-                                                                    <!-- {{question.question_name}} -->
-                                                                    </td>
-                                                                    <td style="width: 20%;">
-                                                                        <div class="table-badge">
-                                                                            <span  class="circle_badge success"></span>
-                                                                            <span  class="circle_badge danger"></span>
-                                                                            <span  class="circle_badge disable-status"></span>
-                                                                        </div>
-                                                                    </td>
+                                                            <ng-container *ngFor="let value of data3; let i=index">
+                                                                <tr class="border-less" *ngFor="let val of value[1]; let j=index" >
+                                                                    <ng-container *ngIf="data[0]==val.taxonomy_name">
+                                                                        <td style="width: 30%;">
+                                                                            <span *ngIf="j==0">{{value[0]}}
+                                                                        </span></td>
+                                                                        <td style="width: 50%;" >
+                                                                        {{val.question_name}}
+                                                                        </td>
+                                                                        <td style="width: 20%;">
+                                                                            <div class="table-badge">
+                                                                                <span  *ngIf="val.ststus == 'Yes'" class="circle_badge success"></span>
+                                                                                <span  *ngIf="val.ststus == 'No'" class="circle_badge danger"></span>
+                                                                                <span *ngIf="val.ststus == 'Data not available'" class="circle_badge disable-status"></span>
+                                                                            </div>
+                                                                        </td>
+                                                                        </ng-container>
                                                                 </tr>
                                                                 <tr class="with-boder"></tr>
                                                             </ng-container>
