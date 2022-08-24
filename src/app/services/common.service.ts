@@ -28,21 +28,18 @@ export class CommonService{
         );
         //return this.http.get<any>('./assets/data/countries.json');
     }
-
-
-    // public getExistedCountries(data: any): Observable<any> {       
-    //     let selected_years = JSON.parse(localStorage.getItem("selected_years") || "")
-    //     if(selected_years && selected_years.length == 2){
-    //         return this.http.get(this.baseUrl + 'ndhs-master/existed-countries-list' );
-    //     }else{
-    //         return this.http.post(
-    //             this.baseUrl + 'ndhs-master/existed-countries-list',
-    //             data
-    //         );
-    //     }        
-    // }
-
+    
+    //api for getting all the countries
     public getAllCountries(): Observable<any> {
         return this.http.get(this.baseUrl + 'ndhs-master/existed-countries-list' );
+    }
+
+    //api for getting BarChart Data
+    public getBarChartData(data: any): Observable<any> {
+        return this.http.post(this.baseUrl + 'ndhs-master/bar-chart', data);
+    }
+
+    public getBubbleChartData(data: any): Observable<any> {
+        return this.http.post(this.baseUrl + 'ndhs-master/bubble-chart', data);
     }
 }

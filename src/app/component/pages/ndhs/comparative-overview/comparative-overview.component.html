@@ -5,7 +5,7 @@
                 <!-- panel one start -->
                 <div class="panel country-selector">
                     <div class="panel-content">
-                        <div #main style="width: 100%;height: 80vh;"></div>
+                        <div #charts style="width: 100%;height: 80vh;"></div>
                     </div>
                     <!-- panel one End -->
                 </div>
@@ -28,27 +28,27 @@
                     <div class="panel-content">
                         <div class="compartive-table-details">
                             <div class="table-details-heading">
-                                <!-- <h5 *ngIf="governance_name">{{governance_name}}</h5> -->
-                                <button >Bar Chart</button>
-                                
+                                <h5 *ngIf="governance_name">{{governance_name}}</h5>
+                                 <!-- <button >Bar Chart</button> -->
+                                <div class="detail-btn">
+                                    <a mat-stroked-button (click)="toggleChartButtons()">{{chartTitle}}</a>
+                                </div>
                                 <!-- <button mat-raised-button (click)="ToggleChart()">{{chartTitle}}</button> -->
                             </div>
                             <div class="table-com">
-                                <div>
-                                <!-- <div [class]="showBarChart ? 'showChart' : 'hideChart'"> -->
+                                <div [class]="showBarChart ? 'showChart' : 'hideChart'">
                                     <div id="chartdiv2" style="width: 500px; height: 250px;margin: 0 auto;"></div>
                                 </div>
-                                <div>
-                                <!-- <div [class]="showBarChart ? 'hideChart' : 'showChart'"> -->
+                                <div [class]="showBarChart ? 'hideChart' : 'showChart'">
                                     <div id="chartdiv1" style="width: 400px; height: 250px;margin: 0 auto;"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
+                </div> 
 
                 <!-- panel one End -->
+                
                 <!-- panel one start -->
                 <div class="panel comparative-details">
                     <div class="panel-content">

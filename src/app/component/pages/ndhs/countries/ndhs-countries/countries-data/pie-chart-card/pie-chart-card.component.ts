@@ -16,12 +16,7 @@ export class PieChartCardComponent implements OnInit {
 
     ngOnInit(): void {
         am4core.options.autoDispose = true;
-
         //  console.log(this.chartdiv);
-        
-        // if(this.taxonomies && this.taxonomies.length){
-        //     this.loading = false;
-        // }
     }
 
 }
