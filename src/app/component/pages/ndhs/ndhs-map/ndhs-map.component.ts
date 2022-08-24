@@ -108,7 +108,35 @@ export class NdhsMapComponent implements OnInit, AfterViewInit {
 
                 this.container.children.push(this.circle);
 
-                this.circle.events.on('click', () => {
+                this.circle.events.on('click', (element:any) => {
+
+                    let country_id = element.target.dataItem.dataContext.country_id;
+                    let country_flag = element.target.dataItem.dataContext.flagImage;
+                    let country_iso_code = element.target.dataItem.dataContext.iso_code;
+                    let year = element.target.dataItem.dataContext.year;
+                    let country_name = element.target.dataItem.dataContext.title;
+
+                    if (localStorage.getItem("country_id") != null) {
+
+                        localStorage.removeItem("country_id");
+                        localStorage.removeItem("country_flag");
+                        localStorage.removeItem("country_iso_code");
+                        localStorage.removeItem("year");
+
+                        localStorage.setItem("country_id", JSON.stringify(country_id));
+                        localStorage.setItem("country_flag", JSON.stringify(country_flag));
+                        localStorage.setItem("country_name", JSON.stringify(country_name));
+                        localStorage.setItem("country_iso_code",JSON.stringify(country_iso_code));
+                        localStorage.setItem("year", JSON.stringify(year));
+                    } else {
+                        localStorage.setItem("country_id", JSON.stringify(country_id));
+                        localStorage.setItem("country_flag", JSON.stringify(country_flag));
+                        localStorage.setItem("country_name", JSON.stringify(country_name));
+                        localStorage.setItem("country_iso_code",JSON.stringify(country_iso_code));
+                        localStorage.setItem("year", JSON.stringify(year));
+                    }
+
+
                     this.toDiffrentPage();
                 });
 
@@ -223,7 +251,37 @@ export class NdhsMapComponent implements OnInit, AfterViewInit {
                     stroke: am5.color(0xff7b7b),
                 });
 
-                this.circle.events.on('click', () => {
+                this.circle.events.on('click', (element:any) => {
+
+                    let country_id = element.target.dataItem.dataContext.country_id;
+                    let country_flag = element.target.dataItem.dataContext.flagImage;
+                    let country_iso_code = element.target.dataItem.dataContext.iso_code;
+                    let year = element.target.dataItem.dataContext.year;
+                    let country_name = element.target.dataItem.dataContext.title;
+
+                    if (localStorage.getItem("country_id") != null) {
+
+                        localStorage.removeItem("country_id");
+                        localStorage.removeItem("country_flag");
+                        localStorage.removeItem("country_iso_code");
+                        localStorage.removeItem("year");
+
+                        localStorage.setItem("country_id", JSON.stringify(country_id));
+                        localStorage.setItem("country_flag", JSON.stringify(country_flag));
+                        localStorage.setItem("country_name", JSON.stringify(country_name));
+                        localStorage.setItem("country_iso_code",JSON.stringify(country_iso_code));
+                        localStorage.setItem("year", JSON.stringify(year));
+                    } else {
+                        localStorage.setItem("country_id", JSON.stringify(country_id));
+                        localStorage.setItem("country_flag", JSON.stringify(country_flag));
+                        localStorage.setItem("country_name", JSON.stringify(country_name));
+                        localStorage.setItem("country_iso_code",JSON.stringify(country_iso_code));
+                        localStorage.setItem("year", JSON.stringify(year));
+                    }
+
+
+
+
                     this.toDiffrentPage();
                 });
 
@@ -256,7 +314,34 @@ export class NdhsMapComponent implements OnInit, AfterViewInit {
                     stroke: am5.color(0x8fb8ff),
                 });
 
-                this.circle.events.on('click', () => {
+                this.circle.events.on('click', (element:any) => {
+
+                    let country_id = element.target.dataItem.dataContext.country_id;
+                    let country_flag = element.target.dataItem.dataContext.flagImage;
+                    let country_iso_code = element.target.dataItem.dataContext.iso_code;
+                    let year = element.target.dataItem.dataContext.year;
+                    let country_name = element.target.dataItem.dataContext.title;
+
+                    if (localStorage.getItem("country_id") != null) {
+
+                        localStorage.removeItem("country_id");
+                        localStorage.removeItem("country_flag");
+                        localStorage.removeItem("country_iso_code");
+                        localStorage.removeItem("year");
+
+                        localStorage.setItem("country_id", JSON.stringify(country_id));
+                        localStorage.setItem("country_flag", JSON.stringify(country_flag));
+                        localStorage.setItem("country_name", JSON.stringify(country_name));
+                        localStorage.setItem("country_iso_code",JSON.stringify(country_iso_code));
+                        localStorage.setItem("year", JSON.stringify(year));
+                    } else {
+                        localStorage.setItem("country_id", JSON.stringify(country_id));
+                        localStorage.setItem("country_flag", JSON.stringify(country_flag));
+                        localStorage.setItem("country_name", JSON.stringify(country_name));
+                        localStorage.setItem("country_iso_code",JSON.stringify(country_iso_code));
+                        localStorage.setItem("year", JSON.stringify(year));
+                    }
+
                     this.toDiffrentPage();
                 });
 
@@ -286,7 +371,35 @@ export class NdhsMapComponent implements OnInit, AfterViewInit {
                     stroke: am5.color(0xff7b7b),
                 });
 
-                this.circle.events.on('click', () => {
+                this.circle.events.on('click', (element:any) => {
+                    let country_id = element.target.dataItem.dataContext.country_id;
+                    let country_flag = element.target.dataItem.dataContext.flagImage;
+                    let country_iso_code = element.target.dataItem.dataContext.iso_code;
+                    let year = element.target.dataItem.dataContext.year;
+                    let country_name = element.target.dataItem.dataContext.title;
+
+                    
+                    if (localStorage.getItem("country_id") != null) {
+
+                        localStorage.removeItem("country_id");
+                        localStorage.removeItem("country_flag");
+                        localStorage.removeItem("country_iso_code");
+                        localStorage.removeItem("year");
+
+                        localStorage.setItem("country_id", JSON.stringify(country_id));
+                        localStorage.setItem("country_flag", JSON.stringify(country_flag));
+                        localStorage.setItem("country_name", JSON.stringify(country_name));
+                        localStorage.setItem("country_iso_code",JSON.stringify(country_iso_code));
+                        localStorage.setItem("year", JSON.stringify(year));
+                    } else {
+                        localStorage.setItem("country_id", JSON.stringify(country_id));
+                        localStorage.setItem("country_flag", JSON.stringify(country_flag));
+                        localStorage.setItem("country_name", JSON.stringify(country_name));
+                        localStorage.setItem("country_iso_code",JSON.stringify(country_iso_code));
+                        localStorage.setItem("year", JSON.stringify(year));
+                    }
+
+
                     this.toDiffrentPage();
                 });
 
