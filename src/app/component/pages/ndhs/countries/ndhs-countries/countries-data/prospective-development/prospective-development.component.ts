@@ -25,6 +25,7 @@ export class ProspectiveDevelopmentComponent implements OnInit {
     data3:any=[];
     data4:any=[];
     data5:any=[];
+    data6:any=[];
     constructor(
         private viewdataService: ViewDataService,
         private _utilities: UtilitiesService
@@ -44,15 +45,12 @@ export class ProspectiveDevelopmentComponent implements OnInit {
 
         this.viewdataService.getViewData(governanceId, 2, this.country_id, this.currentYear).subscribe(result =>{
                 this.result =  Object.entries(result);
-                   console.log(this.result);
                    this.result.forEach((element:any, index:any)=>{
                       this.data = Object.entries(element[1]);
                       this.Capacity = this.data[1];
-                      this.Development = this.data[0];
-                    //   console.log(this.data[1]);
-                      
+                      this.Development = this.data[0];                      
                    })
-                    Object.entries(this.Capacity[1]);
+                    Object.entries(this.Capacity[0]);
                     this.Capacity.forEach((element1:any, index1:any)=>{
                       if(index1 == 1){
                         this.data1= Object.entries(element1);
@@ -62,7 +60,7 @@ export class ProspectiveDevelopmentComponent implements OnInit {
                     })
                     this.data1.forEach((element:any, index:any)=> {
                             element[1];
-                            console.log(element);
+                            // console.log(element);
                             
                             this.entries = Object.entries(element[1]);
             
@@ -75,64 +73,45 @@ export class ProspectiveDevelopmentComponent implements OnInit {
                            
                            })
                            console.log(this.data2);
-                           
-            //    this.result.forEach((element:any, index:any)=>{
-            //     this.data = element[1];
-            //    this.Availability = Object.entries(this.data.Availability)
-            //    this.Availability.forEach((element:any, index:any)=> {
-            //     element[1];
-            //     this.entries = Object.entries(element[1]);
+                           this.data2.forEach((element1:any,index1:any)=>{
+                             element1.forEach((element2:any,index2:any)=>{
+                                this.data3.push(element2);
+                             })              
+                           })
+console.log(this.data3);
 
-            //     if(index == 0) {
-            //         this.data1.push(this.entries);
-            //     }
-            //     if(index) {
-            //         this.data1.push(this.entries);
-            //     }
-               
-            //    })
-            //    console.log(this.data1);
-            //    this.data1.forEach((element1:any,index1:any)=>{
-            //      element1.forEach((element2:any,index2:any)=>{
-            //         this.data4.push(element2);
-            //      })              
-            //    })
-
-            //         console.log(this.data4);
-            //         this.Readiness = Object.entries(this.data.Readiness);
-            //         this.Readiness.forEach((element:any, index:any)=> {
-            //             element[1];
-            //             this.entries = Object.entries(element[1]);
-
-            //             if(index == 0) {
-            //                 this.data2.push(this.entries);
-            //             }
-            //             if(index) {
-            //                 this.data2.push(this.entries);
-            //             }
-            //            })
-            //            console.log(this.data2);
-            //            this.data2.forEach((element1:any,index1:any)=>{
-            //             // console.log(element1);
-            //              element1.forEach((element2:any,index2:any)=>{
-            //                 // console.log(element2);
-            //                 this.data3.push(element2);
-            //              })              
-            //            })
-            //             console.log(this.data3);
-
-            //     Object.entries(this.data).forEach((element2:any, index2:any)=>{
-            //         this.main= element2[0]          
-            //         element2.forEach((element3:any,index3:any)=>{
-            //             if(index3 == 1){
-            //                 // console.log(element3);
-            //                 this.taxnomy = element3
-            //             }
-                       
-            //         })                   
-            //     })
-            //     })                
-        })
+                           Object.entries(this.Development[0]);
+                           this.Development.forEach((element1:any, index1:any)=>{
+                             if(index1 == 1){
+                               this.data4= Object.entries(element1);
+                            //    console.log(this.data4);
+                               
+                             }
+                               
+                           })
+                           this.data4.forEach((element:any, index:any)=> {
+                                   element[1];
+                                //    console.log(element);
+                                   
+                                   this.entries = Object.entries(element[1]);
+                   
+                                   if(index == 0) {
+                                       this.data5.push(this.entries);
+                                   }
+                                   if(index) {
+                                       this.data5.push(this.entries);
+                                   }
+                                  
+                                  })
+                                //   console.log(this.data5);
+                                  this.data5.forEach((element1:any,index1:any)=>{
+                                   // console.log(element1);
+                                    element1.forEach((element2:any,index2:any)=>{
+                                       // console.log(element2);
+                                       this.data6.push(element2);
+                                    })              
+                                  })    
+                     })
 
     }
    

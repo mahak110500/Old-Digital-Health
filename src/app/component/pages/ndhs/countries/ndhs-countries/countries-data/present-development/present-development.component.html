@@ -18,9 +18,8 @@
                         <div class="panel">
                             <div class="table-layout-main">
                                 <ng-container>
-                                    <ng-container    *ngFor="let data of Availability" >
+                                    <ng-container *ngFor="let data of Availability; let z=index" >
                                         <div class="panel-heading" >
-                                            <!-- <h2 *ngIf="i == 0">{{ndhsDetails.development_type}}</h2> -->
                                             <div class="data-heading">
                                                 <h3>
                                                     {{data[0]}}
@@ -52,8 +51,8 @@
                                                                 </th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody  >
-                                                            <ng-container *ngFor="let value of data4;">
+                                                        <tbody>
+                                                            <ng-container *ngFor="let value of data4; let x=index">
                                                                 <tr class="border-less" *ngFor="let val of value[1]; let j=index">
                                                                     <ng-container *ngIf="data[0]==val.taxonomy_name">
                                                                     <td style="width: 30%;">
@@ -94,8 +93,7 @@
                                 <ng-container >
                                     <ng-container  *ngFor="let data of Readiness" >
                                         <div class="panel-heading">
-                                            <!-- <h2 *ngIf="i == 0">{{ndhsDetails.development_type}}</h2> -->
-                                            <div class="data-heading">
+                                             <div class="data-heading">
                                                 <h3>{{data[0]}}
                                                 </h3>
                                                 <div class="status-badge">
