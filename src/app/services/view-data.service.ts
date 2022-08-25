@@ -18,6 +18,7 @@ export class ViewDataService {
     currentYear:number
 
    ): Observable<any> {
+   console.log(governance_id);
    
        return this.http.get(
         this.baseUrl + 'ndhs-master/view-detail/'+ governance_id + "/" + data + "/" + country_id + "/" + currentYear
