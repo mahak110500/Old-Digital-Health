@@ -11,6 +11,7 @@ import am4themes_animated from '@amcharts/amcharts4/themes/animated';
 import * as am4core from '@amcharts/amcharts4/core';
 import * as am4charts from "@amcharts/amcharts4/charts";
 import { environment } from 'src/environments/environment';
+import { UtilitiesService } from 'src/app/services/utilities.service';
 
 
 
@@ -48,9 +49,9 @@ export class ComparativeOverviewComponent implements OnInit {
     @ViewChild('charts') charts: ElementRef | any;
 
 
-    constructor(private common: CommonService) { }
+    constructor(private common: CommonService, private utilities: UtilitiesService) { }
 
-    ngOnInit() { 
+    ngOnInit() {
         this.ultimateId = environment.default_ultimate_id;
         this.developmentId = environment.default_development_id;
         $(document).ready(function () {
@@ -66,8 +67,35 @@ export class ComparativeOverviewComponent implements OnInit {
                     .addClass('active')
                     .removeClass('hide');
             });
-            
-        });   
+
+        });
+
+        this.utilities.yearSource.subscribe((message: any) => {
+            this.year = message;
+            if (localStorage.getItem('selected_country')) {
+                this.countries = localStorage.getItem('selected_country');
+            } else {
+                if (this.year == 2022) {
+                    this.countries = environment.default_country_2022;
+                } else {
+                    this.countries = environment.default_country_2021;
+                }
+            }
+        });
+
+        this.utilities.governanceTypeSource.subscribe((message: any) => {
+            this.governance = message;
+            if (this.governance == 1) {
+                this.taxonomy_id = environment.default_taxonomy_general;
+            } else {
+                this.taxonomy_id = environment.default_taxonomy_digital;
+            }
+        });
+
+        this.showBarChart = false;
+
+        this.BubbleChartData();
+
 
     }
 
@@ -154,6 +182,7 @@ export class ComparativeOverviewComponent implements OnInit {
         });
     }
 
+    //TO TOGGLE CHART BUTTONS
     toggleChartButtons() {
         this.showBarChart = !this.showBarChart;
         if (this.showBarChart) {
@@ -165,10 +194,117 @@ export class ComparativeOverviewComponent implements OnInit {
         }
     }
 
-    BarChart() {
 
+    BarChart() {
+        if (this.bar_chart) {
+            console.log(this.bar_chart);
+            //let root:any;
+            am5.array.each(am5.registry.rootElements, function (root) {
+                if (root && root.dom && root.dom.id == 'chartdiv2') {
+                    root.dispose();
+                }
+            });
+            let root = am5.Root.new('chartdiv2');
+
+            // Set themes
+            // https://www.amcharts.com/docs/v5/concepts/themes/
+            root.setThemes([am5themes_Animated.new(root)]);
+
+            // Create chart
+            // https://www.amcharts.com/docs/v5/charts/xy-chart/
+            let chart: any = root.container.children.push(
+                am5xy.XYChart.new(root, {
+                    panX: false,
+                    panY: false,
+                    wheelX: 'none',
+                    wheelY: 'none',
+                })
+            );
+
+            let data = [
+                {
+                    year: '1',
+                    income: 100,
+                    columnConfig: {
+                        fill: am5.color(0x00306c),
+                    },
+                },
+                {
+                    year: '2',
+                    income: 75,
+                    columnConfig: {
+                        fill: am5.color(0x4a92ec),
+                    },
+                },
+                {
+                    year: '3',
+                    income: 50,
+                    columnConfig: {
+                        fill: am5.color(0x4aec9b),
+                    },
+                },
+                {
+                    year: '4',
+                    income: 25,
+                    columnConfig: {
+                        fill: am5.color(0xfa8e15),
+                    },
+                },
+            ];
+        }
+            
+        //     am4core.useTheme(am4themes_animated);
+
+        //     var chart = am4core.create("chartdiv1", am4charts.XYChart);
+
+        //     chart.data = [{
+        //         "category": "Research",
+        //         "value": 450
+        //     }, {
+        //         "category": "Marketing",
+        //         "value": 1200
+        //     }, {
+        //         "category": "Distribution",
+        //         "value": 1850
+        //     }];
+
+        //     var categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
+        //     categoryAxis.dataFields.category = "category";
+        //     categoryAxis.renderer.grid.template.location = 0;
+
+        //     var valueAxis = chart.xAxes.push(new am4charts.ValueAxis());
+
+        //     var series = chart.series.push(new am4charts.ColumnSeries());
+        //     series.dataFields.valueX = "value";
+        //     series.dataFields.categoryY = "category";
+        // }
     }
 
+    BarChartData(){
+        let selected_years = JSON.parse(localStorage.getItem("selected_years") || '');
+        let selectedYear = this.year;
+        if(selected_years && selected_years.length == 2){
+            selectedYear = selected_years.toString();
+        }
+        let data = {
+            countries: this.countries,
+            developmentId: this.developmentId,
+            governanceId: this.governance,
+            ultimateId: this.ultimateId,
+            taxonomyId: this.taxonomy_id,
+            year: selectedYear,
+        };
+        this.common.getBarChartData(data).subscribe((result) => {
+            console.log(data);
+            
+            this.bar_chart = result;
+            // console.log(this.bar_chart);
+            
+            
+
+            
+        });
+    }
 
     BubbleChart() {
         var chart = am4core.create("chartdiv2", am4plugins_forceDirected.ForceDirectedTree);
@@ -243,9 +379,9 @@ export class ComparativeOverviewComponent implements OnInit {
 
         // Add labels
         series.nodes.template.label.text = "{name}";
-        series.fontSize = 11;
-        series.minRadius = 15;
-        series.maxRadius = 15;
+        series.fontSize = 10;
+        series.minRadius = 16;
+        series.maxRadius = 16;
 
         series.nodes.template.propertyFields.x = 'x';
         series.nodes.template.propertyFields.y = 'y';
@@ -271,34 +407,54 @@ export class ComparativeOverviewComponent implements OnInit {
 
         var title2 = chart.titles.create();
 
-        
+
     }
 
-    BubbleChartData(){
+    BubbleChartData() {
 
         let selected_years = JSON.parse(localStorage.getItem("selected_years") || '');
         let selectedYear = this.year;
-        if(selected_years && selected_years.length == 2){
+        if (selected_years && selected_years.length == 2) {
             selectedYear = selected_years.toString();
         }
 
         let data = {
-            countries: this.countries,
-            developmentId: this.developmentId,
+            developmentId: environment.default_developments,
             governanceId: this.governance,
             ultimateId: this.ultimateId,
             taxonomyId: this.taxonomy_id,
             year: selectedYear,
         };
-        
+
+        this.range25 = [];
+        this.range60 = [];
+        this.range80 = [];
+        this.range100 = [];
 
 
-        this.common.getBubbleChartData(data).subscribe((result)=> {
-            result.forEach((element:any) => {
+        this.common.getBubbleChartData(data).subscribe((result) => {
+            result.forEach((e: any) => {
                 // console.log(result);
-                console.log(data);
-                
-                                
+
+                let bubble_chart = {
+                    name: e.country_name, //country's name
+                    value: 1 //decides the size of bubble
+                }
+
+                if (e.percentage <= 25) {
+                    this.range25.push(bubble_chart);
+                }
+                else if (e.percentage <= 60) {
+                    this.range60.push(bubble_chart);
+                }
+                else if (e.percentage <= 80) {
+                    this.range80.push(bubble_chart);
+                }
+                else if (e.percentage <= 100) {
+                    this.range100.push(bubble_chart);
+                }
+
+
             });
             this.BubbleChart;
         });
