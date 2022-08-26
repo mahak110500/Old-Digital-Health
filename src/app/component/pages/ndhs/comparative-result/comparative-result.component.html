@@ -9,15 +9,15 @@
                             <div class="country-label">Select two countries for comparison.</div>
                             <!-- country dropdown start -->
                             <div class="country-dropdown">
-                                <mat-form-field appearance="fill" disableRipple for="flexCheckChecked" mat-raised-button
+                                   <mat-form-field appearance="fill" disableRipple for="flexCheckChecked" mat-raised-button
                                     #tooltip="matTooltip"
                                     matTooltip="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
                                     matTooltipPosition="left"
                                     aria-tooltip="Button that displays and hides a tooltip triggered by other buttons">
                                     <mat-label>Search Country</mat-label>
                                     <mat-select #mySelect multiple>
-                                        <mat-option #selectedMapData>
-                                            <!-- {{country.country_name}} -->
+                                        <mat-option #selectedMapData  *ngFor="let country of countries">
+                                            {{country.name}}
                                         </mat-option>
                                     </mat-select>
                                 </mat-form-field>

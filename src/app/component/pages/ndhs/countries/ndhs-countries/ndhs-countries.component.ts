@@ -315,7 +315,6 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
 
             if (this.governance_id == 1) {
 
-                asapScheduler.schedule(() => {
                     //HEALTH TEXANOMY PRESENT
                     this.health_taxonomies_present.forEach((taxonomy: any, index: number) => {
                         // console.log(taxonomy);
@@ -326,7 +325,8 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
                             'chartdiv_health_present' + (i + index),
                             am4charts.PieChart3D
                         );
-
+                            // console.log(taxonomy);
+                            
                         this.chart.data = [
                             {
                                 taxonomy: "Readiness",
@@ -472,10 +472,11 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
                         }
                     );
 
-                });
+                
             } else {
 
-                asapScheduler.schedule(() => {
+                console.log(this.digital_taxonomies_present);
+                
 
                     //DIGITAL TEXANOMY PRESENT;
 
@@ -648,7 +649,7 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
                             series.fontWeight = 'bold';
                         }
                     );
-                });
+                
             }
 
 
