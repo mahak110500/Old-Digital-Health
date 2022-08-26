@@ -29,11 +29,12 @@
                         <div class="compartive-table-details">
                             <div class="table-details-heading">
                                 <h5 *ngIf="governance_name">{{governance_name}}</h5>
-                                 <!-- <button >Bar Chart</button> -->
+                                 <!-- <button >{{chartTitle}}</button> -->
                                 <div class="detail-btn">
+                                    <button>{{chartTitle}}</button> &nbsp; &nbsp;
                                     <a mat-stroked-button (click)="toggleChartButtons()">{{chartTitle}}</a>
                                 </div>
-                                <!-- <button mat-raised-button (click)="ToggleChart()">{{chartTitle}}</button> -->
+                                <!-- <button mat-raised-button (click)="toggleChartButtons()">{{chartTitle}}</button> -->
                             </div>
                             <div class="table-com">
                                 <div [class]="showBarChart ? 'showChart' : 'hideChart'">
