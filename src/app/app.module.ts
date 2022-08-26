@@ -22,7 +22,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 
-
 import { AppComponent } from './app.component';
 import { HeaderOuterComponent } from './component/common/header-outer/header-outer.component';
 import { HeaderInnerComponent } from './component/common/header-inner/header-inner.component';

@@ -317,6 +317,13 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
                         am4charts.PieChart3D
                     );
 
+<<<<<<< HEAD
+=======
+                    //HEALTH TEXANOMY PRESENT
+                    this.health_taxonomies_present.forEach((taxonomy: any, index: number) => {
+                        // console.log(taxonomy);
+                        // console.log(index);
+>>>>>>> a73b94b7264e3b1451e0851333a1ecc59a166cfb
 
                     this.chart.data = [
                         {
@@ -389,10 +396,15 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
                             'chartdiv_health_prospective' + (i + index),
                             am4charts.PieChart3D
                         );
+<<<<<<< HEAD
                         this.title = taxonomy.title;
                         this.capacity_building_score = taxonomy.capacity_building_score;
                         this.development_strategy_score = taxonomy.development_strategy_score;
 
+=======
+                            // console.log(taxonomy);
+                            
+>>>>>>> a73b94b7264e3b1451e0851333a1ecc59a166cfb
                         this.chart.data = [
                             {
                                 taxonomy: 'Capacity Building',
@@ -497,6 +509,7 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
                             },
                         ];
 
+<<<<<<< HEAD
                         this.chart.innerRadius = 40;
                         this.chart.depth = 10;
 
@@ -505,6 +518,59 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
                         );
                         series.dataFields.value = 'percentage';
                         series.dataFields.category = 'taxonomy';
+=======
+                
+            } else {
+
+                console.log(this.digital_taxonomies_present);
+                
+
+                    //DIGITAL TEXANOMY PRESENT;
+
+                    this.digital_taxonomies_present.forEach(
+                        (taxonomy: any, index: number) => {
+                            let i = 6;
+                            this.chart = am4core.create(
+                                'chartdiv_digital_present' + (i + index),
+                                am4charts.PieChart3D
+                            );
+                            this.title = taxonomy.title;
+                            this.availability_score = taxonomy.availability_score;
+                            this.readiness_score = taxonomy.readiness_score;
+
+                            //this.chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
+
+                            this.chart.data = [
+                                {
+                                    taxonomy: 'Readiness',
+                                    percentage: taxonomy.readiness_percentage,
+                                },
+                                {
+                                    taxonomy: 'Avaliability',
+                                    percentage: taxonomy.availability_percentage,
+                                },
+                                {
+                                    percentage: taxonomy.remaining_percentage,
+                                },
+                            ];
+
+                            this.chart.innerRadius = 40;
+                            this.chart.depth = 10;
+
+                            let series = this.chart.series.push(
+                                new am4charts.PieSeries3D()
+                            );
+                            series.dataFields.value = 'percentage';
+                            series.dataFields.category = 'taxonomy';
+
+                            series.colors.list = [
+                                '#71ADB5',
+                                '#1F914F',
+                                '#E2E2E4',
+                            ].map(function (color) {
+                                return new (am4core.color as any)(color);
+                            });
+>>>>>>> a73b94b7264e3b1451e0851333a1ecc59a166cfb
 
                         series.colors.list = [
                             '#71ADB5',
@@ -629,6 +695,12 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
                                 ev.target.show();
                             }
                         }
+<<<<<<< HEAD
+=======
+                    );
+                
+            }
+>>>>>>> a73b94b7264e3b1451e0851333a1ecc59a166cfb
 
                         series.labels.template.text = '{taxonomy}';
 
