@@ -7,7 +7,7 @@ import * as am4core from '@amcharts/amcharts4/core';
     templateUrl: './pie-chart-card.component.html',
     styleUrls: ['./pie-chart-card.component.css'],
 })
-export class PieChartCardComponent implements OnInit, AfterViewInit {
+export class PieChartCardComponent implements OnInit {
     @Input() chartdiv: any;
     loading:boolean =  true;
 
@@ -16,15 +16,7 @@ export class PieChartCardComponent implements OnInit, AfterViewInit {
     ngOnInit(): void {
         am4core.options.autoDispose = true;
          console.log(this.chartdiv);
-<<<<<<< HEAD
          
-    }
-
-    ngAfterViewInit(): void {
-        
-=======
-       
->>>>>>> a73b94b7264e3b1451e0851333a1ecc59a166cfb
     }
 
 }
