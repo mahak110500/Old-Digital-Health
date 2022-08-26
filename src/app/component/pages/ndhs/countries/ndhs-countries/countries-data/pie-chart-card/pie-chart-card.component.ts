@@ -1,6 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { DataModalComponent } from '../data-modal/data-modal.component';
 import * as am4core from '@amcharts/amcharts4/core';
 
 @Component({
@@ -8,7 +7,7 @@ import * as am4core from '@amcharts/amcharts4/core';
     templateUrl: './pie-chart-card.component.html',
     styleUrls: ['./pie-chart-card.component.css'],
 })
-export class PieChartCardComponent implements OnInit {
+export class PieChartCardComponent implements OnInit, AfterViewInit {
     @Input() chartdiv: any;
     loading:boolean =  true;
 
@@ -16,7 +15,12 @@ export class PieChartCardComponent implements OnInit {
 
     ngOnInit(): void {
         am4core.options.autoDispose = true;
-        //  console.log(this.chartdiv);
+         console.log(this.chartdiv);
+         
+    }
+
+    ngAfterViewInit(): void {
+        
     }
 
 }

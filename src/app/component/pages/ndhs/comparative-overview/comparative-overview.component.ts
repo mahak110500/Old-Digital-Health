@@ -30,6 +30,7 @@ export class ComparativeOverviewComponent implements OnInit {
     governance: any;
     ultimateId: any;
     taxonomy_id: number = 0;
+    taxonomy_name: any;
 
     bar_chart: any;
     bar_chart_new: any;
@@ -44,6 +45,9 @@ export class ComparativeOverviewComponent implements OnInit {
     year: any;
     countries: any;
     governance_name: any;
+
+    optionRadar: any;
+
 
 
     @ViewChild('charts') charts: ElementRef | any;
@@ -83,6 +87,7 @@ export class ComparativeOverviewComponent implements OnInit {
             }
         });
 
+
         this.utilities.governanceTypeSource.subscribe((message: any) => {
             this.governance = message;
             if (this.governance == 1) {
@@ -92,9 +97,13 @@ export class ComparativeOverviewComponent implements OnInit {
             }
         });
 
-        this.showBarChart = false;
+        this.showBarChart = true;
+
 
         this.BubbleChartData();
+        this.BarChart();
+        // this.BarChartData();
+        this.RadarChart();
 
 
     }
@@ -196,94 +205,44 @@ export class ComparativeOverviewComponent implements OnInit {
 
 
     BarChart() {
-        if (this.bar_chart) {
-            console.log(this.bar_chart);
-            //let root:any;
-            am5.array.each(am5.registry.rootElements, function (root) {
-                if (root && root.dom && root.dom.id == 'chartdiv2') {
-                    root.dispose();
-                }
-            });
-            let root = am5.Root.new('chartdiv2');
+        // if (this.bar_chart) {
+        //     console.log(this.bar_chart);
 
-            // Set themes
-            // https://www.amcharts.com/docs/v5/concepts/themes/
-            root.setThemes([am5themes_Animated.new(root)]);
-
-            // Create chart
-            // https://www.amcharts.com/docs/v5/charts/xy-chart/
-            let chart: any = root.container.children.push(
-                am5xy.XYChart.new(root, {
-                    panX: false,
-                    panY: false,
-                    wheelX: 'none',
-                    wheelY: 'none',
-                })
-            );
-
-            let data = [
-                {
-                    year: '1',
-                    income: 100,
-                    columnConfig: {
-                        fill: am5.color(0x00306c),
-                    },
-                },
-                {
-                    year: '2',
-                    income: 75,
-                    columnConfig: {
-                        fill: am5.color(0x4a92ec),
-                    },
-                },
-                {
-                    year: '3',
-                    income: 50,
-                    columnConfig: {
-                        fill: am5.color(0x4aec9b),
-                    },
-                },
-                {
-                    year: '4',
-                    income: 25,
-                    columnConfig: {
-                        fill: am5.color(0xfa8e15),
-                    },
-                },
-            ];
-        }
-            
-        //     am4core.useTheme(am4themes_animated);
-
-        //     var chart = am4core.create("chartdiv1", am4charts.XYChart);
-
-        //     chart.data = [{
-        //         "category": "Research",
-        //         "value": 450
-        //     }, {
-        //         "category": "Marketing",
-        //         "value": 1200
-        //     }, {
-        //         "category": "Distribution",
-        //         "value": 1850
-        //     }];
-
-        //     var categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
-        //     categoryAxis.dataFields.category = "category";
-        //     categoryAxis.renderer.grid.template.location = 0;
-
-        //     var valueAxis = chart.xAxes.push(new am4charts.ValueAxis());
-
-        //     var series = chart.series.push(new am4charts.ColumnSeries());
-        //     series.dataFields.valueX = "value";
-        //     series.dataFields.categoryY = "category";
         // }
+
+        am4core.useTheme(am4themes_animated);
+
+        var chart = am4core.create("chartdiv1", am4charts.XYChart);
+
+        chart.data = [{
+            "category": "Research",
+            "value": 450
+        }, {
+            "category": "Marketing",
+            "value": 1200
+        }, {
+            "category": "Distribution",
+            "value": 1850
+        }];
+
+        var categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
+        categoryAxis.dataFields.category = "category";
+        categoryAxis.renderer.grid.template.location = 0;
+
+        var valueAxis = chart.xAxes.push(new am4charts.ValueAxis());
+
+        var series = chart.series.push(new am4charts.ColumnSeries());
+        series.dataFields.valueX = "value";
+        series.dataFields.categoryY = "category";
+
+
+
     }
 
-    BarChartData(){
+    BarChartData() {
         let selected_years = JSON.parse(localStorage.getItem("selected_years") || '');
         let selectedYear = this.year;
-        if(selected_years && selected_years.length == 2){
+        if (selected_years && selected_years.length == 2) {
             selectedYear = selected_years.toString();
         }
         let data = {
@@ -294,15 +253,15 @@ export class ComparativeOverviewComponent implements OnInit {
             taxonomyId: this.taxonomy_id,
             year: selectedYear,
         };
+        console.log(this.countries);
+
+
         this.common.getBarChartData(data).subscribe((result) => {
             console.log(data);
-            
-            this.bar_chart = result;
-            // console.log(this.bar_chart);
-            
-            
 
-            
+            this.bar_chart = result;
+            console.log(this.bar_chart);
+
         });
     }
 
@@ -425,6 +384,8 @@ export class ComparativeOverviewComponent implements OnInit {
             taxonomyId: this.taxonomy_id,
             year: selectedYear,
         };
+        console.log(this.developmentId);
+        
 
         this.range25 = [];
         this.range60 = [];
@@ -459,6 +420,106 @@ export class ComparativeOverviewComponent implements OnInit {
             this.BubbleChart;
         });
     }
+
+    RadarChart() {
+        this.optionRadar = {
+            color: ['#338A14', 'rgba(92,221,189,1)', '#56A3F1', '#FF917C'],
+            title: {
+                text: this.taxonomy_name,
+            },
+            legend: {},
+            radar: [
+                {
+                    indicator: [
+                        { text: 'Availability', max: 100 },
+                        { text: 'Capacity Building', max: 100 },
+                        { text: 'Development Strategy', max: 100 },
+                        { text: 'Readiness', max: 100 },
+                    ],
+                    center: ['55%', '55%'],
+                    radius: 110,
+                    startAngle: 90,
+                    splitNumber: 4,
+                    shape: 'circle',
+                    axisName: {
+                        color: '#707070',
+                        fontSize: '10',
+                    },
+                    splitArea: {
+                        areaStyle: {
+                            color: ['#DADADA', '#DADADA', '#CED5D3', '#B9BDBC'],
+                            shadowColor: 'rgba(0, 0, 0, 0.2)',
+                            shadowBlur: 10,
+                        },
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: 'rgba(154,165,162,1)',
+                        },
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: 'rgba(154,165,162,1)',
+                        },
+                    },
+                },
+            ],
+            series: [
+                {
+                    type: 'radar',
+                    emphasis: {
+                        lineStyle: {
+                            width: 4,
+                        },
+                    },
+                    data: [
+                        {
+                            value: [100, 8, 0.4, -80, 2000],
+                            name: 'Data A'
+                        },
+                        {
+                            value: [60, 5, 0.3, -100, 1500],
+                            name: 'Data B',
+                            areaStyle: {
+                                color: 'rgba(255, 228, 52, 0.6)'
+                            }
+                        }
+
+                    ],
+                },
+            ],
+        }
+
+    }
+
+    RadarChartData(){
+        let selected_years = JSON.parse(localStorage.getItem("selected_years") || '');
+        let selectedYear = this.year;
+        if (selected_years && selected_years.length == 2) {
+            selectedYear = selected_years.toString();
+        }
+
+        let data = {
+            developmentId: environment.default_developments,
+            governanceId: this.governance,
+            ultimateId: this.ultimateId,
+            taxonomyId: this.taxonomy_id,
+            year: selectedYear,
+        };
+        console.log(this.developmentId);
+        
+        
+        
+        this.common.getRadarChartData(data).subscribe((result)=> {
+            // console.log(data);
+            
+            console.log(result);
+            
+
+        })
+
+    }
+
 
 
 

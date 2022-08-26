@@ -40,6 +40,13 @@ export class CommonService{
     }
 
     public getBubbleChartData(data: any): Observable<any> {
+        console.log(data);
+        
         return this.http.post(this.baseUrl + 'ndhs-master/bubble-chart', data);
+    }
+
+    public getRadarChartData(data: any): Observable<any> {
+        console.log(data);
+        return this.http.post(this.baseUrl + 'ndhs-master/radar-chart', data);
     }
 }

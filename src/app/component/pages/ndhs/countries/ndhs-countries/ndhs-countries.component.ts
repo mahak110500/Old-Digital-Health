@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Inject, NgZone, OnInit, PLATFORM_ID } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, Inject, NgZone, OnInit, PLATFORM_ID } from '@angular/core';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
@@ -44,27 +44,14 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
     capacity_building_score: any;
     development_strategy_score: any;
     governance_id: any;
-    zone: NgZone;
     // governanceId: any;
 
     // countries!: Observable<Country[]>;
 
     constructor(private common: CommonService,
-        private utilities: UtilitiesService,
-        @Inject(PLATFORM_ID) private platformId: Object,
-        private NgZone: NgZone
-    ) {
-        this.zone = NgZone;
-    }
+        private utilities: UtilitiesService ) {}
 
-    browserOnly(f: () => void) {
-        if (isPlatformBrowser(this.platformId)) {
-            this.zone.runOutsideAngular(() => {
-                f();
-            });
-        }
-    }
-
+    
     ngOnInit(): void {
 
         this.utilities.showHeaderMenu.next(true);
@@ -79,6 +66,7 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
 
             if (this.triggerInit) {
                 this.getNdhsCountriesDetails(governanceId);
+
             }
 
         });
@@ -89,11 +77,9 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
             this.country_list = res;
         })
 
-
     }
 
     getNdhsCountriesDetails(governanceId: any) {
-        console.log(governanceId);
 
         this.dataNew = [];
         this.health_taxonomies_prospective = [];
@@ -244,10 +230,10 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
                                     prefix: 'digital_present',
                                 };
                                 this.dataNew.push(details);
-                                // console.log(this.dataNew);
+                                console.log(this.dataNew);
 
                                 this.digital_taxonomies_present.push(details);
-                                // console.log(this.digital_taxonomies_present);
+                                console.log(this.digital_taxonomies_present);
 
                             });
                         }
@@ -299,8 +285,13 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
                     );
 
                 }
+                // this.showNDHsCountriesDetails();
                 this.ngAfterViewInit();
+
             });
+
+
+
     }
 
     getPercantage(value: number) {
@@ -308,71 +299,153 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
         return per;
     }
 
-    // showNDHsCountriesDetails(governanceId: any) {}
+    ngAfterViewInit() {
+        // console.log( this.health_taxonomies_present); //the whole array
+        // console.log(this.governance_id);
 
-    ngAfterViewInit(): void {
-        this.browserOnly(() => {
 
-            if (this.governance_id == 1) {
+        if (this.governance_id == 1) {
+            //HEALTH TEXANOMY PRESENT
+            setTimeout(() => {
+                this.health_taxonomies_present.forEach((taxonomy: any, index: number) => {
+                    // console.log(taxonomy);//all the data
+                    // console.log(index);
 
-                asapScheduler.schedule(() => {
-                    //HEALTH TEXANOMY PRESENT
-                    this.health_taxonomies_present.forEach((taxonomy: any, index: number) => {
-                        // console.log(taxonomy);
-                        // console.log(index);
+                    let i = 1;
+                    this.chart = am4core.create(
+                        'chartdiv_health_present' + (i + index),
+                        am4charts.PieChart3D
+                    );
 
+
+                    this.chart.data = [
+                        {
+                            taxonomy: "Readiness",
+                            percentage: taxonomy.readiness_percentage
+                        },
+                        {
+                            taxonomy: "Availability",
+                            percentage: taxonomy.availability_percentage
+                        },
+                        {
+                            percentage: 10
+                        }
+                    ];
+
+                    this.chart.innerRadius = 38;
+                    this.chart.depth = 10;
+
+                    this.series = this.chart.series.push(new am4charts.PieSeries3D());
+                    this.series.dataFields.value = "percentage";
+                    this.series.dataFields.category = "taxonomy";
+
+                    //for setting the color
+                    this.series.colors.list = [
+                        '#1181B2',
+                        '#05D5AA',
+                        '#E2E2E4',
+                    ].map(function (color) {
+                        return new (am4core.color as any)(color);
+                    });
+
+                    //for the middle text
+                    var label = this.series.createChild(am4core.Label);
+                    label.text = taxonomy.readiness_percentage + taxonomy.availability_percentage + '%';
+                    label.horizontalCenter = 'middle';
+                    label.verticalCenter = 'middle';
+                    label.fontSize = 25;
+                    label.fontWeight = 'normal';
+
+                    //to hide the tick of last splice
+                    this.series.ticks.template.events.on('ready', hideSmall);
+                    this.series.ticks.template.events.on('visibilitychanged', hideSmall);
+
+                    this.series.labels.template.events.on('ready', hideSmall);
+                    this.series.labels.template.events.on('visibilitychanged', hideSmall);
+                    this.series.labels.template.maxWidth = 70;
+                    this.series.labels.template.wrap = true;
+
+                    function hideSmall(ev: any) {
+                        if (ev.target.dataItem.hasProperties == false || ev.target.dataItem.dataContext.percentage == 0) {
+                            ev.target.hide();
+                        } else {
+                            ev.target.show();
+                        }
+                    }
+
+                    //to display only taxonomy and hide the percentage
+                    this.series.labels.template.text = '{taxonomy}';
+                    this.series.slices.template.tooltipText = '{category}'; //hides percentage
+                    this.series.fontSize = '10';
+                    this.series.fontWeight = 'bold';
+
+                });
+
+                //HEALTH TEXANOMY PROSPECTIVE
+                this.health_taxonomies_prospective.forEach(
+                    (taxonomy: any, index: number) => {
                         let i = 1;
                         this.chart = am4core.create(
-                            'chartdiv_health_present' + (i + index),
+                            'chartdiv_health_prospective' + (i + index),
                             am4charts.PieChart3D
                         );
+                        this.title = taxonomy.title;
+                        this.capacity_building_score = taxonomy.capacity_building_score;
+                        this.development_strategy_score = taxonomy.development_strategy_score;
 
                         this.chart.data = [
                             {
-                                taxonomy: "Readiness",
-                                percentage: taxonomy.readiness_percentage
+                                taxonomy: 'Capacity Building',
+                                percentage: taxonomy.capacity_building_percentage,
                             },
                             {
-                                taxonomy: "Availability",
-                                percentage: taxonomy.availability_percentage
+                                taxonomy: 'Development Strategy',
+                                percentage: taxonomy.development_strategy_percentage,
                             },
                             {
-                                percentage: 10
-                            }
+                                percentage: taxonomy.remaining_percentage,
+                            },
                         ];
 
-                        this.chart.innerRadius = 38;
+                        this.chart.innerRadius = 40;
                         this.chart.depth = 10;
 
-                        this.series = this.chart.series.push(new am4charts.PieSeries3D());
-                        this.series.dataFields.value = "percentage";
-                        this.series.dataFields.category = "taxonomy";
+                        let series = this.chart.series.push(
+                            new am4charts.PieSeries3D()
+                        );
+                        series.dataFields.value = 'percentage';
+                        series.dataFields.category = 'taxonomy';
 
-                        //for setting the color
-                        this.series.colors.list = [
-                            '#1181B2',
-                            '#05D5AA',
+                        series.colors.list = [
+                            '#2F4770',
+                            '#0860FE',
                             '#E2E2E4',
                         ].map(function (color) {
                             return new (am4core.color as any)(color);
                         });
 
-                        //for the middle text
-                        var label = this.series.createChild(am4core.Label);
-                        label.text = taxonomy.readiness_percentage + taxonomy.availability_percentage + '%';
+                        var label = series.createChild(am4core.Label);
+                        label.text =
+                            taxonomy.development_strategy_percentage +
+                            taxonomy.capacity_building_percentage +
+                            '%';
                         label.horizontalCenter = 'middle';
                         label.verticalCenter = 'middle';
-                        label.fontSize = 25;
+                        label.fontSize = 26;
                         label.fontWeight = 'normal';
 
-                        //to hide the tick of last splice
-                        this.series.ticks.template.events.on('ready', hideSmall);
-                        this.series.ticks.template.events.on('visibilitychanged', hideSmall);
-
-                        this.series.labels.template.events.on('ready', hideSmall);
-                        this.series.labels.template.events.on('visibilitychanged', hideSmall);
-                        this.series.labels.template.maxWidth = 70;
-                        this.series.labels.template.wrap = true;
+                        series.ticks.template.events.on('ready', hideSmall);
+                        series.ticks.template.events.on(
+                            'visibilitychanged',
+                            hideSmall
+                        );
+                        series.labels.template.events.on('ready', hideSmall);
+                        series.labels.template.events.on(
+                            'visibilitychanged',
+                            hideSmall
+                        );
+                        series.labels.template.maxWidth = 70;
+                        series.labels.template.wrap = true;
 
                         function hideSmall(ev: any) {
                             if (ev.target.dataItem.hasProperties == false || ev.target.dataItem.dataContext.percentage == 0) {
@@ -382,294 +455,211 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
                             }
                         }
 
-                        //to display only taxonomy and hide the percentage
-                        this.series.labels.template.text = '{taxonomy}';
-                        this.series.slices.template.tooltipText = '{category}'; //hides percentage
-                        this.series.fontSize = '10';
-                        this.series.fontWeight = 'bold';
+                        series.labels.template.text = '{taxonomy}';
 
-                    });
+                        series.slices.template.tooltipText = '{category}';
+                        series.fontSize = '9';
+                        series.fontWeight = 'bold';
+                    }
+                );
 
-                    //HEALTH TEXANOMY PROSPECTIVE
-                    this.health_taxonomies_prospective.forEach(
-                        (taxonomy: any, index: number) => {
-                            let i = 1;
-                            this.chart = am4core.create(
-                                'chartdiv_health_prospective' + (i + index),
-                                am4charts.PieChart3D
-                            );
-                            this.title = taxonomy.title;
-                            this.capacity_building_score = taxonomy.capacity_building_score;
-                            this.development_strategy_score = taxonomy.development_strategy_score;
+            },2000);
+        }
+        else {
 
-                            this.chart.data = [
-                                {
-                                    taxonomy: 'Capacity Building',
-                                    percentage: taxonomy.capacity_building_percentage,
-                                },
-                                {
-                                    taxonomy: 'Development Strategy',
-                                    percentage: taxonomy.development_strategy_percentage,
-                                },
-                                {
-                                    percentage: taxonomy.remaining_percentage,
-                                },
-                            ];
+            //DIGITAL TEXANOMY PRESENT;
+            setTimeout(() => {
+                this.digital_taxonomies_present.forEach(
+                    (taxonomy: any, index: number) => {
+                        let i = 6;
+                        this.chart = am4core.create(
+                            'chartdiv_digital_present' + (i + index),
+                            am4charts.PieChart3D
+                        );
+                        // console.log(i + index);
+                        this.title = taxonomy.title;
+                        this.availability_score = taxonomy.availability_score;
+                        this.readiness_score = taxonomy.readiness_score;
 
-                            this.chart.innerRadius = 40;
-                            this.chart.depth = 10;
+                        //this.chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
 
-                            let series = this.chart.series.push(
-                                new am4charts.PieSeries3D()
-                            );
-                            series.dataFields.value = 'percentage';
-                            series.dataFields.category = 'taxonomy';
+                        this.chart.data = [
+                            {
+                                taxonomy: 'Readiness',
+                                percentage: taxonomy.readiness_percentage,
+                            },
+                            {
+                                taxonomy: 'Avaliability',
+                                percentage: taxonomy.availability_percentage,
+                            },
+                            {
+                                percentage: taxonomy.remaining_percentage,
+                            },
+                        ];
 
-                            series.colors.list = [
-                                '#2F4770',
-                                '#0860FE',
-                                '#E2E2E4',
-                            ].map(function (color) {
-                                return new (am4core.color as any)(color);
-                            });
+                        this.chart.innerRadius = 40;
+                        this.chart.depth = 10;
 
-                            var label = series.createChild(am4core.Label);
-                            label.text =
-                                taxonomy.development_strategy_percentage +
-                                taxonomy.capacity_building_percentage +
-                                '%';
-                            label.horizontalCenter = 'middle';
-                            label.verticalCenter = 'middle';
-                            label.fontSize = 26;
-                            label.fontWeight = 'normal';
+                        let series = this.chart.series.push(
+                            new am4charts.PieSeries3D()
+                        );
+                        series.dataFields.value = 'percentage';
+                        series.dataFields.category = 'taxonomy';
 
-                            series.ticks.template.events.on('ready', hideSmall);
-                            series.ticks.template.events.on(
-                                'visibilitychanged',
-                                hideSmall
-                            );
-                            series.labels.template.events.on('ready', hideSmall);
-                            series.labels.template.events.on(
-                                'visibilitychanged',
-                                hideSmall
-                            );
-                            series.labels.template.maxWidth = 70;
-                            series.labels.template.wrap = true;
+                        series.colors.list = [
+                            '#71ADB5',
+                            '#1F914F',
+                            '#E2E2E4',
+                        ].map(function (color) {
+                            return new (am4core.color as any)(color);
+                        });
 
-                            function hideSmall(ev: any) {
-                                if (ev.target.dataItem.hasProperties == false || ev.target.dataItem.dataContext.percentage == 0) {
-                                    ev.target.hide();
-                                } else {
-                                    ev.target.show();
-                                }
+                        var label = series.createChild(am4core.Label);
+                        label.text =
+                            taxonomy.readiness_percentage +
+                            taxonomy.availability_percentage +
+                            '%';
+                        label.horizontalCenter = 'middle';
+                        label.verticalCenter = 'middle';
+                        label.fontSize = 26;
+                        label.fontWeight = 'normal';
+
+                        series.ticks.template.events.on('ready', hideSmall);
+                        series.ticks.template.events.on(
+                            'visibilitychanged',
+                            hideSmall
+                        );
+                        series.labels.template.events.on('ready', hideSmall);
+                        series.labels.template.events.on(
+                            'visibilitychanged',
+                            hideSmall
+                        );
+                        series.labels.template.maxWidth = 70;
+                        series.labels.template.wrap = true;
+
+                        function hideSmall(ev: any) {
+                            if (ev.target.dataItem.hasProperties == false || ev.target.dataItem.dataContext.percentage == 0) {
+                                ev.target.hide();
+                            } else {
+                                ev.target.show();
                             }
-
-                            series.labels.template.text = '{taxonomy}';
-
-                            series.slices.template.tooltipText = '{category}';
-                            series.fontSize = '9';
-                            series.fontWeight = 'bold';
                         }
-                    );
 
-                });
-            } else {
+                        series.labels.template.text = '{taxonomy}';
 
-                asapScheduler.schedule(() => {
+                        series.slices.template.tooltipText = '{category}';
+                        series.fontSize = '9';
+                        series.fontWeight = 'bold';
+                    }
+                );
 
-                    //DIGITAL TEXANOMY PRESENT;
+                //DIGITAL TAXONOMY PROSPECTIVE
 
-                    this.digital_taxonomies_present.forEach(
-                        (taxonomy: any, index: number) => {
-                            let i = 6;
-                            this.chart = am4core.create(
-                                'chartdiv_digital_present' + (i + index),
-                                am4charts.PieChart3D
-                            );
-                            this.title = taxonomy.title;
-                            this.availability_score = taxonomy.availability_score;
-                            this.readiness_score = taxonomy.readiness_score;
+                this.digital_taxonomies_prospective.forEach(
+                    (taxonomy: any, index: number) => {
+                        let i = 6;
+                        this.chart = am4core.create(
+                            'chartdiv_digital_prospective' + (i + index),
+                            am4charts.PieChart3D
+                        );
+                        this.title = taxonomy.title;
+                        this.capacity_building_score = taxonomy.capacity_building_score;
+                        this.development_strategy_score = taxonomy.development_strategy_score;
 
-                            //this.chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
+                        //this.chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
 
-                            this.chart.data = [
-                                {
-                                    taxonomy: 'Readiness',
-                                    percentage: taxonomy.readiness_percentage,
-                                },
-                                {
-                                    taxonomy: 'Avaliability',
-                                    percentage: taxonomy.availability_percentage,
-                                },
-                                {
-                                    percentage: taxonomy.remaining_percentage,
-                                },
-                            ];
+                        this.chart.data = [
+                            {
+                                taxonomy: 'Capacity Building',
+                                percentage: taxonomy.capacity_building_percentage,
+                            },
+                            {
+                                taxonomy: 'Development Strategy',
+                                percentage: taxonomy.development_strategy_percentage,
+                            },
+                            {
+                                percentage: taxonomy.remaining_percentage,
+                            },
+                        ];
 
-                            this.chart.innerRadius = 40;
-                            this.chart.depth = 10;
+                        this.chart.innerRadius = 40;
+                        this.chart.depth = 10;
 
-                            let series = this.chart.series.push(
-                                new am4charts.PieSeries3D()
-                            );
-                            series.dataFields.value = 'percentage';
-                            series.dataFields.category = 'taxonomy';
+                        let series = this.chart.series.push(
+                            new am4charts.PieSeries3D()
+                        );
+                        series.dataFields.value = 'percentage';
+                        series.dataFields.category = 'taxonomy';
 
-                            series.colors.list = [
-                                '#71ADB5',
-                                '#1F914F',
-                                '#E2E2E4',
-                            ].map(function (color) {
-                                return new (am4core.color as any)(color);
-                            });
+                        series.colors.list = [
+                            '#14CCAA',
+                            '#41565A',
+                            '#E2E2E4',
+                        ].map(function (color) {
+                            return new (am4core.color as any)(color);
+                        });
 
-                            var label = series.createChild(am4core.Label);
-                            label.text =
-                                taxonomy.readiness_percentage +
-                                taxonomy.availability_percentage +
-                                '%';
-                            label.horizontalCenter = 'middle';
-                            label.verticalCenter = 'middle';
-                            label.fontSize = 26;
-                            label.fontWeight = 'normal';
+                        var label = series.createChild(am4core.Label);
+                        label.text =
+                            taxonomy.capacity_building_percentage +
+                            taxonomy.development_strategy_percentage +
+                            '%';
+                        label.horizontalCenter = 'middle';
+                        label.verticalCenter = 'middle';
+                        label.fontSize = 26;
+                        label.fontWeight = 'normal';
 
-                            series.ticks.template.events.on('ready', hideSmall);
-                            series.ticks.template.events.on(
-                                'visibilitychanged',
-                                hideSmall
-                            );
-                            series.labels.template.events.on('ready', hideSmall);
-                            series.labels.template.events.on(
-                                'visibilitychanged',
-                                hideSmall
-                            );
-                            series.labels.template.maxWidth = 70;
-                            series.labels.template.wrap = true;
+                        series.ticks.template.events.on('ready', hideSmall);
+                        series.ticks.template.events.on(
+                            'visibilitychanged',
+                            hideSmall
+                        );
+                        series.labels.template.events.on('ready', hideSmall);
+                        series.labels.template.events.on(
+                            'visibilitychanged',
+                            hideSmall
+                        );
+                        series.labels.template.maxWidth = 70;
+                        series.labels.template.wrap = true;
 
-                            function hideSmall(ev: any) {
-                                if (ev.target.dataItem.hasProperties == false || ev.target.dataItem.dataContext.percentage == 0) {
-                                    ev.target.hide();
-                                } else {
-                                    ev.target.show();
-                                }
+                        function hideSmall(ev: any) {
+                            if (ev.target.dataItem.hasProperties == false || ev.target.dataItem.dataContext.percentage == 0) {
+                                ev.target.hide();
+                            } else {
+                                ev.target.show();
                             }
-
-                            series.labels.template.text = '{taxonomy}';
-
-                            series.slices.template.tooltipText = '{category}';
-                            series.fontSize = '9';
-                            series.fontWeight = 'bold';
                         }
-                    );
 
-                    //DIGITAL TAXONOMY PROSPECTIVE
+                        series.labels.template.text = '{taxonomy}';
 
-                    // console.log(this.digital_taxonomies_prospective);
-
-                    this.digital_taxonomies_prospective.forEach(
-                        (taxonomy: any, index: number) => {
-                            let i = 6;
-                            this.chart = am4core.create(
-                                'chartdiv_digital_prospective' + (i + index),
-                                am4charts.PieChart3D
-                            );
-                            this.title = taxonomy.title;
-                            this.capacity_building_score = taxonomy.capacity_building_score;
-                            this.development_strategy_score = taxonomy.development_strategy_score;
-
-                            //this.chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
-
-                            this.chart.data = [
-                                {
-                                    taxonomy: 'Capacity Building',
-                                    percentage: taxonomy.capacity_building_percentage,
-                                },
-                                {
-                                    taxonomy: 'Development Strategy',
-                                    percentage: taxonomy.development_strategy_percentage,
-                                },
-                                {
-                                    percentage: taxonomy.remaining_percentage,
-                                },
-                            ];
-
-                            this.chart.innerRadius = 40;
-                            this.chart.depth = 10;
-
-                            let series = this.chart.series.push(
-                                new am4charts.PieSeries3D()
-                            );
-                            series.dataFields.value = 'percentage';
-                            series.dataFields.category = 'taxonomy';
-
-                            series.colors.list = [
-                                '#14CCAA',
-                                '#41565A',
-                                '#E2E2E4',
-                            ].map(function (color) {
-                                return new (am4core.color as any)(color);
-                            });
-
-                            var label = series.createChild(am4core.Label);
-                            label.text =
-                                taxonomy.capacity_building_percentage +
-                                taxonomy.development_strategy_percentage +
-                                '%';
-                            label.horizontalCenter = 'middle';
-                            label.verticalCenter = 'middle';
-                            label.fontSize = 26;
-                            label.fontWeight = 'normal';
-
-                            series.ticks.template.events.on('ready', hideSmall);
-                            series.ticks.template.events.on(
-                                'visibilitychanged',
-                                hideSmall
-                            );
-                            series.labels.template.events.on('ready', hideSmall);
-                            series.labels.template.events.on(
-                                'visibilitychanged',
-                                hideSmall
-                            );
-                            series.labels.template.maxWidth = 70;
-                            series.labels.template.wrap = true;
-
-                            function hideSmall(ev: any) {
-                                if (ev.target.dataItem.hasProperties == false || ev.target.dataItem.dataContext.percentage == 0) {
-                                    ev.target.hide();
-                                } else {
-                                    ev.target.show();
-                                }
-                            }
-
-                            series.labels.template.text = '{taxonomy}';
-
-                            series.slices.template.tooltipText = '{category}';
-                            series.fontSize = '9';
-                            series.fontWeight = 'bold';
-                        }
-                    );
-                });
-            }
-
-
-        });
+                        series.slices.template.tooltipText = '{category}';
+                        series.fontSize = '9';
+                        series.fontWeight = 'bold';
+                    }
+                );
+            },2000);
+        }
 
     }
+
+    // ngAfterViewInit(): void {
+    //     this.showNDHsCountriesDetails();
+
+    // }
+
+
 
 
     getSelectedCountry(country: any) {
 
         if (country) {
-            console.log(country);
+            // console.log(country);
 
             this.country_id = country.country_id;
             this.country_flag = country.flag;
             this.country_iso_code = country.iso_code;
             this.country_name = country.country_name;
-            console.log(this.country_name);
-
             this.currentYear = country.year;
-            console.log(this.currentYear);
 
             if (localStorage.getItem('country_id') != null) {
                 localStorage.removeItem('country_id');
