@@ -34,12 +34,23 @@ export class CommonService{
         return this.http.get(this.baseUrl + 'ndhs-master/existed-countries-list' );
     }
 
+    public getTaxonomyTableData(data: any): Observable<any> {
+        return this.http.post(this.baseUrl + 'ndhs-master/table-chart', data);
+    }
+    
+
     //api for getting BarChart Data
     public getBarChartData(data: any): Observable<any> {
+        console.log(data);
+        
         return this.http.post(this.baseUrl + 'ndhs-master/bar-chart', data);
     }
 
     public getBubbleChartData(data: any): Observable<any> {
         return this.http.post(this.baseUrl + 'ndhs-master/bubble-chart', data);
+    }
+
+    public getRadarChartData(data: any): Observable<any> {
+        return this.http.post(this.baseUrl + 'ndhs-master/radar-chart', data);
     }
 }

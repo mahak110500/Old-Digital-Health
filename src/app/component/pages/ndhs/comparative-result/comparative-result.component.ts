@@ -230,11 +230,11 @@ export class ComparativeResultComponent implements OnInit, AfterViewInit {
     comparativeResult(){
         this.countriesService.getCountries().subscribe(result=>{
             let year = Object.entries(result);
-            console.log(year);
+            // console.log(year);
             year.forEach((element:any, index:any)=> {
                 if(element[0]== this.data){
                     this.countries = element[1];
-                    console.log(this.countries);
+                    // console.log(this.countries);
                 }                
             })            
         })

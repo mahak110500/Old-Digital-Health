@@ -30,6 +30,7 @@ export class ComparativeOverviewComponent implements OnInit {
     governance: any;
     ultimateId: any;
     taxonomy_id: number = 0;
+    taxonomy_name: any;
 
     bar_chart: any;
     bar_chart_new: any;
@@ -45,13 +46,30 @@ export class ComparativeOverviewComponent implements OnInit {
     countries: any;
     governance_name: any;
 
+    optionRadar: any;
+    radar_chart: any;
+    country1: any;
+    country2: any;
 
-    @ViewChild('charts') charts: ElementRef | any;
+    isValue: number = 0;
+    panelOpenState = false;
+    step = 0;
+    stepinner = 0;
+    taxonomy_overviews: any;
+    taxonomy_indicators: any;
+
+    dash_array: any;
+
+
+
+   @ViewChild('charts') charts: ElementRef | any;
 
 
     constructor(private common: CommonService, private utilities: UtilitiesService) { }
 
     ngOnInit() {
+        this.dash_array = [1, 2, 3, 4, 5];
+
         this.ultimateId = environment.default_ultimate_id;
         this.developmentId = environment.default_development_id;
         $(document).ready(function () {
@@ -83,6 +101,7 @@ export class ComparativeOverviewComponent implements OnInit {
             }
         });
 
+
         this.utilities.governanceTypeSource.subscribe((message: any) => {
             this.governance = message;
             if (this.governance == 1) {
@@ -92,9 +111,16 @@ export class ComparativeOverviewComponent implements OnInit {
             }
         });
 
-        this.showBarChart = false;
+        this.showBarChart = true;
+
 
         this.BubbleChartData();
+        // this.BarChart();
+        this.BarChartData();
+        // this.RadarChart();
+        this.RadarChartData();
+        this.taxonomyTableDetails();
+
 
 
     }
@@ -196,15 +222,15 @@ export class ComparativeOverviewComponent implements OnInit {
 
 
     BarChart() {
+
         if (this.bar_chart) {
-            console.log(this.bar_chart);
-            //let root:any;
+
             am5.array.each(am5.registry.rootElements, function (root) {
-                if (root && root.dom && root.dom.id == 'chartdiv2') {
+                if (root && root.dom && root.dom.id == 'chartdiv1') {
                     root.dispose();
                 }
             });
-            let root = am5.Root.new('chartdiv2');
+            let root = am5.Root.new('chartdiv1');
 
             // Set themes
             // https://www.amcharts.com/docs/v5/concepts/themes/
@@ -251,39 +277,204 @@ export class ComparativeOverviewComponent implements OnInit {
                     },
                 },
             ];
+
+            if (this.bar_chart_new.length == 1) {
+                this.bar_chart_new.forEach((element: any) => {
+                    let bar_data_same = {
+                        text: element.text,
+                        comIncome: element.comIncome,
+                        compText: element.compText,
+                        // img: './assets/images/line.png',
+                    };
+                    if (element.per <= 25) {
+                        data[3] = { ...data[3], ...bar_data_same };
+                    } else if (element.per <= 50) {
+                        data[2] = { ...data[2], ...bar_data_same };
+                    } else if (element.per <= 75) {
+                        data[1] = { ...data[1], ...bar_data_same };
+                    } else if (element.per <= 100) {
+                        data[0] = { ...data[0], ...bar_data_same };
+                    }
+                });
+            } else {
+                this.bar_chart.forEach((element: any) => {
+                    let bar_data = {
+                        text: element.country_name,
+                        comIncome: element.percentage + '%',
+                        compText: element.country_name,
+                        // img: './assets/images/line.png',
+                    };
+                    if (element.percentage <= 25) {
+                        data[3] = { ...data[3], ...bar_data };
+                    } else if (element.percentage <= 50) {
+                        data[2] = { ...data[2], ...bar_data };
+                    } else if (element.percentage <= 75) {
+                        data[1] = { ...data[1], ...bar_data };
+                    } else if (element.percentage <= 100) {
+                        data[0] = { ...data[0], ...bar_data };
+                    }
+                });
+            }
+
+
+
+            //Create axes
+            let yAxis = chart.yAxes.push(
+                am5xy.CategoryAxis.new(root, {
+                    categoryField: 'year',
+                    renderer: am5xy.AxisRendererY.new(root, {
+                        cellStartLocation: 0.2,
+                        cellEndLocation: 0.9,
+                        strokeOpacity: 1,
+                        strokeWidth: 1,
+                    }),
+                })
+            );
+
+            const myTheme = am5.Theme.new(root);
+
+            myTheme.rule('Grid').setAll({
+                visible: false,
+            });
+
+            root.setThemes([myTheme]);
+
+            let yRenderer = yAxis.get('renderer');
+            yRenderer.labels.template.setAll({
+                visible: false,
+            });
+
+            yAxis.data.setAll(data);
+
+            let xAxis = chart.xAxes.push(
+                am5xy.ValueAxis.new(root, {
+                    min: 0,
+                    numberFormat: "''",
+                    renderer: am5xy.AxisRendererX.new(root, {
+                        strokeOpacity: 1,
+                        strokeWidth: 1,
+                    }),
+                })
+            );
+
+            let myRange = [
+                {
+                    x: 20,
+                },
+                {
+                    x: 40,
+                },
+                {
+                    x: 60,
+                },
+                {
+                    x: 80,
+                },
+                {
+                    x: 100,
+                },
+            ];
+
+            for (var i = 0; i < data.length + 1; i++) {
+                let value = myRange[i].x;
+
+                let rangeDataItem = xAxis.makeDataItem({
+                    value: value,
+                });
+
+                let range = xAxis.createAxisRange(rangeDataItem);
+
+                rangeDataItem.get('label').setAll({
+                    forceHidden: false,
+                    text: value + '%',
+                });
+            }
+
+            //FOR THE BLACK PART BESIDES Y axis
+            yAxis.children.moveValue(
+                am5.Label.new(root, {
+                    html:
+                        `
+                    <div style="background: #000;
+                        color: #fff;
+                        width: 50px;
+                        height: 200px;
+                        padding: 10px;
+                        text-align: center;
+                        border-radius: 15px 0px 0 15px;">
+                        <div style="transform: rotate(-90deg);
+                        position: absolute;
+                        left: -50px;
+                        top: 38%;">
+                        <label style="font-size: 12px;
+                        width: 150px;
+                        position: relative;
+                        top: 48%;">` +
+                        this.bar_chart[0].development_type +
+                        `</label>
+                    <span style="font-size: 12px;"><b>` +
+                        this.bar_chart[0].ultimate_field +
+                        `</b><span>
+                    <div>
+                    </div>
+                    `,
+                }),
+                0
+            );
+
+
+            // /Add series
+            let series = chart.series.push(
+                am5xy.ColumnSeries.new(root, {
+                    name: 'income',
+                    xAxis: xAxis,
+                    yAxis: yAxis,
+                    valueXField: 'income',
+                    categoryYField: 'year',
+                    sequencedInterpolation: true,
+                })
+            );
+
+            series.columns.template.setAll({
+                height: am5.percent(70),
+                templateField: 'columnConfig',
+                strokeOpacity: 0,
+            });
+
+            series.bullets.push(function () {
+                return am5.Bullet.new(root, {
+                    locationX: 0.8,
+                    locationY: -0.5,
+                    sprite: am5.Label.new(root, {
+                        centerY: am5.p50,
+                        html: `<div style="text-align:center;">
+                  {comIncome} <br> {compText}<br>
+                  <img src="{img}" width="120" style="margin-top:-17px;margin-left:-17px;">
+            </div>`,
+                    }),
+                });
+            });
+
+            // Add cursor
+
+            let cursor = chart.set(
+                'cursor',
+                am5xy.XYCursor.new(root, {
+                    // behavior: 'zoomY',
+                })
+            );
+            cursor.lineX.set('visible', false);
+            cursor.lineY.set('visible', false);
+
+            series.data.setAll(data);
         }
-            
-        //     am4core.useTheme(am4themes_animated);
 
-        //     var chart = am4core.create("chartdiv1", am4charts.XYChart);
-
-        //     chart.data = [{
-        //         "category": "Research",
-        //         "value": 450
-        //     }, {
-        //         "category": "Marketing",
-        //         "value": 1200
-        //     }, {
-        //         "category": "Distribution",
-        //         "value": 1850
-        //     }];
-
-        //     var categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
-        //     categoryAxis.dataFields.category = "category";
-        //     categoryAxis.renderer.grid.template.location = 0;
-
-        //     var valueAxis = chart.xAxes.push(new am4charts.ValueAxis());
-
-        //     var series = chart.series.push(new am4charts.ColumnSeries());
-        //     series.dataFields.valueX = "value";
-        //     series.dataFields.categoryY = "category";
-        // }
     }
 
-    BarChartData(){
+    BarChartData() {
         let selected_years = JSON.parse(localStorage.getItem("selected_years") || '');
         let selectedYear = this.year;
-        if(selected_years && selected_years.length == 2){
+        if (selected_years && selected_years.length == 2) {
             selectedYear = selected_years.toString();
         }
         let data = {
@@ -294,16 +485,54 @@ export class ComparativeOverviewComponent implements OnInit {
             taxonomyId: this.taxonomy_id,
             year: selectedYear,
         };
-        this.common.getBarChartData(data).subscribe((result) => {
-            console.log(data);
-            
-            this.bar_chart = result;
-            // console.log(this.bar_chart);
-            
-            
 
-            
-        });
+        this.common.getBarChartData(data).subscribe((res) => {
+            // console.log(res);
+            this.bar_chart = res;
+            this.bar_chart_new = [];
+
+            let bar_data = {
+                text: res[0].country_name + ',' + res[1].country_name,
+                comIncome:
+                    res[0].percentage + '%,' + res[1].percentage + '%',
+                compText: res[0].country_name + ',' + res[1].country_name,
+                img: './assets/images/line.png',
+                per: res[0].percentage,
+            };
+            if (res[0].percentage <= 25 && res[1].percentage <= 25) {
+                this.bar_chart_new.push(bar_data);
+            }
+            if (
+                res[0].percentage > 25 &&
+                res[0].percentage <= 60 &&
+                res[1].percentage > 25 &&
+                res[1].percentage <= 60
+            ) {
+                this.bar_chart_new.push(bar_data);
+            } else if (
+                res[0].percentage > 60 &&
+                res[0].percentage <= 80 &&
+                res[1].percentage > 60 &&
+                res[1].percentage <= 80
+            ) {
+                this.bar_chart_new.push(bar_data);
+            } else if (
+                res[0].percentage > 80 &&
+                res[0].percentage <= 100 &&
+                res[1].percentage > 80 &&
+                res[1].percentage <= 100
+            ) {
+                this.bar_chart_new.push(bar_data);
+            }
+
+            this.governance_name = res[0].governance_name;
+            this.BarChart();
+
+
+        })
+
+
+
     }
 
     BubbleChart() {
@@ -425,6 +654,8 @@ export class ComparativeOverviewComponent implements OnInit {
             taxonomyId: this.taxonomy_id,
             year: selectedYear,
         };
+        // console.log(this.developmentId);
+
 
         this.range25 = [];
         this.range60 = [];
@@ -460,6 +691,233 @@ export class ComparativeOverviewComponent implements OnInit {
         });
     }
 
+    RadarChart() {
+
+        this.optionRadar = {
+            color: ['#338A14', 'rgba(92,221,189,1)', '#56A3F1', '#FF917C'],
+            title: {
+                text: this.taxonomy_name,
+            },
+            legend: {},
+            radar: [
+                {
+                    indicator: [
+                        { text: 'Availability', max: 100 },
+                        { text: 'Capacity Building', max: 100 },
+                        { text: 'Development Strategy', max: 100 },
+                        { text: 'Readiness', max: 100 },
+                    ],
+                    center: ['55%', '55%'],
+                    radius: 110,
+                    startAngle: 90,
+                    splitNumber: 4,
+                    shape: 'circle',
+                    axisName: {
+                        color: '#707070',
+                        fontSize: '10',
+                    },
+                    splitArea: {
+                        areaStyle: {
+                            color: ['#DADADA', '#DADADA', '#CED5D3', '#B9BDBC'],
+                            shadowColor: 'rgba(0, 0, 0, 0.2)',
+                            shadowBlur: 10,
+                        },
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: 'rgba(154,165,162,1)',
+                        },
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: 'rgba(154,165,162,1)',
+                        },
+                    },
+                },
+            ],
+            series: [
+                {
+                    type: 'radar',
+                    emphasis: {
+                        lineStyle: {
+                            width: 4,
+                        },
+                    },
+                    data: [
+                        {
+                            value: [
+                                this.country1.a_score,
+                                this.country1.c_score,
+                                this.country1.d_score,
+                                this.country1.r_score,
+                            ],
+                            name: this.country1.country,
+                            areaStyle: {
+                                color: 'rgba(51, 138, 20, 0.6)',
+                            },
+                        },
+                        {
+                            value: [
+                                this.country2.a_score,
+                                this.country2.c_score,
+                                this.country2.d_score,
+                                this.country2.r_score,
+                            ],
+                            name: this.country2.country,
+                            areaStyle: {
+                                color: 'rgba(92,221,189,0.6)',
+                            },
+                        },
+
+                    ],
+                },
+            ],
+        }
+
+    }
+
+    RadarChartData() {
+        let selected_years = JSON.parse(localStorage.getItem("selected_years") || '');
+        let selectedYear = this.year;
+        if (selected_years && selected_years.length == 2) {
+            selectedYear = selected_years.toString();
+        }
+
+        let data = {
+            countries: this.countries,
+            developmentId: environment.default_developments,
+            governanceId: this.governance,
+            taxonomyId: this.taxonomy_id,
+            year: selectedYear,
+        };
+
+        this.common.getRadarChartData(data).subscribe((result) => {
+            this.radar_chart = result;
+            // console.log(result);
+
+            const results = this.nestGroupsBy(result, ['country_name']);
+            // console.log(results);
+
+            let resultDetails = Object.values(results);
+            // console.log(resultDetails);
+
+
+            this.country1 = this.getCountryData(resultDetails[0]);
+            this.country2 = this.getCountryData(resultDetails[1]);
+
+            // console.log(this.country1);
+            // console.log(this.country2);
+
+            this.RadarChart();
+        })
+
+    }
+
+    getCountryData(data: any) {
+        // console.log(data);
+
+        let availability_score: any;
+        let radiness_score: any;
+        let capacity_score: any;
+        let development_score: any;
+        let country: any;
+
+        data.forEach((element: any) => {
+            country = element.country_name;
+            if (element.ultimate_field == 'Readiness') {
+                radiness_score = element.percentage;
+            } else if (element.ultimate_field == 'Availability') {
+                availability_score = element.percentage;
+            } else if (element.ultimate_field == 'Capacity Building') {
+                capacity_score = element.percentage;
+            } else if (element.ultimate_field == 'Development Strategy') {
+                development_score = element.percentage;
+            }
+        });
+
+        let result = {
+            r_score: radiness_score,
+            a_score: availability_score,
+            c_score: capacity_score,
+            d_score: development_score,
+            country: country,
+        };
+
+        return result;
+
+    }
+
+    groupBy(conversions: any, property: any) {
+        return conversions.reduce((acc: any, obj: any) => {
+            let key = obj[property];
+            if (!acc[key]) {
+                acc[key] = [];
+            }
+            acc[key].push(obj);
+            return acc;
+        }, {});
+    }
+
+    nestGroupsBy(arr: any, properties: any) {
+        properties = Array.from(properties);
+        if (properties.length === 1) {
+            return this.groupBy(arr, properties[0]);
+        }
+        const property = properties.shift();
+        var grouped = this.groupBy(arr, property);
+        for (let key in grouped) {
+            grouped[key] = this.nestGroupsBy(
+                grouped[key],
+                Array.from(properties)
+            );
+        }
+        return grouped;
+    }
+
+    //TABLE DATA
+    taxonomyTableDetails() {
+        let selected_years = JSON.parse(localStorage.getItem("selected_years") || '');
+        let selectedYear = this.year;
+        if(selected_years && selected_years.length == 2){
+            selectedYear = selected_years.toString();
+        }
+
+        let data = {
+            countries: this.countries,
+            developmentId: this.developmentId,
+            governanceId: this.governance,
+            ultimateId: this.ultimateId,
+            taxonomyId: this.taxonomy_id,
+            year: selectedYear,
+        };
+        this.common.getTaxonomyTableData(data).subscribe((result) => {
+            console.log(result);
+            
+            this.taxonomy_overviews = result;
+            const results = this.nestGroupsBy(result, ['indicator_name']);
+            this.taxonomy_indicators = Object.entries(results);
+        });
+    }
+
+    dropDown2() {
+        $('.toggleSubmenu2').next('ul').toggleClass('show');
+    }
+    dropDown1() {
+        $('.toggleSubmenu1').next('ul').toggleClass('show');
+    }
+
+    setStep(index: number) {
+        this.step = 0;
+        return true;
+    }
+
+    setStepInner(index: number) {
+        this.stepinner = index;
+    }
+
+    toggle(num: number) {
+        this.isValue = num;
+    }
 
 
 
