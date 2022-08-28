@@ -9,6 +9,7 @@ import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
 import am5geodata_worldLow from '@amcharts/amcharts5-geodata/worldLow';
 
 import * as am5map from '@amcharts/amcharts5/map';
+import { ComparativeService } from 'src/app/services/comparative.service';
 // import worldLow from "@amcharts/amcharts5/geodata/franceLow";
 
 type EChartsOption = echarts.EChartsOption
@@ -42,9 +43,11 @@ export class ComparativeResultComponent implements OnInit, AfterViewInit {
     container:any;
     constructor(
         private countriesService: CountriesService,
-        private _utilities: UtilitiesService 
+        private _utilities: UtilitiesService,
+        private comparativeservice: ComparativeService
     ){}
     ngOnInit(): void {
+    
         this._utilities.yearSource.subscribe(res=>{
             this.data = res;
             this.comparativeResult();
@@ -52,6 +55,10 @@ export class ComparativeResultComponent implements OnInit, AfterViewInit {
         
     }
     ngAfterViewInit(): void {
+        this.comparativeservice.getComparative().subscribe(res=>{
+            console.log(res);
+            
+        })
     this.barGraph();
     this.mapGraph();
 
@@ -234,7 +241,7 @@ export class ComparativeResultComponent implements OnInit, AfterViewInit {
             year.forEach((element:any, index:any)=> {
                 if(element[0]== this.data){
                     this.countries = element[1];
-                    // console.log(this.countries);
+                    console.log(this.countries);
                 }                
             })            
         })
