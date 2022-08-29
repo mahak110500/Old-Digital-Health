@@ -15,8 +15,8 @@
                                     matTooltipPosition="left"
                                     aria-tooltip="Button that displays and hides a tooltip triggered by other buttons">
                                     <mat-label>Search Country</mat-label>
-                                    <mat-select #mySelect multiple>
-                                        <mat-option #selectedMapData  *ngFor="let country of countries">
+                                    <mat-select multiple [formControl]="selectedCountry" (selectionChange)="onComparCountry($event)">
+                                        <mat-option #selectedMapData   *ngFor="let country of countries" value="{{country.id}}">
                                             {{country.name}}
                                         </mat-option>
                                     </mat-select>
@@ -39,7 +39,7 @@
             </div>
             <div class="col-md-4 col-sm-5 col-xs-12">
                 <!-- panel one start -->
-                <div class="panel comparative-details">
+                <div class="panel comparative-details" *ngIf="comparitive_countries.length">
                     <div class="panel-content">
                         <div class="detail-btn">
                             <a mat-stroked-button routerLink="/comparative-result-detail">More details</a>
@@ -47,13 +47,13 @@
                         <div class="compartive-table-details">
                             <div class="table-details-heading">
                                 <h5>Comparative table</h5>
-                                <div class="status-badge">
+                                <div class="status-badge" >
                                     <ul>
                                         <li><span class="circle_badge success"></span>
-                                           India
+                                           {{comparitive_countries[0]}}
                                         </li>
                                         <li><span class="circle_badge danger"></span>
-                                            USA
+                                            {{comparitive_countries[1]}}
                                         </li>
                                     </ul>
                                 </div>
@@ -76,26 +76,24 @@
                                                 <td style="width:39%"><span
                                                         class="circle_badge success"></span>Availability</td>
                                                 <td style="width:35%">
-                                                    <ng-container>
-                                                        <span class="square-badge success">
-                                                            23%
+                                                    <ng-container *ngFor="let available of availability">
+                                                        <span class="square-badge success" *ngIf="available.country == comparitive_countries[0] && available.governance_id == 1">
+                                                            {{available.percentage}}%
                                                         </span>
-                                                        <span class="square-badge danger">
-                                                            <!-- {{availability.percentage}}% -->
+                                                        <span class="square-badge danger" *ngIf="available.country == comparitive_countries[1] && available.governance_id == 1">
+                                                            {{available.percentage}}%                                                        
                                                         </span>
                                                     </ng-container>
                                                 </td>
                                                 <td style="width:38%">
-                                                    <ng-container >
-                                                        <span
-                                                           
+                                                    <ng-container *ngFor="let available of availability" >
+                                                        <span *ngIf="available.country == comparitive_countries[0] && available.governance_id == 2"
                                                             class="square-badge success">
-                                                            <!-- {{availability.percentage}}% -->
+                                                            {{available.percentage}}%                                                        
                                                         </span>
-                                                        <span
-                                                           
-                                                            class="square-badge danger">
-                                                            <!-- {{availability.percentage}}% -->
+                                                        <span *ngIf="available.country == comparitive_countries[1] && available.governance_id == 2"  
+                                                        class="square-badge danger">
+                                                            {{available.percentage}}%                                                        
                                                         </span>
                                                     </ng-container>
                                                 </td>
@@ -104,29 +102,29 @@
                                                 <td style="width:39%"><span
                                                         class="circle_badge success"></span>Readiness</td>
                                                 <td style="width:35%">
-                                                    <ng-container >
-                                                        <span
+                                                    <ng-container *ngFor="let read of readiness" >
+                                                        <span *ngIf="read.country == comparitive_countries[0] && read.governance_id == 1"
                                                           
                                                             class="square-badge success">
-                                                            <!-- {{readiness.percentage}}% -->
+                                                            {{read.percentage}}%
                                                         </span>
-                                                        <span
+                                                        <span *ngIf="read.country == comparitive_countries[1] && read.governance_id == 1"
                                                             class="square-badge danger">
-                                                            <!-- {{readiness.percentage}}% -->
+                                                            {{read.percentage}}%
                                                         </span>
                                                     </ng-container>
                                                 </td>
                                                 <td style="width:38%">
-                                                    <ng-container >
-                                                        <span
+                                                    <ng-container *ngFor="let read of readiness" >
+                                                        <span *ngIf="read.country == comparitive_countries[0] && read.governance_id ==2"
                                                             
                                                             class="square-badge success">
-                                                            <!-- {{readiness.percentage}}% -->
+                                                            {{read.percentage}}%
                                                         </span>
-                                                        <span
+                                                        <span *ngIf="read.country == comparitive_countries[1] && read.governance_id == 2"
                                                             
                                                             class="square-badge danger">
-                                                            <!-- {{readiness.percentage}}% -->
+                                                            {{read.percentage}}%
                                                         </span>
                                                     </ng-container>
                                                 </td>
@@ -141,30 +139,30 @@
                                                 <td style="width:39%"><span class="circle_badge success"></span>Capacity
                                                     Building</td>
                                                 <td style="width:35%">
-                                                    <ng-container >
-                                                        <span
+                                                    <ng-container *ngFor="let capacity of capacityBuilding">
+                                                        <span *ngIf="capacity.country == comparitive_countries[0] && capacity.governance_id == 1"
                                                             
                                                             class="square-badge success">
-                                                            <!-- {{capacity_building.percentage}}% -->
+                                                            {{capacity.percentage}}%
                                                         </span>
-                                                        <span
+                                                        <span *ngIf="capacity.country == comparitive_countries[1] && capacity.governance_id == 1"
                                                            
                                                             class="square-badge danger">
-                                                            <!-- {{capacity_building.percentage}}% -->
+                                                            {{capacity.percentage}}%
                                                         </span>
                                                     </ng-container>
                                                 </td>
                                                 <td style="width:38%">
-                                                    <ng-container >
-                                                        <span
+                                                    <ng-container *ngFor="let capacity of capacityBuilding">
+                                                        <span *ngIf="capacity.country == comparitive_countries[0] && capacity.governance_id == 2"
                                                           
                                                             class="square-badge success">
-                                                            <!-- {{capacity_building.percentage}}% -->
+                                                            {{capacity.percentage}}%
                                                         </span>
                                                         <span
-                                                            
+                                                        *ngIf="capacity.country == comparitive_countries[1] && capacity.governance_id == 2"
                                                             class="square-badge danger">
-                                                            <!-- {{capacity_building.percentage}}% -->
+                                                            {{capacity.percentage}}%
                                                         </span>
                                                     </ng-container>
                                                 </td>
@@ -173,32 +171,32 @@
                                                 <td style="width:39%"><span
                                                         class="circle_badge success"></span>Development Strategy</td>
                                                 <td style="width:35%">
-                                                    <ng-container
-                                                       >
-                                                        <span
-                                                           
+                                                    <ng-container *ngFor="let development of developmentStrategy">
+                                                        <span                                                        
+                                                         *ngIf="development.country == comparitive_countries[0] && development.governance_id == 1"                                                           
                                                             class="square-badge success">
-                                                            <!-- {{development_strategy.percentage}}% -->
+                                                            {{development.percentage}}%
                                                         </span>
                                                         <span
-                                                           
+                                                        *ngIf="development.country == comparitive_countries[1] && development.governance_id == 1"                                                          
+
                                                             class="square-badge danger">
-                                                            <!-- {{development_strategy.percentage}}% -->
+                                                            {{development.percentage}}%
                                                         </span>
                                                     </ng-container>
                                                 </td>
                                                 <td style="width:38%">
-                                                    <ng-container
-                                                        >
+                                                    <ng-container *ngFor="let development of developmentStrategy" >
                                                         <span
-                                                           
+                                                        *ngIf="development.country == comparitive_countries[0] && development.governance_id == 2"                                                          
                                                             class="square-badge success">
-                                                            <!-- {{development_strategy.percentage}}% -->
+                                                            {{development.percentage}}%
+
                                                         </span>
                                                         <span
-                                                           
+                                                        *ngIf="development.country == comparitive_countries[1] && development.governance_id == 2"                                                          
                                                             class="square-badge danger">
-                                                            <!-- {{development_strategy.percentage}}% -->
+                                                            {{development.percentage}}%
                                                         </span>
                                                     </ng-container>
                                                 </td>

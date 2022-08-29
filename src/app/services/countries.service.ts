@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 // import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 
@@ -7,6 +7,8 @@ import { HttpClient } from '@angular/common/http';
     providedIn: 'root',
 })
 export class CountriesService {
+    mapData = new Subject<any>();
+
     constructor(private http: HttpClient) {}
 
     // public baseUrl = environment.baseUrl;
