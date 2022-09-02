@@ -6,9 +6,13 @@ import { BehaviorSubject, Subject } from 'rxjs';
     providedIn: 'root',
 })
 export class UtilitiesService {
+    // defaultCountry = {
+    //     countries: localStorage.getItem('selected_country')
+    // }
     constructor(private http: HttpClient) {}
 
     showHeaderMenu = new Subject<boolean>();
+    // emitDefaultCountries = new BehaviorSubject<any>(this.defaultCountry);
 
     yearSource = new BehaviorSubject<string>('2021');
     currentYear = this.yearSource.asObservable();

@@ -36,11 +36,11 @@ export class NdhsMapComponent implements OnInit, AfterViewInit {
 
     ngOnInit(): void {
            this.countriesService.getCountries().subscribe(result => {
-            // console.log(result);   
+            console.log(result);   
             this.data2021 = result[2021];
             this.data2022 = result[2022];
     })
-        setTimeout(() => {
+       
             // Create root and chart
             this.root = am5.Root.new('country_Map');
             this.root._logo.dispose();
@@ -176,9 +176,9 @@ export class NdhsMapComponent implements OnInit, AfterViewInit {
                     country.flag
                 );
             }
-            // this.yearChecked2021 = !this.yearChecked2021;
-            // this.yearChecked2022 = !this.yearChecked2022;
-        }, 3000);
+            this.yearChecked2021 = !this.yearChecked2021;
+            this.yearChecked2022 = !this.yearChecked2022;
+        
     }
 
 

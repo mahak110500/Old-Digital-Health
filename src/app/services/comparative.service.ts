@@ -25,4 +25,7 @@ export class ComparativeService {
    getComparative(data:any): Observable<any>{
        return this.http.post(this.baseUrl + 'ndhs-master/comparative',data);
     }
+    getDefault(data:any): Observable<any>{
+        return this.http.post(this.baseUrl + 'ndhs-master/default-country',data);
+     }
 }

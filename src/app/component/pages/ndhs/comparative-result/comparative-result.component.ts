@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { CountriesService } from 'src/app/services/countries.service';
 import { UtilitiesService } from 'src/app/services/utilities.service';
 import * as echarts from 'echarts';
@@ -12,6 +12,8 @@ import * as am5map from '@amcharts/amcharts5/map';
 import { ComparativeService } from 'src/app/services/comparative.service';
 import { FormControl } from '@angular/forms';
 import { any } from '@amcharts/amcharts5/.internal/core/util/Array';
+import { CommonService } from 'src/app/services/common.service';
+
 // import worldLow from "@amcharts/amcharts5/geodata/franceLow";
 
 type EChartsOption = echarts.EChartsOption
@@ -30,8 +32,10 @@ interface GraphNode {
     templateUrl: './comparative-result.component.html',
     styleUrls: ['./comparative-result.component.css'],
 })
-export class ComparativeResultComponent implements OnInit, AfterViewInit {
+
+export class ComparativeResultComponent implements OnInit, AfterViewInit, OnDestroy{
     @ViewChild('main') main: ElementRef | any;
+    @ViewChild('mySelect') mySelect: ElementRef | any;
     chart:any;
     circle:any;
     selectedCountry = new FormControl;
@@ -41,9 +45,11 @@ export class ComparativeResultComponent implements OnInit, AfterViewInit {
     pointSeries:any;
     networkData:any;
     year:any;
+    mySelections:any;
     comparCountry:any;
     countries:any=[];
     polygonSeries:any;
+    mapDataInfo:any;
     container:any;
     comparativeresult:any;
     comparitive_countries:any =[];
@@ -51,37 +57,54 @@ export class ComparativeResultComponent implements OnInit, AfterViewInit {
     readiness:any =[];
     developmentStrategy:any =[];
     capacityBuilding:any =[];
+    defaultCountry:any= "";
     mapData:any;
+    isLoading:any = false;
+    selectedMapData:any
+    oneCountry:any;
+    twoCountry:any;
+    selected:any;
+    countries_2021:any;
+    countries_2022:any;
+    countriesData:any;
+    selectedYear:any;
+    selectedcountry:any =[];
+    oldSelections:any;
     constructor(
         private countriesService: CountriesService,
         private _utilities: UtilitiesService,
-        private comparativeservice: ComparativeService
+        private comparativeservice: ComparativeService,
+        private commonService: CommonService
     ){}
     ngOnInit(): void {
+        this.countriesService.getCountries().subscribe((data) => {
+            let country = Object.entries(data);
+            country.forEach((element:any, index:any)=>{
+            let Data = element[1];
+            Data.forEach((element1:any, index1: any)=>{
+                this.countries.push(element1);
+                Object.entries(this.countries);
+                 })
+            })
+        });
+        console.log(this.countries);
 
             this._utilities.yearSource.subscribe(res=>{
             this.data = res;
-            this.comparativeResult();
-        })   
-        
+            // this.comparativeResult();
+        });        
     }
     ngAfterViewInit(): void {
        
         this.barGraph();
+        // this.onComparCountry();
         this.mapGraph();
+        this.isLoading = true;
 
     }
     mapGraph(){    
         this.countriesService.getCountries().subscribe(result=>{
-            let year = Object.entries(result);
-            // console.log(year);
-            year.forEach((element:any, index:any)=> {
-                if(element[0]== this.data){
-                    this.countries = element[1];
-                    console.log(this.countries);
-                }                
-            })            
-        
+            // this.countries = result;
         this.root = am5.Root.new('chartdiv');
         this.root._logo.dispose();
         // this.root.setThemes([am5themes_Animated.new(this.root)]);
@@ -107,11 +130,12 @@ export class ComparativeResultComponent implements OnInit, AfterViewInit {
             templateField: 'polygonSettings',
             strokeWidth: 2,
         });
+        
         this.countriesService.mapData.subscribe(res=>{
             this.mapData = res;     
-            console.log(this.mapData);
-            
-            am5.array.each(this.countries, (c: any) => {
+            // console.log(this.mapData);
+            if(this.mapData.length < 3) {
+            am5.array.each(this.countries, (c: any) => {                  
                if(this.mapData[0] == c.id){
 
                 let country_iso_codes = [];
@@ -126,7 +150,7 @@ export class ComparativeResultComponent implements OnInit, AfterViewInit {
                         fill: am5.color(0x84abbd),
                         flag: '/assets/flags/' + c.flag,
                     })
-                );
+                );              
             }
             if(this.mapData[1] == c.id){
 
@@ -145,8 +169,6 @@ export class ComparativeResultComponent implements OnInit, AfterViewInit {
                 );
             }
             });
-    
-
         this.polygonSeries.mapPolygons.template.states.create('active', {
             fill: this.root.interfaceColors.get('primaryButtonActive'),
         });
@@ -218,17 +240,9 @@ export class ComparativeResultComponent implements OnInit, AfterViewInit {
         };            
                 for (var i = 0; i < this.countries.length; i++) {
                     let country = this.countries[i];
-                    if(this.mapData[0] == country.id){
-                    
-                    addCountry(
-                        country.lng,
-                        country.lat,
-                        country.name,
-                        country.flag
-                    );
-                    }
-                    if(this.mapData[1] == country.id){
-                    
+                    if(this.mapData.length < 3){
+                        if(this.mapData[0] == country.id){
+                        
                         addCountry(
                             country.lng,
                             country.lat,
@@ -236,12 +250,21 @@ export class ComparativeResultComponent implements OnInit, AfterViewInit {
                             country.flag
                         );
                         }
+                        if(this.mapData[1] == country.id){
+                        
+                            addCountry(
+                                country.lng,
+                                country.lat,
+                                country.name,
+                                country.flag
+                            );
+                        }
+                    }
                 }
+            }
         })
     });    
- }
-  
-  
+ }  
     barGraph(){
         var chartDom = this.main.nativeElement;
         var myChart = echarts.init(chartDom);
@@ -270,41 +293,46 @@ export class ComparativeResultComponent implements OnInit, AfterViewInit {
         myChart.setOption(option);
     }
 
-    comparativeResult(){
-        this.countriesService.getCountries().subscribe(result=>{
-            let year = Object.entries(result);
-            // console.log(year);
-            year.forEach((element:any, index:any)=> {
-                if(element[0]== this.data){
-                    this.countries = element[1];
-                    // console.log(this.countries);
-                }                
-            })            
-        })
-    }
-    onComparCountry(data:any){
-        this.countriesService.mapData.next(data.value);
-        
-        if(data.value.length < 3){
-            // console.log(data.value);
-            this.comparCountry = data.value
-            //  console.log(this.comparCountry);                  
-        }
-        if(this.comparCountry.length == 2){
-            this.comparCountry = this.comparCountry.toString();
+    // comparativeResult(){
+    //     this.countriesService.getCountries().subscribe(result=>{
+    //          this.countries = result;
+                   
+    //     })
+    // }
+    onComparCountry(){
+        this.isLoading = true;
+        // console.log(data.value);              
+        if (this.selectedCountry.value.length < 3) {
+            this.defaultCountry = this.selectedCountry.value;
+            console.log(this.defaultCountry);
+            
 
-            // console.log(this.comparCountry);
-
+            if (this.defaultCountry.length == 2) {
+                this.comparCountry = this.defaultCountry.toString();
+                localStorage.removeItem('selected_country');
+                localStorage.setItem('selected_country', this.comparCountry);
+                // this.mySelect.close();
+            }
+        }   
+        this.countriesService.mapData.next(this.defaultCountry);    
+        if(this.mapData.length == 2){
+            this.comparCountry = this.mapData.toString();
+            console.log(this.comparCountry);
+            
             let data ={
                 countries : this.comparCountry,
                 developmentId : "1,2",
                 year: this.data
             }
             this.comparativeservice.getComparative(data).subscribe(res=>{
-                this.comparativeresult = res;
+                 this.comparativeresult = res;
+                console.log(this.comparativeresult);
+                
                 res.filter((item: any) => {                   
                     if (!this.comparitive_countries.includes(item.country)) {
                         this.comparitive_countries.push(item.country);
+                        console.log(this.comparitive_countries);
+                        
                     }
                     if(item.development_type == "Present Development"){
                         if(item.ultimate_field == "Availability"){
@@ -313,7 +341,6 @@ export class ComparativeResultComponent implements OnInit, AfterViewInit {
                         if(item.ultimate_field == "Readiness"){
                             this.readiness.push(item);
                         }
-
                     }
                     if(item.development_type == "Prospective Development"){
                         if(item.ultimate_field == "Development Strategy"){
@@ -322,23 +349,14 @@ export class ComparativeResultComponent implements OnInit, AfterViewInit {
                         }
                         if(item.ultimate_field == "Capacity Building"){
                             this.capacityBuilding.push(item);
-
                         }
-
                     }
                 });
-    
-                // for(let data of this.comparativeresult){
-                  
-                //     console.log(data);
-                    
-                // }
-                
             });
-        }   
-       
-        
+        } 
+        console.log(this.defaultCountry);
     }
-            
-
+    ngOnDestroy(): void {
+        this.mapData.unsubscribe();
+    }
 }

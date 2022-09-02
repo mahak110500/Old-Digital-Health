@@ -96,7 +96,7 @@ console.log(governanceId);
                         this.data3.push(element2);
                      })              
                    })
-console.log(this.data3);
+                  console.log(this.data3);
 
             Object.entries(this.data).forEach((element2:any, index2:any)=>{
                 this.main= element2[0]          

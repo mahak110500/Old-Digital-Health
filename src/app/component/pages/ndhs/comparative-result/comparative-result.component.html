@@ -1,6 +1,9 @@
 <div class="two-column-layout">
     <div class="container-fluid">
         <div class="row">
+            <!-- <div *ngIf="isLoading" style = "text-align: center;">
+                <app-loading-spinner></app-loading-spinner>
+            </div> -->
             <div class="col-md-8 col-sm-7 col-xs-12">
                 <!-- panel one start -->
                 <div class="panel country-selector">
@@ -14,10 +17,18 @@
                                     matTooltip="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
                                     matTooltipPosition="left"
                                     aria-tooltip="Button that displays and hides a tooltip triggered by other buttons">
+                            
                                     <mat-label>Search Country</mat-label>
-                                    <mat-select multiple [formControl]="selectedCountry" (selectionChange)="onComparCountry($event)">
-                                        <mat-option #selectedMapData   *ngFor="let country of countries" value="{{country.id}}">
-                                            {{country.name}}
+                                    <mat-select 
+                                    #mySelect 
+                                    multiple
+                                    [formControl]="selectedCountry"
+                                    [(ngModel)]="defaultCountry"
+                                    (selectionChange)="onComparCountry()">
+                                        <mat-option 
+                                        #selectedMapData
+                                        *ngFor="let country of countries" [value]="country.id">                                           
+                                            <span>{{country.name}}</span>
                                         </mat-option>
                                     </mat-select>
                                 </mat-form-field>
@@ -37,7 +48,7 @@
                 </div>
                 <!-- panel one End -->
             </div>
-            <div class="col-md-4 col-sm-5 col-xs-12">
+            <div class="col-md-4 col-sm-5 col-xs-12" >
                 <!-- panel one start -->
                 <div class="panel comparative-details" *ngIf="comparitive_countries.length">
                     <div class="panel-content">
@@ -78,10 +89,11 @@
                                                 <td style="width:35%">
                                                     <ng-container *ngFor="let available of availability">
                                                         <span class="square-badge success" *ngIf="available.country == comparitive_countries[0] && available.governance_id == 1">
-                                                            {{available.percentage}}%
+                                                            <!-- {{available.percentage | number}}% -->
+                                                            {{available.percentage | number: '1.0-0'}}%
                                                         </span>
                                                         <span class="square-badge danger" *ngIf="available.country == comparitive_countries[1] && available.governance_id == 1">
-                                                            {{available.percentage}}%                                                        
+                                                            {{available.percentage| number: '1.0-0'}}%                                                      
                                                         </span>
                                                     </ng-container>
                                                 </td>
@@ -89,11 +101,11 @@
                                                     <ng-container *ngFor="let available of availability" >
                                                         <span *ngIf="available.country == comparitive_countries[0] && available.governance_id == 2"
                                                             class="square-badge success">
-                                                            {{available.percentage}}%                                                        
+                                                            {{available.percentage | number: '1.0-0'}}%                                                       
                                                         </span>
                                                         <span *ngIf="available.country == comparitive_countries[1] && available.governance_id == 2"  
                                                         class="square-badge danger">
-                                                            {{available.percentage}}%                                                        
+                                                            {{available.percentage | number: '1.0-0'}}%                                                       
                                                         </span>
                                                     </ng-container>
                                                 </td>
@@ -106,11 +118,11 @@
                                                         <span *ngIf="read.country == comparitive_countries[0] && read.governance_id == 1"
                                                           
                                                             class="square-badge success">
-                                                            {{read.percentage}}%
+                                                            {{read.percentage| number: '1.0-0'}}%
                                                         </span>
                                                         <span *ngIf="read.country == comparitive_countries[1] && read.governance_id == 1"
                                                             class="square-badge danger">
-                                                            {{read.percentage}}%
+                                                            {{read.percentage| number: '1.0-0'}}%
                                                         </span>
                                                     </ng-container>
                                                 </td>
@@ -119,12 +131,12 @@
                                                         <span *ngIf="read.country == comparitive_countries[0] && read.governance_id ==2"
                                                             
                                                             class="square-badge success">
-                                                            {{read.percentage}}%
+                                                            {{read.percentage| number: '1.0-0'}}%
                                                         </span>
                                                         <span *ngIf="read.country == comparitive_countries[1] && read.governance_id == 2"
                                                             
                                                             class="square-badge danger">
-                                                            {{read.percentage}}%
+                                                            {{read.percentage| number: '1.0-0'}}%
                                                         </span>
                                                     </ng-container>
                                                 </td>
@@ -143,12 +155,12 @@
                                                         <span *ngIf="capacity.country == comparitive_countries[0] && capacity.governance_id == 1"
                                                             
                                                             class="square-badge success">
-                                                            {{capacity.percentage}}%
+                                                            {{capacity.percentage| number: '1.0-0'}}%
                                                         </span>
                                                         <span *ngIf="capacity.country == comparitive_countries[1] && capacity.governance_id == 1"
                                                            
                                                             class="square-badge danger">
-                                                            {{capacity.percentage}}%
+                                                            {{capacity.percentage| number: '1.0-0'}}%
                                                         </span>
                                                     </ng-container>
                                                 </td>
@@ -157,12 +169,12 @@
                                                         <span *ngIf="capacity.country == comparitive_countries[0] && capacity.governance_id == 2"
                                                           
                                                             class="square-badge success">
-                                                            {{capacity.percentage}}%
+                                                            {{capacity.percentage| number: '1.0-0'}}%
                                                         </span>
                                                         <span
                                                         *ngIf="capacity.country == comparitive_countries[1] && capacity.governance_id == 2"
                                                             class="square-badge danger">
-                                                            {{capacity.percentage}}%
+                                                            {{capacity.percentage| number: '1.0-0'}}%
                                                         </span>
                                                     </ng-container>
                                                 </td>
@@ -175,13 +187,13 @@
                                                         <span                                                        
                                                          *ngIf="development.country == comparitive_countries[0] && development.governance_id == 1"                                                           
                                                             class="square-badge success">
-                                                            {{development.percentage}}%
+                                                            {{development.percentage| number: '1.0-0'}}%
                                                         </span>
                                                         <span
                                                         *ngIf="development.country == comparitive_countries[1] && development.governance_id == 1"                                                          
 
                                                             class="square-badge danger">
-                                                            {{development.percentage}}%
+                                                            {{development.percentage| number: '1.0-0'}}%
                                                         </span>
                                                     </ng-container>
                                                 </td>
@@ -190,13 +202,13 @@
                                                         <span
                                                         *ngIf="development.country == comparitive_countries[0] && development.governance_id == 2"                                                          
                                                             class="square-badge success">
-                                                            {{development.percentage}}%
+                                                            {{development.percentage| number: '1.0-0'}}%
 
                                                         </span>
                                                         <span
                                                         *ngIf="development.country == comparitive_countries[1] && development.governance_id == 2"                                                          
                                                             class="square-badge danger">
-                                                            {{development.percentage}}%
+                                                            {{development.percentage| number: '1.0-0'}}%
                                                         </span>
                                                     </ng-container>
                                                 </td>

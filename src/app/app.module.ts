@@ -41,6 +41,7 @@ import { ComparativeResultDetailComponent } from './component/pages/ndhs/compara
 import { ComparativeOverviewComponent } from './component/pages/ndhs/comparative-overview/comparative-overview.component';
 import { PieChartCardComponent } from './component/pages/ndhs/countries/ndhs-countries/countries-data/pie-chart-card/pie-chart-card.component';
 import { DataModalComponent } from './component/pages/ndhs/countries/ndhs-countries/countries-data/data-modal/data-modal.component';
+import { LoadingSpinnerComponent } from './component/pages/ndhs/comparative-result/loading-spinner/loading-spinner.component';
 
 @NgModule({
     declarations: [
@@ -62,7 +63,8 @@ import { DataModalComponent } from './component/pages/ndhs/countries/ndhs-countr
         ComparativeResultDetailComponent,
         ComparativeOverviewComponent,
         PieChartCardComponent,
-        DataModalComponent
+        DataModalComponent,
+        LoadingSpinnerComponent
     ],
     imports: [
         BrowserModule,
