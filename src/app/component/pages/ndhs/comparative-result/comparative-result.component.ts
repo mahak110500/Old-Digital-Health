@@ -38,8 +38,12 @@ export class ComparativeResultComponent implements OnInit, AfterViewInit, OnDest
     @ViewChild('mySelect') mySelect: ElementRef | any;
     chart:any;
     circle:any;
+    comparitiveData:any;
     selectedCountry = new FormControl;
     data:any;
+    resultArray:any =[];
+    graph:any;
+    uniqueCountry:any=[];
     root:any;
     circleProperties:any;
     pointSeries:any;
@@ -70,6 +74,7 @@ export class ComparativeResultComponent implements OnInit, AfterViewInit, OnDest
     selectedYear:any;
     selectedcountry:any =[];
     oldSelections:any;
+    countrySelected:any;
     constructor(
         private countriesService: CountriesService,
         private _utilities: UtilitiesService,
@@ -299,62 +304,253 @@ export class ComparativeResultComponent implements OnInit, AfterViewInit, OnDest
                    
     //     })
     // }
+    
+    comparativeResult() {
+        let data = {
+            countries: this.countrySelected,
+            developmentId: '1,2',
+            year: this.selectedYear.toString(),
+        };
+        this.comparativeservice.getComparative(data).subscribe((response) => {
+            this.comparitiveData = response;
+            this.setComparitive();
+        });
+    }
     onComparCountry(){
-        this.isLoading = true;
-        // console.log(data.value);              
+        let temp = this.mySelections.filter((obj:any) => {
+            return this.oldSelections.indexOf(obj) == -1;
+        });
         if (this.selectedCountry.value.length < 3) {
-            this.defaultCountry = this.selectedCountry.value;
-            console.log(this.defaultCountry);
+            this.mySelections = this.selectedCountry.value;
+            if (this.mySelections.length == 2) {
+                this.countrySelected = this.mySelections.toString();
+                console.log(this.countrySelected);
+                
+                localStorage.removeItem('selected_country');
+                localStorage.setItem('selected_country', this.countrySelected);
+                this.mySelect.close();
+            }
+        } else {
+            if (this.selectedCountry.value.length == 3) {
+                let index = this.selectedCountry.value.indexOf(temp[0]);
+                if (index == 0) {
+                    this.selectedCountry.value.pop();
+                } else {
+                    this.selectedCountry.value.shift();
+                }
+                this.mySelections = this.selectedCountry.value;
+                this.oldSelections = this.mySelections;
+                if (this.mySelections.length == 2) {
+                    this.countrySelected = this.mySelections.toString();
+                    let defaultCountry = {
+                        countries: this.countrySelected,
+                    };
+                    // this.utilityService.emitDefaultCountries.next(
+                    //     defaultCountry
+                    // );
+                    // this.getComparitive();
+                    localStorage.removeItem('selected_country');
+                    localStorage.setItem(
+                        'selected_country',
+                        this.countrySelected
+                    );
+                    this.mySelect.close();
+                }
+            }
+            this.selectedCountry.setValue(this.mySelections);
+        }
+        // this.isLoading = true;
+        // // console.log(data.value);              
+        // if (this.selectedCountry.value.length < 3) {
+        //     this.defaultCountry = this.selectedCountry.value;
+        //     console.log(this.defaultCountry);
             
 
-            if (this.defaultCountry.length == 2) {
-                this.comparCountry = this.defaultCountry.toString();
-                localStorage.removeItem('selected_country');
-                localStorage.setItem('selected_country', this.comparCountry);
-                // this.mySelect.close();
-            }
-        }   
-        this.countriesService.mapData.next(this.defaultCountry);    
-        if(this.mapData.length == 2){
-            this.comparCountry = this.mapData.toString();
-            console.log(this.comparCountry);
+        //     if (this.defaultCountry.length == 2) {
+        //         this.comparCountry = this.defaultCountry.toString();
+        //         localStorage.removeItem('selected_country');
+        //         localStorage.setItem('selected_country', this.comparCountry);
+        //         // this.mySelect.close();
+        //     }
+        // }   
+        // this.countriesService.mapData.next(this.defaultCountry);    
+        // if(this.mapData.length == 2){
+        //     this.comparCountry = this.mapData.toString();
+        //     console.log(this.comparCountry);
             
-            let data ={
-                countries : this.comparCountry,
-                developmentId : "1,2",
-                year: this.data
-            }
-            this.comparativeservice.getComparative(data).subscribe(res=>{
-                 this.comparativeresult = res;
-                console.log(this.comparativeresult);
+        //     let data ={
+        //         countries : this.comparCountry,
+        //         developmentId : "1,2",
+        //         year: this.data
+        //     }
+        //     this.comparativeservice.getComparative(data).subscribe(res=>{
+        //          this.comparativeresult = res;
+        //         console.log(this.comparativeresult);
                 
-                res.filter((item: any) => {                   
-                    if (!this.comparitive_countries.includes(item.country)) {
-                        this.comparitive_countries.push(item.country);
-                        console.log(this.comparitive_countries);
+        //         res.filter((item: any) => {                   
+        //             if (!this.comparitive_countries.includes(item.country)) {
+        //                 this.comparitive_countries.push(item.country);
+        //                 console.log(this.comparitive_countries);
                         
-                    }
-                    if(item.development_type == "Present Development"){
-                        if(item.ultimate_field == "Availability"){
-                           this.availability.push(item);
-                        }
-                        if(item.ultimate_field == "Readiness"){
-                            this.readiness.push(item);
-                        }
-                    }
-                    if(item.development_type == "Prospective Development"){
-                        if(item.ultimate_field == "Development Strategy"){
-                            this.developmentStrategy.push(item);
+        //             }
+        //             if(item.development_type == "Present Development"){
+        //                 if(item.ultimate_field == "Availability"){
+        //                    this.availability.push(item);
+        //                 }
+        //                 if(item.ultimate_field == "Readiness"){
+        //                     this.readiness.push(item);
+        //                 }
+        //             }
+        //             if(item.development_type == "Prospective Development"){
+        //                 if(item.ultimate_field == "Development Strategy"){
+        //                     this.developmentStrategy.push(item);
                                
-                        }
-                        if(item.ultimate_field == "Capacity Building"){
-                            this.capacityBuilding.push(item);
+        //                 }
+        //                 if(item.ultimate_field == "Capacity Building"){
+        //                     this.capacityBuilding.push(item);
+        //                 }
+        //             }
+        //         });
+        //     });
+        // } 
+        // console.log(this.defaultCountry);
+    }
+    setComparitive() {
+        this.resultArray = [];
+        this.uniqueCountry = [
+            ...new Set(
+                this.comparitiveData.reduce(
+                    (acc: any, curr: any) => [...acc, curr.country],
+                    []
+                )
+            ),
+        ];
+        let developmentType: any = [
+            ...new Set(
+                this.comparitiveData.reduce(
+                    (acc: any, curr: any) => [...acc, curr.development_type],
+                    []
+                )
+            ),
+        ];
+
+        let governanceName: any = [
+            ...new Set(
+                this.comparitiveData.reduce(
+                    (acc: any, curr: any) => [...acc, curr.governance_name],
+                    []
+                )
+            ),
+        ];
+        let ultimateField: any = [
+            ...new Set(
+                this.comparitiveData.reduce(
+                    (acc: any, curr: any) => [...acc, curr.ultimate_field],
+                    []
+                )
+            ),
+        ];
+        function myFunc(obj: any[], prop: string) {
+            return obj.reduce(function (acc, item) {
+                let key = item[prop];
+                if (typeof key === 'string') {
+                    key = key.replace(/\s+/g, '');
+                }
+                if (!acc[key]) {
+                    acc[key] = [];
+                }
+                if (prop == 'q_indicator_id') {
+                    if (
+                        acc[key].findIndex(
+                            (x: { q_indicator_id: any }) =>
+                                x.q_indicator_id === item.q_indicator_id
+                        ) === -1
+                    ) {
+                        acc[key].push(item);
+                    }
+                } else {
+                    acc[key].push(item);
+                }
+                return acc;
+            }, {});
+        }
+
+        let groupByDevelopmentType = myFunc(
+            this.comparitiveData,
+            'development_type'
+        );
+        developmentType.forEach((development: any) => {
+            this.resultArray.push({
+                [development]: [],
+            });
+            let oldDevelopment = development;
+            if (typeof development === 'string') {
+                development = development.replace(/\s+/g, '');
+            }
+            let groupByUltimateField = myFunc(
+                groupByDevelopmentType[development],
+                'ultimate_field'
+            );
+            let groupByGovernanceName: any;
+            ultimateField.forEach((id: any) => {
+                if (typeof id === 'string') {
+                    id = id.replace(/\s+/g, '');
+                }
+                if (groupByUltimateField[id] !== undefined) {
+                    groupByGovernanceName = myFunc(
+                        groupByUltimateField[id],
+                        'governance_name'
+                    );
+                }
+                this.resultArray.forEach(
+                    (element: {
+                        [x: string]: { [x: number]: [string, unknown][] }[];
+                    }) => {
+                        if (
+                            element[oldDevelopment] !== undefined &&
+                            groupByGovernanceName !== undefined
+                        ) {
+                            element[oldDevelopment].push({
+                                [id]: groupByGovernanceName,
+                            });
                         }
                     }
-                });
+                );
             });
-        } 
-        console.log(this.defaultCountry);
+        });
+        this.resultArray[0]['Present Development'].splice(2, 2);
+        console.log(this.resultArray);
+    }
+
+    nodeChart() {
+        let chartDom = this.main.nativeElement;
+        let nodechart = echarts.init(chartDom);
+        let option: any;
+        option = {
+            tooltip: {},
+            animationDuration: 1500,
+            animationEasingUpdate: 'quinticInOut',
+            series: [
+                {
+                    name: '',
+                    type: 'graph',
+                    layout: 'none',
+                    data: this.graph.nodes,
+                    links: this.graph.links,
+                    categories: this.graph.categories,
+                    roam: true,
+                    label: {
+                        position: 'right',
+                        formatter: '{b}',
+                    },
+                    lineStyle: {
+                        color: 'source',
+                        curveness: 0.3,
+                    },
+                },
+            ],
+        };
+        nodechart.setOption(option);
     }
     ngOnDestroy(): void {
         this.mapData.unsubscribe();

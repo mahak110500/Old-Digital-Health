@@ -43,9 +43,13 @@ console.log(governanceId);
 
         this.country_name = JSON.parse(localStorage.getItem("country_name") || '');
         this.country_id = JSON.parse(localStorage.getItem("country_id") || '');
-        this.currentYear = JSON.parse(localStorage.getItem('year') || '');
-
-     this.viewdataService.getViewData(governanceId, 1, this.country_id, this.currentYear).subscribe(result =>{                    
+        this.currentYear = JSON.parse(localStorage.getItem('year') || ''); 
+        let data = {
+            countries:this.country_id,
+            development_id: 1,
+            governanceId:governanceId
+        }
+     this.viewdataService.getViewData(data).subscribe(result =>{                    
     this.result =  Object.entries(result);
     this.result.forEach((element:any, index:any) => {
             if(index == 0){
