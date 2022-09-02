@@ -11,17 +11,9 @@ export class ViewDataService {
 
     // public baseUrl = environment.baseUrl;
      public baseUrl = "http://3.95.161.176:4000/";
-   getViewData(
-    governance_id:number,
-    data:number,
-    country_id:number,
-    currentYear:number
-
-   ): Observable<any> {
-   console.log(governance_id);
-   
-       return this.http.get(
-        this.baseUrl + 'ndhs-master/view-detail/'+ governance_id + "/" + data + "/" + country_id + "/" + currentYear
+   getViewData(data:any): Observable<any> {   
+       return this.http.post(
+        this.baseUrl + 'ndhs-master/overview/', data
         );
     }
 

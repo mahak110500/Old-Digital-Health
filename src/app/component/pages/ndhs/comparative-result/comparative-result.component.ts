@@ -4,14 +4,10 @@ import { UtilitiesService } from 'src/app/services/utilities.service';
 import * as echarts from 'echarts';
 import * as am5 from '@amcharts/amcharts5';
 import graph from 'src/assets/data/network2.json';
-import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
-
 import am5geodata_worldLow from '@amcharts/amcharts5-geodata/worldLow';
-
 import * as am5map from '@amcharts/amcharts5/map';
 import { ComparativeService } from 'src/app/services/comparative.service';
 import { FormControl } from '@angular/forms';
-import { any } from '@amcharts/amcharts5/.internal/core/util/Array';
 import { CommonService } from 'src/app/services/common.service';
 
 // import worldLow from "@amcharts/amcharts5/geodata/franceLow";
