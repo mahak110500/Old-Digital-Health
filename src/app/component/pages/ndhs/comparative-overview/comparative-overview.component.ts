@@ -60,9 +60,7 @@ export class ComparativeOverviewComponent implements OnInit {
 
     dash_array: any;
 
-
-
-   @ViewChild('charts') charts: ElementRef | any;
+    @ViewChild('charts') charts: ElementRef | any;
 
 
     constructor(private common: CommonService, private utilities: UtilitiesService) { }
@@ -120,8 +118,6 @@ export class ComparativeOverviewComponent implements OnInit {
         // this.RadarChart();
         this.RadarChartData();
         this.taxonomyTableDetails();
-
-
 
     }
 
@@ -483,8 +479,13 @@ export class ComparativeOverviewComponent implements OnInit {
             governanceId: this.governance,
             ultimateId: this.ultimateId,
             taxonomyId: this.taxonomy_id,
-            year: selectedYear,
+            year: selectedYear
+
         };
+        console.log(this.countries);
+        console.log(this.developmentId);
+        
+        
 
         this.common.getBarChartData(data).subscribe((res) => {
             // console.log(res);
@@ -878,7 +879,7 @@ export class ComparativeOverviewComponent implements OnInit {
     taxonomyTableDetails() {
         let selected_years = JSON.parse(localStorage.getItem("selected_years") || '');
         let selectedYear = this.year;
-        if(selected_years && selected_years.length == 2){
+        if (selected_years && selected_years.length == 2) {
             selectedYear = selected_years.toString();
         }
 
@@ -892,7 +893,7 @@ export class ComparativeOverviewComponent implements OnInit {
         };
         this.common.getTaxonomyTableData(data).subscribe((result) => {
             console.log(result);
-            
+
             this.taxonomy_overviews = result;
             const results = this.nestGroupsBy(result, ['indicator_name']);
             this.taxonomy_indicators = Object.entries(results);

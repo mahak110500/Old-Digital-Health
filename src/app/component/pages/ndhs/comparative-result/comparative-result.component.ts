@@ -87,7 +87,7 @@ export class ComparativeResultComponent implements OnInit, AfterViewInit, OnDest
                  })
             })
         });
-        console.log(this.countries);
+        // console.log(this.countries);
 
             this._utilities.yearSource.subscribe(res=>{
             this.data = res;
