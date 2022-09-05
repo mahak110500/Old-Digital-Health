@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
 import * as am5 from '@amcharts/amcharts5';
 import * as am5map from '@amcharts/amcharts5/map';
 import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
@@ -34,13 +33,23 @@ export class NdhsMapComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit(): void {
-           this.countriesService.getCountries().subscribe(result => {
-            console.log(result);   
-            this.data2021 = result[2021];
-            this.data2022 = result[2022];
-    })
-       
-            // Create root and chart
+            this.countriesService.getCountries().subscribe(result => {
+                    console.log(result);   
+                    this.data2021 = result[2021];
+                    this.data2022 = result[2022];
+                    for (var i = 0; i < this.data2021.length; i++) {
+                let country = this.data2021[i];
+                addCountry(
+                    country.lng,
+                    country.lat,
+                    country.name,
+                    country.flag
+                );
+            }
+            this.yearChecked2021 = !this.yearChecked2021;
+            this.yearChecked2022 = !this.yearChecked2022;
+            })
+                // Create root and chart
             this.root = am5.Root.new('country_Map');
             this.root._logo.dispose();
             this.root.setThemes([am5themes_Animated.new(this.root)]);
@@ -166,28 +175,23 @@ export class NdhsMapComponent implements OnInit, AfterViewInit {
                     flag: "../../../../../assets/flags/" + flag,
                 });
             };
-            for (var i = 0; i < this.data2021.length; i++) {
-                let country = this.data2021[i];
-                addCountry(
-                    country.lng,
-                    country.lat,
-                    country.name,
-                    country.flag
-                );
-            }
-            this.yearChecked2021 = !this.yearChecked2021;
-            this.yearChecked2022 = !this.yearChecked2022;
-        
     }
 
-
     selectedYear(ev: any) {
+
         this.yearChecked2021 = true;
         this.year = this.year.filter((v: any, i: any, a: any) => a.indexOf(v) === i);
         if (!this.year.includes(ev.target.value)) {
             this.year.push(ev.target.value);
-        } else {
+            
+        localStorage.removeItem('selected_years');
+            localStorage.setItem('selected_years',JSON.stringify(this.year));
+        } 
+        else {
             this.year.splice(this.year.indexOf(ev.target.value), 1);
+            
+        localStorage.removeItem('selected_years');
+            localStorage.setItem('selected_years',JSON.stringify(this.year));
         }
         this.ndhsMapData();
     }
@@ -251,7 +255,9 @@ export class NdhsMapComponent implements OnInit, AfterViewInit {
                 });
 
                 this.circle.events.on('click', (element:any) => {
-
+                    let selected_years = element.target.dataItem.dataContext.selected_years;
+                    console.log(selected_years);
+                    
                     let country_id = element.target.dataItem.dataContext.country_id;
                     let country_flag = element.target.dataItem.dataContext.flagImage;
                     let country_iso_code = element.target.dataItem.dataContext.iso_code;
@@ -293,7 +299,6 @@ export class NdhsMapComponent implements OnInit, AfterViewInit {
             
         } else if (this.year.includes('2021')) {
             this.countries = this.data2021;
-
             this.pointSeries = this.chart.series.push(
                 am5map.MapPointSeries.new(this.root, {})
             );
