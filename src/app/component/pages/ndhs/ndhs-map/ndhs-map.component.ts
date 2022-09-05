@@ -178,12 +178,20 @@ export class NdhsMapComponent implements OnInit, AfterViewInit {
     }
 
     selectedYear(ev: any) {
+
         this.yearChecked2021 = true;
         this.year = this.year.filter((v: any, i: any, a: any) => a.indexOf(v) === i);
         if (!this.year.includes(ev.target.value)) {
             this.year.push(ev.target.value);
-        } else {
+            
+        localStorage.removeItem('selected_years');
+            localStorage.setItem('selected_years',JSON.stringify(this.year));
+        } 
+        else {
             this.year.splice(this.year.indexOf(ev.target.value), 1);
+            
+        localStorage.removeItem('selected_years');
+            localStorage.setItem('selected_years',JSON.stringify(this.year));
         }
         this.ndhsMapData();
     }
@@ -247,7 +255,9 @@ export class NdhsMapComponent implements OnInit, AfterViewInit {
                 });
 
                 this.circle.events.on('click', (element:any) => {
-
+                    let selected_years = element.target.dataItem.dataContext.selected_years;
+                    console.log(selected_years);
+                    
                     let country_id = element.target.dataItem.dataContext.country_id;
                     let country_flag = element.target.dataItem.dataContext.flagImage;
                     let country_iso_code = element.target.dataItem.dataContext.iso_code;

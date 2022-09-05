@@ -1,34 +1,42 @@
 <div class="two-column-layout">
     <div class="container-fluid">
         <div class="row">
-            <!-- <div *ngIf="isLoading" style = "text-align: center;">
-                <app-loading-spinner></app-loading-spinner>
-            </div> -->
             <div class="col-md-8 col-sm-7 col-xs-12">
                 <!-- panel one start -->
                 <div class="panel country-selector">
                     <div class="panel-content">
                         <div class="select-country-area">
-                            <div class="country-label">Select two countries for comparison.</div>
+                            <div class="country-label">
+                                Select two countries for comparison.
+                            </div>
                             <!-- country dropdown start -->
                             <div class="country-dropdown">
-                                   <mat-form-field appearance="fill" disableRipple for="flexCheckChecked" mat-raised-button
+                                <mat-form-field
+                                    appearance="fill"
+                                    disableRipple
+                                    for="flexCheckChecked"
+                                    mat-raised-button
                                     #tooltip="matTooltip"
                                     matTooltip="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
                                     matTooltipPosition="left"
-                                    aria-tooltip="Button that displays and hides a tooltip triggered by other buttons">
-                            
+                                    aria-tooltip="Button that displays and hides a tooltip triggered by other buttons"
+                                >
                                     <mat-label>Search Country</mat-label>
-                                    <mat-select 
-                                    #mySelect 
-                                    multiple
-                                    [formControl]="selectedCountry"
-                                    [(ngModel)]="defaultCountry"
-                                    (selectionChange)="onComparCountry()">
-                                        <mat-option 
-                                        #selectedMapData
-                                        *ngFor="let country of countries" [value]="country.id">                                           
-                                            <span>{{country.name}}</span>
+                                    <mat-select
+                                        #mySelect
+                                        [(ngModel)]="mySelections"
+                                        [formControl]="toppings"
+                                        (selectionChange)="onSelected()"
+                                        multiple
+                                    >
+                                        <mat-option
+                                            #selectedMapData
+                                            *ngFor="
+                                                let country of countriesToShow
+                                            "
+                                            [value]="country.country_id"
+                                        >
+                                            {{ country.country_name }}
                                         </mat-option>
                                     </mat-select>
                                 </mat-form-field>
@@ -42,28 +50,41 @@
                 <div class="panel country-selector">
                     <div class="panel-content">
                         <div class="map-area">
-                            <div id="chartdiv" style="width: 100%; height: 70vh"></div>
+                            <div
+                                id="chartdivcomp"
+                                style="width: 100%; height: 70vh"
+                            ></div>
                         </div>
                     </div>
                 </div>
                 <!-- panel one End -->
             </div>
-            <div class="col-md-4 col-sm-5 col-xs-12" >
+            <div class="col-md-4 col-sm-5 col-xs-12">
                 <!-- panel one start -->
-                <div class="panel comparative-details" *ngIf="comparitive_countries.length">
+                <div class="panel comparative-details">
                     <div class="panel-content">
                         <div class="detail-btn">
-                            <a mat-stroked-button routerLink="/comparative-result-detail">More details</a>
+                            <a
+                                mat-stroked-button
+                                routerLink="/comparative-result-detail"
+                                >More details</a
+                            >
                         </div>
                         <div class="compartive-table-details">
                             <div class="table-details-heading">
                                 <h5>Comparative table</h5>
-                                <div class="status-badge" >
+                                <div class="status-badge">
                                     <ul>
-                                        <li><span class="circle_badge success"></span>
-                                           {{comparitive_countries[0]}}
+                                        <li>
+                                            <span
+                                                class="circle_badge success"
+                                            ></span>
+                                            {{comparitive_countries[0]}}
                                         </li>
-                                        <li><span class="circle_badge danger"></span>
+                                        <li>
+                                            <span
+                                                class="circle_badge danger"
+                                            ></span>
                                             {{comparitive_countries[1]}}
                                         </li>
                                     </ul>
@@ -74,9 +95,13 @@
                                     <table class="table align-middle">
                                         <thead>
                                             <tr>
-                                                <th style="width:38%"></th>
-                                                <th style="width:35%">Health & IT</th>
-                                                <th style="width:38%">Digital Health</th>
+                                                <th style="width: 38%"></th>
+                                                <th style="width: 35%">
+                                                    Health & IT
+                                                </th>
+                                                <th style="width: 38%">
+                                                    Digital Health
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -142,7 +167,6 @@
                                                 </td>
                                             </tr>
                                         </tbody>
-
                                         <tbody>
                                             <tr>
                                                 <td colspan="3" class="com-data-heading">Prospective Development</td>
@@ -226,11 +250,14 @@
                 <div class="panel comparative-details butterfly-map">
                     <div class="panel-content">
                         <div class="detail-btn">
-                            <a mat-stroked-button routerLink="/comparative-overview">Over View</a>
+                            <a
+                                mat-stroked-button
+                                routerLink="/comparative-overview"
+                                >Over View</a
+                            >
                         </div>
                         <div class="compartive-table-details">
-                            <div #main style="width: 100%;height: 60vh;">
-                            </div>
+                            <div #main style="width: 100%; height: 60vh"></div>
                         </div>
                     </div>
                 </div>

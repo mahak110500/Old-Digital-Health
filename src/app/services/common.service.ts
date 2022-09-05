@@ -51,4 +51,9 @@ export class CommonService{
     public getRadarChartData(data: any): Observable<any> {
         return this.http.post(this.baseUrl + 'ndhs-master/radar-chart', data);
     }
+
+    public getdefaultCountry(data: any): Observable<any> {
+        return this.http.post(this.baseUrl + 'ndhs-master/countries-with-year', data);
+    }
+
 }
