@@ -69,9 +69,8 @@ export class ComparativeResultComponent implements OnInit, AfterViewInit, OnDest
     constructor(
         private countriesService: CountriesService,
         private _utilities: UtilitiesService,
-        private comparativeservice: ComparativeService,
-        private commonService: CommonService
-    ){}
+        private comparativeservice: ComparativeService
+        ){}
     ngOnInit(): void {
         this.countriesService.getCountries().subscribe((data) => {
             let country = Object.entries(data);
@@ -307,7 +306,7 @@ export class ComparativeResultComponent implements OnInit, AfterViewInit, OnDest
                 this.comparCountry = this.defaultCountry.toString();
                 localStorage.removeItem('selected_country');
                 localStorage.setItem('selected_country', this.comparCountry);
-                // this.mySelect.close();
+                this.mySelect.close();
             }
         }   
         this.countriesService.mapData.next(this.defaultCountry);    
