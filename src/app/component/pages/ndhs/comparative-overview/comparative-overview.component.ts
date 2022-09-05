@@ -113,9 +113,8 @@ export class ComparativeOverviewComponent implements OnInit {
 
 
         this.BubbleChartData();
-        // this.BarChart();
+        this.BubbleChart();
         this.BarChartData();
-        // this.RadarChart();
         this.RadarChartData();
         this.taxonomyTableDetails();
 
@@ -199,6 +198,10 @@ export class ComparativeOverviewComponent implements OnInit {
                 this.governance = d_info.g_id;
                 this.ultimateId = d_info.u_id;
                 this.taxonomy_id = d_info.t_id;
+                this.taxonomyTableDetails();
+                this.BarChartData();
+                this.BubbleChartData();
+                this.BubbleChart();
 
             }
         });
@@ -220,6 +223,7 @@ export class ComparativeOverviewComponent implements OnInit {
     BarChart() {
 
         if (this.bar_chart) {
+
 
             am5.array.each(am5.registry.rootElements, function (root) {
                 if (root && root.dom && root.dom.id == 'chartdiv1') {
@@ -280,7 +284,7 @@ export class ComparativeOverviewComponent implements OnInit {
                         text: element.text,
                         comIncome: element.comIncome,
                         compText: element.compText,
-                        // img: './assets/images/line.png',
+                        img: './assets/images/line.png',
                     };
                     if (element.per <= 25) {
                         data[3] = { ...data[3], ...bar_data_same };
@@ -298,7 +302,7 @@ export class ComparativeOverviewComponent implements OnInit {
                         text: element.country_name,
                         comIncome: element.percentage + '%',
                         compText: element.country_name,
-                        // img: './assets/images/line.png',
+                        img: './assets/images/line.png',
                     };
                     if (element.percentage <= 25) {
                         data[3] = { ...data[3], ...bar_data };
@@ -463,12 +467,13 @@ export class ComparativeOverviewComponent implements OnInit {
             cursor.lineY.set('visible', false);
 
             series.data.setAll(data);
-        }
 
+        }
     }
 
     BarChartData() {
         let selected_years = JSON.parse(localStorage.getItem("selected_years") || '');
+
         let selectedYear = this.year;
         if (selected_years && selected_years.length == 2) {
             selectedYear = selected_years.toString();
@@ -479,23 +484,23 @@ export class ComparativeOverviewComponent implements OnInit {
             governanceId: this.governance,
             ultimateId: this.ultimateId,
             taxonomyId: this.taxonomy_id,
-            year: selectedYear
 
         };
-        console.log(this.countries);
-        console.log(this.developmentId);
-        
-        
 
-        this.common.getBarChartData(data).subscribe((res) => {
+        // console.log(data);
+
+
+        this.common.getChartData(data).subscribe((res) => {
             // console.log(res);
+
             this.bar_chart = res;
             this.bar_chart_new = [];
+            
 
             let bar_data = {
                 text: res[0].country_name + ',' + res[1].country_name,
                 comIncome:
-                    res[0].percentage + '%,' + res[1].percentage + '%',
+                    Math.round(res[0].percentage) + '%,' + Math.round(res[1].percentage) + '%',
                 compText: res[0].country_name + ',' + res[1].country_name,
                 img: './assets/images/line.png',
                 per: res[0].percentage,
@@ -653,9 +658,8 @@ export class ComparativeOverviewComponent implements OnInit {
             governanceId: this.governance,
             ultimateId: this.ultimateId,
             taxonomyId: this.taxonomy_id,
-            year: selectedYear,
+            year: "2021,2022",
         };
-        // console.log(this.developmentId);
 
 
         this.range25 = [];
@@ -664,7 +668,7 @@ export class ComparativeOverviewComponent implements OnInit {
         this.range100 = [];
 
 
-        this.common.getBubbleChartData(data).subscribe((result) => {
+        this.common.getChartData(data).subscribe((result) => {
             result.forEach((e: any) => {
                 // console.log(result);
 
@@ -789,12 +793,12 @@ export class ComparativeOverviewComponent implements OnInit {
             developmentId: environment.default_developments,
             governanceId: this.governance,
             taxonomyId: this.taxonomy_id,
-            year: selectedYear,
+            year: "2021,2022",
+            ultimateId: "",
         };
 
-        this.common.getRadarChartData(data).subscribe((result) => {
+        this.common.getChartData(data).subscribe((result) => {
             this.radar_chart = result;
-            // console.log(result);
 
             const results = this.nestGroupsBy(result, ['country_name']);
             // console.log(results);
@@ -875,7 +879,7 @@ export class ComparativeOverviewComponent implements OnInit {
         return grouped;
     }
 
-    //TABLE DATA
+    //TAXONOMY TABLE DATA
     taxonomyTableDetails() {
         let selected_years = JSON.parse(localStorage.getItem("selected_years") || '');
         let selectedYear = this.year;
@@ -889,14 +893,18 @@ export class ComparativeOverviewComponent implements OnInit {
             governanceId: this.governance,
             ultimateId: this.ultimateId,
             taxonomyId: this.taxonomy_id,
-            year: selectedYear,
         };
+        
         this.common.getTaxonomyTableData(data).subscribe((result) => {
-            console.log(result);
 
             this.taxonomy_overviews = result;
+            
             const results = this.nestGroupsBy(result, ['indicator_name']);
+            
+          
             this.taxonomy_indicators = Object.entries(results);
+            console.log(this.taxonomy_indicators);
+            
         });
     }
 

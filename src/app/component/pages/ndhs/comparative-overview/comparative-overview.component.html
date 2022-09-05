@@ -29,46 +29,47 @@
                         <div class="compartive-table-details">
                             <div class="table-details-heading">
                                 <h5 *ngIf="governance_name">{{governance_name}}</h5>
-                                 <!-- <button >{{chartTitle}}</button> -->
+                                <!-- <h2 style="text-align: center; font-size: 15px;">Healthcare Governance</h2> -->
+
                                 <div class="detail-btn">
-                                    <!-- <button>{{chartTitle}}</button> &nbsp; &nbsp; -->
                                     <a mat-stroked-button (click)="toggleChartButtons()">{{chartTitle}}</a>
                                 </div>
-                                <!-- <button mat-raised-button (click)="toggleChartButtons()">{{chartTitle}}</button> -->
                             </div>
                             <div class="table-com">
                                 <div [class]="showBarChart ? 'showChart' : 'hideChart'">
-                                    <div id="chartdiv1" style="width: 500px; height: 250px;margin: 0 auto;"></div>
+                                    <div id="chartdiv2" style="width: 400px; height: 250px;margin: 0 auto;"></div>
                                 </div>
                                 <div [class]="showBarChart ? 'hideChart' : 'showChart'">
-                                    <div id="chartdiv2" style="width: 400px; height: 250px;margin: 0 auto;"></div>
+                                    <div id="chartdiv1" style="width: 500px; height: 250px;margin: 0 auto;"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div> 
+                </div>
 
                 <!-- panel one End -->
-                
+
                 <!-- panel one start -->
                 <div class="panel comparative-details">
                     <div class="panel-content">
                         <div class="table-details-heading">
                             <div class="status-table">
-                                <!-- <h5 *ngIf="taxonomy_overviews && taxonomy_overviews[0] && taxonomy_overviews[0].governance_name">{{taxonomy_overviews[0].governance_name}}</h5> -->
+                                <h5
+                                    *ngIf="taxonomy_overviews && taxonomy_overviews[0] && taxonomy_overviews[0].governance_name">
+                                    {{taxonomy_overviews[0].governance_name}}</h5>
                             </div>
                         </div>
-                    </div> 
+                    </div>
                     <div class="panel-content">
                         <div class="select-country-area">
                             <div class="country-label table-details-heading">
-                                <!-- <h5>{{this.bar_chart ? this.bar_chart[0].development_type : ''}}</h5>
-                                <h6>{{this.bar_chart ? this.bar_chart[0].ultimate_field : ''}}</h6> -->
+                                <h5>{{this.bar_chart ? this.bar_chart[0].development_type : ''}}</h5>
+                                <h6>{{this.bar_chart ? this.bar_chart[0].ultimate_field : ''}}</h6>
                             </div>
-                            <!-- <div class="country-label">
-                                <h1 *ngIf="taxonomy_overviews && taxonomy_overviews[0] && taxonomy_overviews[0].development_type">{{taxonomy_overviews[0].development_type}}</h1>
-                                <span *ngIf="taxonomy_overviews && taxonomy_overviews[0] && taxonomy_overviews[0].ultimate_field">{{taxonomy_overviews[0].ultimate_field}}</span>
-                            </div> -->
+                            <div class="country-label">
+                                <!-- <h1 *ngIf="taxonomy_overviews && taxonomy_overviews[0] && taxonomy_overviews[0].development_type">{{taxonomy_overviews[0].development_type}}</h1>
+                                <span *ngIf="taxonomy_overviews && taxonomy_overviews[0] && taxonomy_overviews[0].ultimate_field">{{taxonomy_overviews[0].ultimate_field}}</span> -->
+                            </div>
                             <!-- country dropdown start -->
                             <div class="detail-btn">
                                 <a mat-stroked-button routerLink="/comparative-result-detail">More details</a>
@@ -87,23 +88,24 @@
                                             </div>
                                             <mat-accordion>
                                                 <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)"
-                                                hideToggle>
+                                                    hideToggle>
                                                     <mat-expansion-panel-header>
-                                                        <mat-panel-title  *ngIf="taxonomy_overviews && taxonomy_overviews[0].taxonomy_name">
-                                                            {{ taxonomy_overviews[0].taxonomy_name}}>
+                                                        <mat-panel-title
+                                                            *ngIf="taxonomy_overviews && taxonomy_overviews[0].taxonomy_name">
+                                                            {{ taxonomy_overviews[0].taxonomy_name}}
                                                         </mat-panel-title>
                                                         <mat-panel-description>
-                                                            <!-- <mat-icon>arrow_drop_down</mat-icon> -->
                                                         </mat-panel-description>
                                                     </mat-expansion-panel-header>
 
 
                                                     <div class="accordion-content">
-                                                        <div class="content-row" *ngFor="let indicator of taxonomy_indicators; let j=index;">
+                                                        <div class="content-row"
+                                                            *ngFor="let indicator of taxonomy_indicators; let j=index;">
                                                             <mat-accordion>
                                                                 <div class="content-inner">
-                                                                    <mat-expansion-panel expanded]="stepinner === j"
-                                                                    (opened)="setStepInner(j)" hideToggle>
+                                                                    <mat-expansion-panel [expanded]="stepinner === j"
+                                                                        (opened)="setStepInner(j)" hideToggle>
                                                                         <mat-expansion-panel-header>
                                                                             <div class="left-content col-md-7">
                                                                                 <mat-panel-title>
@@ -112,23 +114,37 @@
                                                                             </div>
                                                                             <div class="right-content col-md-4">
                                                                                 <div class="country-1">
-                                                                                    <Span> <mat-icon>arrow_drop_up</mat-icon>
+                                                                                    <Span>
+                                                                                        <mat-icon>arrow_drop_up
+                                                                                        </mat-icon>
                                                                                     </Span>
                                                                                     <div class="rating">
 
-                                                                                        <ng-container *ngFor="let dash of dash_array;let i=index">
-                                                                                            <span *ngIf=" dash <= (((indicator[1][0].actual_score/indicator[1][0].indicator_score) * 100)/20)" class="green"></span>
-                                                                                            <span *ngIf=" dash > (((indicator[1][0].actual_score/indicator[1][0].indicator_score) * 100)/20)" class="gray"></span>
+                                                                                        <ng-container
+                                                                                            *ngFor="let dash of dash_array;let i=index">
+                                                                                            <span
+                                                                                                *ngIf=" dash <= (((indicator[1][0].actual_score/indicator[1][0].indicator_score) * 100)/20)"
+                                                                                                class="green"></span>
+                                                                                            <span
+                                                                                                *ngIf=" dash > (((indicator[1][0].actual_score/indicator[1][0].indicator_score) * 100)/20)"
+                                                                                                class="gray"></span>
                                                                                         </ng-container>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="country-2">
-                                                                                    <Span><mat-icon>arrow_drop_up</mat-icon>
+                                                                                    <Span>
+                                                                                        <mat-icon>arrow_drop_up
+                                                                                        </mat-icon>
                                                                                     </Span>
                                                                                     <div class="rating">
-                                                                                        <ng-container *ngFor="let dash of dash_array;let i=index">
-                                                                                            <span *ngIf=" dash <= (((indicator[1][1].actual_score/indicator[1][1].indicator_score) * 100)/20)" class="green"></span>
-                                                                                            <span *ngIf=" dash > (((indicator[1][1].actual_score/indicator[1][1].indicator_score) * 100)/20)" class="gray"></span>
+                                                                                        <ng-container
+                                                                                            *ngFor="let dash of dash_array;let i=index">
+                                                                                            <span
+                                                                                                *ngIf=" dash <= (((indicator[1][1].actual_score/indicator[1][1].indicator_score) * 100)/20)"
+                                                                                                class="blue"></span>
+                                                                                            <span
+                                                                                                *ngIf=" dash > (((indicator[1][1].actual_score/indicator[1][1].indicator_score) * 100)/20)"
+                                                                                                class="gray"></span>
                                                                                         </ng-container>
                                                                                     </div>
                                                                                 </div>
@@ -140,11 +156,10 @@
                                                                         <div class="content-row">
                                                                             <div class="query-right-content col-md-12">
                                                                                 <div class="query-name col-md-7">
-                                                                                    {{indicator[1][0].question}}
-                                                                                </div>
+                                                                                    {{indicator[1][0].question}}</div>
                                                                                 <div class="country-1 col-md-2">
                                                                                     <div class="rating">
-                                                                                        <span
+                                                                                        <!-- <span
                                                                                             *ngIf="indicator[1][0].status == 'Yes'"
                                                                                             class="green success"></span>
                                                                                         <span
@@ -153,12 +168,12 @@
                                                                                         <span
                                                                                             *ngIf="indicator[1][0].status == 'Data not available'"
                                                                                             class="gray disable-status">
-                                                                                        </span>
+                                                                                        </span> -->
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="country-2 col-md-2">
                                                                                     <div class="rating">
-                                                                                        <span
+                                                                                        <!-- <span
                                                                                             *ngIf="indicator[1][1].status == 'Yes'"
                                                                                             class="green success"></span>
                                                                                         <span
@@ -166,8 +181,7 @@
                                                                                             class="alert-red danger"></span>
                                                                                         <span
                                                                                             *ngIf="indicator[1][1].status == 'Data not available'"
-                                                                                            class="gray disable-status">
-                                                                                        </span>
+                                                                                            class="gray disable-status"></span> -->
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
