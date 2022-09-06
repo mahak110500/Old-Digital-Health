@@ -410,13 +410,14 @@ li.parent-li ul,
 ::ng-deep .mat-expansion-panel-header[aria-expanded=true] {
     height: 30px;
     background: rgba(116, 167, 186, 0.6) !important;
+    pointer-events: none;
 }
 
 ::ng-deep .mat-expansion-panel-header mat-panel-title {
     font-size: 12px;
     font-weight: 500;
     color: rgb(82 82 82 / 70%) !important;
-    width: 150px;
+    width: 192px;
 }
 
 .left-content.col-md-8 {

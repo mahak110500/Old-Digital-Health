@@ -53,10 +53,10 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
 
 
     ngOnInit(): void {
-        this.common.getNdhsCountriesDetails()
-            .subscribe((result) => {
-                console.log(result);
-            })
+        // this.common.getNdhsCountriesDetails()
+        //     .subscribe((result) => {
+        //         console.log(result);
+        //     })
 
 
         this.utilities.showHeaderMenu.next(true);
@@ -67,7 +67,7 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
             this.health_taxonomies_prospective = [];
             this.health_taxonomies_present = [];
             this.digital_taxonomies_present = [];
-            this.digital_taxonomies_prospective = [];           
+            this.digital_taxonomies_prospective = [];
 
             if (this.triggerInit) {
                 this.getNdhsCountriesDetails(governanceId);
@@ -100,17 +100,20 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
         this.governance_id = JSON.parse(localStorage.getItem('governance_id') || '');
         this.currentYear = JSON.parse(localStorage.getItem('year') || '');
 
-        this.common.getNdhsCountriesDetails()
+        
+
+        this.common.getNdhsCountriesDetails(governanceId,this.country_id,this.currentYear)
             .subscribe((result) => {
                 this.ndhsDetails = result;
-                console.log(this.ndhsDetails);  //array for present and prospective development
+                //console.log(this.ndhsDetails);  //array for present and prospective development
 
                 if (governanceId == 1) {
-                     console.log(this.ndhsDetails);
+                    // console.log(this.ndhsDetails);
 
-                    this.ndhsDetails['Present Development'].forEach(
-                        (element: any) => { 
-                            
+                    let presentDevelopment = [this.ndhsDetails['Present Development']];
+                    presentDevelopment.forEach(
+                        (element: any) => {
+
                             Object.keys(element).forEach((key) => {
                                 let readiness_score = parseInt(
                                     element[key][0].score
@@ -146,18 +149,16 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
                                         element[key][0].governance_id,
                                     prefix: 'health_present',
                                 };
-                                
+
                                 this.dataNew.push(details);
-                                console.log(this.dataNew);
 
                                 this.health_taxonomies_present.push(details);
-                                console.log(this.health_taxonomies_present);
-
                             });
                         }
                     );
 
-                    this.ndhsDetails['Prospective Development'].forEach(
+                    let prospectiveDevelopment = [this.ndhsDetails['Prospective Development']];
+                    prospectiveDevelopment.forEach(
                         (element: any) => {
                             Object.keys(element).forEach((key) => {
                                 let capacity_building_score = parseInt(
@@ -201,8 +202,11 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
                     );
 
                 } else {
-                    this.ndhsDetails['Present Development'].forEach(
+
+                    let presentD = [this.ndhsDetails['Present Development']];
+                    presentD.forEach(
                         (element: any) => {
+                            
                             Object.keys(element).forEach((key) => {
                                 let readiness_score = parseInt(
                                     element[key][0].score
@@ -239,16 +243,17 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
                                     prefix: 'digital_present',
                                 };
                                 this.dataNew.push(details);
-                                console.log(this.dataNew);
+                                // console.log(this.dataNew);
 
                                 this.digital_taxonomies_present.push(details);
-                                console.log(this.digital_taxonomies_present);
+                                // console.log(this.digital_taxonomies_present);
 
                             });
                         }
                     );
 
-                    this.ndhsDetails['Prospective Development'].forEach(
+                    let prospectiveD = [this.ndhsDetails['Prospective Development']];
+                    prospectiveD.forEach(
                         (element: any) => {
                             Object.keys(element).forEach((key) => {
                                 let capacity_building_score = parseInt(
@@ -285,10 +290,9 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
                                         element[key][0].governance_id,
                                     prefix: 'digital_prospective',
                                 };
+                                
                                 this.dataNew.push(details);
-                                this.digital_taxonomies_prospective.push(
-                                    details
-                                );
+                                this.digital_taxonomies_prospective.push(details);
                             });
                         }
                     );
@@ -312,14 +316,9 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
         if (this.governance_id == 1) {
             setTimeout(() => {
 
-                 console.log(this.health_taxonomies_present);
-
                 //HEALTH TEXANOMY PRESENT
                 this.health_taxonomies_present.forEach(
                     (taxonomy: any, index: number) => {
-
-                        console.log(taxonomy);
-                        console.log(index);
 
                         let i = 1;
                         this.chart = am4core.create(
@@ -407,6 +406,8 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
                 //HEALTH TEXANOMY PROSPECTIVE
                 this.health_taxonomies_prospective.forEach(
                     (taxonomy: any, index: number) => {
+                        
+                        
                         let i = 1;
                         this.chart = am4core.create(
                             'chartdiv_health_prospective' + (i + index),
@@ -492,7 +493,6 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
         } else {
 
             setTimeout(() => {
-
                 //DIGITAL TEXANOMY PRESENT
                 this.digital_taxonomies_present.forEach(
                     (taxonomy: any, index: number) => {
@@ -501,6 +501,7 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
                             'chartdiv_digital_present' + (i + index),
                             am4charts.PieChart3D
                         );
+                        
                         this.title = taxonomy.title;
                         this.availability_score = taxonomy.availability_score;
                         this.readiness_score = taxonomy.readiness_score;
@@ -660,7 +661,6 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
                     }
                 );
 
-
             }, 2000)
 
         }
@@ -676,9 +676,8 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
 
 
     getSelectedCountry(country: any) {
-
+        
         if (country) {
-            // console.log(country);
 
             this.country_id = country.country_id;
             this.country_flag = country.flag;

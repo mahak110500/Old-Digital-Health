@@ -13,11 +13,18 @@ export class CommonService{
     public baseUrl = "http://3.95.161.176:4000/";
 
     public getNdhsCountriesDetails(
-        
+        governance_id: number,
+        country_id: number,
+        year: number
     ): Observable<any> {
         return this.http.get(
             this.baseUrl +
-                'ndhs-master/governance-stats/1/14/2021'
+                'ndhs-master/governance-stats/' +
+                governance_id +
+                '/' +
+                country_id +
+                '/' +
+                year
         );
         //return this.http.get<any>('./assets/data/countries.json');
     }
@@ -30,23 +37,34 @@ export class CommonService{
     //comparative-result details
     public getTopCountriesData(data: any): Observable<any> {
         console.log(data);
-        
         return this.http.post(this.baseUrl + 'ndhs-master/top-countries', data);
     }
 
     public getTaxonomyTableData(data: any): Observable<any> {
+        console.log(data);
+        
         return this.http.post(this.baseUrl + 'ndhs-master/table-chart', data);
     }
 
     //api for getting BarChart Data
-    public getBarChartData(data: any): Observable<any> {
-        console.log(data);
-        return this.http.post(this.baseUrl + '/ndhs-master/bar-chart', data);
+    public getChartData(data:any): Observable<any>{
+        return this.http.post(this.baseUrl + 'ndhs-master/stats-graph', data);
     }
 
-    public getBubbleChartData(data: any): Observable<any> {
-        return this.http.post(this.baseUrl + 'ndhs-master/bubble-chart', data);
-    }
+
+    // public getBarChartData(data: any): Observable<any> {
+    //     // console.log(data);
+    //     return this.http.post(this.baseUrl + '/ndhs-master/stats-graph', data);
+        
+    // }
+
+    // public getBubbleChartData(data: any): Observable<any> {
+    //     return this.http.post(this.baseUrl + 'ndhs-master/stats-graph', data);
+    // }
+
+    // public getRadarChartData(data: any): Observable<any> {
+    //     return this.http.post(this.baseUrl + 'ndhs-master/stats-graph', data);
+    // }
 
     public getRadarChartData(data: any): Observable<any> {
         return this.http.post(this.baseUrl + 'ndhs-master/radar-chart', data);
