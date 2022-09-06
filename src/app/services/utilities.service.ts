@@ -12,7 +12,7 @@ export class UtilitiesService {
     };
     constructor(private http: HttpClient) {}
 
-    showHeaderMenu = new Subject<boolean>();
+    showHeaderMenu = new BehaviorSubject<boolean>(false);
     emitDefaultCountries = new BehaviorSubject<any>(this.defaultCountry);
 
     yearSource = new BehaviorSubject<string>('2021');
