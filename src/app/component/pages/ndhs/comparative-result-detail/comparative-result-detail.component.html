@@ -762,7 +762,7 @@
                                                 role="progressbar" style="width: {{comparative.percentage}}%"aria-valuenow="comparative.score" aria-valuemin="0" aria-valuemax="100">
                                             </div>
                                         </div>
-                                        <Span>{{comparative.percentage}}%</Span>
+                                        <Span>{{comparative.percentage | number: '1.0-0'}}%</Span>
                                     </div>
                                 </div>
                                 <!-- progress row End -->

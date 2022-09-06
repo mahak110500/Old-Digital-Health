@@ -25,9 +25,9 @@ var option: EChartsOption;
 interface GraphNode {
     symbolSize: number;
     label?: {
-      show?: boolean;
+        show?: boolean;
     };
-  }
+}
 @Component({
     selector: 'app-comparative-result',
     templateUrl: './comparative-result.component.html',
@@ -35,40 +35,40 @@ interface GraphNode {
 })
 export class ComparativeResultComponent implements OnInit, AfterViewInit {
     toppings = new FormControl();
-        comparativeresult:any;
-        countriesToShow: any;
-        countriesData: any;
-        selectedYear: any = [];
-        comparitive_countries:any=[];
-        capacityBuilding:any =[];
-        readiness:any=[];
-        pointSeries: any;
-        developmentStrategy:any=[];
-        root: any;
-        chart: any;
-        countries_2021: any;
-        countries_2022: any;
-        selectedCountry: any = [];
-        polygonSeries: any;
-        mySelections: string[] = [];
-        countrySelected: string | null | undefined;
-        oldSelections: string[] = [];
-        comparitiveData: any = [];
-        uniqueCountry: any[] = [];
-        resultArray: any = [];
-        object: any = Object.keys;
-        graph: any;
-        availability:any=[];
-    
+    comparativeresult: any;
+    countriesToShow: any;
+    countriesData: any;
+    selectedYear: any = [];
+    comparitive_countries: any = [];
+    capacityBuilding: any = [];
+    readiness: any = [];
+    pointSeries: any;
+    developmentStrategy: any = [];
+    root: any;
+    chart: any;
+    countries_2021: any;
+    countries_2022: any;
+    selectedCountry: any = [];
+    polygonSeries: any;
+    mySelections: string[] = [];
+    countrySelected: string | null | undefined;
+    oldSelections: string[] = [];
+    comparitiveData: any = [];
+    uniqueCountry: any[] = [];
+    resultArray: any = [];
+    object: any = Object.keys;
+    graph: any;
+    availability: any = [];
+
 
     @ViewChild('main') main: ElementRef | any;
     @ViewChild('mySelect') mySelect: ElementRef | any;
     constructor(
-                private mapService: CountriesService,
-                private utilityService: UtilitiesService,
-                private apiService: CommonService,
-                private comparResult: ComparativeService
-    ) {}
+        private mapService: CountriesService,
+        private utilityService: UtilitiesService,
+        private apiService: CommonService,
+        private comparResult: ComparativeService
+    ) { }
 
     ngAfterViewInit(): void {
         this.setMap();
@@ -97,8 +97,11 @@ export class ComparativeResultComponent implements OnInit, AfterViewInit {
         //getting countries data
         this.mapService.getCountries().subscribe((data) => {
             let country = data;
+            console.log(country);
+            
             this.countries_2021 = country['2021'];
             this.countries_2022 = country['2022'];
+            
             this.countries_2022.map((data: any) => {
                 return (data.bulletColors = { fill: am5.color(0xff0000) });
             });
@@ -110,12 +113,14 @@ export class ComparativeResultComponent implements OnInit, AfterViewInit {
                 ...{ '2021': this.countries_2021 },
                 ...{ '2022': this.countries_2022 },
             };
+            console.log(this.countriesData);
+            
             this.setCountry();
             this.getComparitive();
         });
     }
 
-   
+
     setMap() {
         // Create root
         this.root = am5.Root.new('mapChart');
@@ -193,16 +198,16 @@ export class ComparativeResultComponent implements OnInit, AfterViewInit {
                     localStorage.removeItem('year');
                     localStorage.removeItem('country_name');
 
-                    localStorage.setItem('country_id',JSON.stringify(country_id));
-                    localStorage.setItem('country_flag',JSON.stringify(country_flag));
-                    localStorage.setItem('country_name',JSON.stringify(country_name));
-                    localStorage.setItem('country_iso_code',JSON.stringify(country_iso_code));
+                    localStorage.setItem('country_id', JSON.stringify(country_id));
+                    localStorage.setItem('country_flag', JSON.stringify(country_flag));
+                    localStorage.setItem('country_name', JSON.stringify(country_name));
+                    localStorage.setItem('country_iso_code', JSON.stringify(country_iso_code));
                     localStorage.setItem('year', JSON.stringify(year));
                 } else {
-                    localStorage.setItem('country_id',JSON.stringify(country_id));
-                    localStorage.setItem('country_flag',JSON.stringify(country_flag));
-                    localStorage.setItem('country_name',JSON.stringify(country_name));
-                    localStorage.setItem('country_iso_code',JSON.stringify(country_iso_code));
+                    localStorage.setItem('country_id', JSON.stringify(country_id));
+                    localStorage.setItem('country_flag', JSON.stringify(country_flag));
+                    localStorage.setItem('country_name', JSON.stringify(country_name));
+                    localStorage.setItem('country_iso_code', JSON.stringify(country_iso_code));
                     localStorage.setItem('year', JSON.stringify(year));
                 }
                 this.utilityService.showHeaderMenu.next(true);
@@ -410,34 +415,35 @@ export class ComparativeResultComponent implements OnInit, AfterViewInit {
             });
         });
         this.resultArray[0]['Present Development'].splice(2, 2);
-        console.log(this.resultArray);  
+        console.log(this.resultArray);
     }
 
     barChart() {
-                var chartDom = this.main.nativeElement;
-                var myChart = echarts.init(chartDom);
-                    
-                graph.nodes.forEach(function (node: GraphNode) {
-                    node.label = {
-                    show: node.symbolSize > 30
-                    };
-                });
-                option = {
-                    tooltip: {},
-                    series: [
-                    {
-                        type: 'graph',
-                        layout: 'none',
-                        data: graph.nodes,
-                        links: graph.links,
-                        categories: graph.categories,
-                        lineStyle: {
+        var chartDom = this.main.nativeElement;
+        var myChart = echarts.init(chartDom);
+
+        graph.nodes.forEach(function (node: GraphNode) {
+            node.label = {
+                show: node.symbolSize > 30
+            };
+        });
+        option = {
+            tooltip: {},
+            series: [
+                {
+                    type: 'graph',
+                    layout: 'none',
+                    data: graph.nodes,
+                    links: graph.links,
+                    categories: graph.categories,
+                    lineStyle: {
                         color: 'source',
                         curveness: 0.3
-                        }
                     }
-                    ]
-                };
-                myChart.setOption(option);
-            }
+                }
+            ]
+        };
+        myChart.setOption(option);
+    }
+
 }

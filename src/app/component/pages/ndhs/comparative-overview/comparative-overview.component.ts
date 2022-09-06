@@ -300,7 +300,7 @@ export class ComparativeOverviewComponent implements OnInit {
                 this.bar_chart.forEach((element: any) => {
                     let bar_data = {
                         text: element.country_name,
-                        comIncome: element.percentage + '%',
+                        comIncome: Math.round(element.percentage) + '%',
                         compText: element.country_name,
                         img: './assets/images/line.png',
                     };
@@ -503,7 +503,7 @@ export class ComparativeOverviewComponent implements OnInit {
                     Math.round(res[0].percentage) + '%,' + Math.round(res[1].percentage) + '%',
                 compText: res[0].country_name + ',' + res[1].country_name,
                 img: './assets/images/line.png',
-                per: res[0].percentage,
+                per: Math.round(res[0].percentage),
             };
             if (res[0].percentage <= 25 && res[1].percentage <= 25) {
                 this.bar_chart_new.push(bar_data);

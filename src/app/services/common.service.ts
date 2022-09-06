@@ -44,6 +44,19 @@ export class CommonService{
         return this.http.post(this.baseUrl + 'ndhs-master/top-countries', data);
     }
 
+    //to get all the exiting countries
+    public getExistingCountries(data: any): Observable<any> {
+        let selected_years = JSON.parse(localStorage.getItem("selected_years") || "")
+        if (selected_years && selected_years.length == 2) {
+            return this.http.get(this.baseUrl + 'ndhs-master/country-list?year=2021');
+        } else {
+            return this.http.post(
+                this.baseUrl + 'ndhs-master/country-list?year=2021',
+                data
+            );
+        }
+    }
+
     public getTaxonomyTableData(data: any): Observable<any> {
         return this.http.post(this.baseUrl + 'ndhs-master/table-chart', data);
     }

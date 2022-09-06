@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { TransitionCheckState } from '@angular/material/checkbox';
+import { data } from 'jquery';
 import { CommonService } from 'src/app/services/common.service';
+import { CountriesService } from 'src/app/services/countries.service';
 import { UtilitiesService } from 'src/app/services/utilities.service';
 import { environment } from 'src/environments/environment';
 
@@ -27,14 +29,25 @@ export class ComparativeResultDetailComponent implements OnInit {
 	development_name: any;
 	countries_array: any = [];
 	ultimate_type: any;
-	toppings = new FormControl();
+	default_country_list: any;
+	mySelections: any = [];
+	country_list: any;
+	countries_2021: any;
+    countries_2022: any;
+    countriesData: any;
 
+
+
+
+	toppings = new FormControl();
 	triggerInit: boolean = true;
 
 
-
-
-	constructor(private common: CommonService, private utilities: UtilitiesService) { }
+	constructor(
+		private common: CommonService,
+		private utilities: UtilitiesService,
+		private mapService: CountriesService
+	) {}
 
 	public ngOnInit() {
 		this.utilities.showHeaderMenu.next(true);
@@ -65,9 +78,57 @@ export class ComparativeResultDetailComponent implements OnInit {
 					year: this.year
 				};
 
+				// this.common.getExistingCountries(data).subscribe((result) => {
+				// 	console.log(result);
+				// 	this.country_list = result;
+				// })
+
+				this.mapService.getCountries().subscribe((data) => {
+					let country = data;
+					console.log(country);
+					
+					this.countries_2021 = country['2021'];
+					this.countries_2022 = country['2022'];
+					
+					
+					this.countriesData = {
+						...{ '2021': this.countries_2021 },
+						...{ '2022': this.countries_2022 },
+					};
+				
+				});
+
+				
+
+				let default_country = {
+					countries: this.countries
+				}
+
+
+
+				this.common.getdefaultCountry(default_country).subscribe((result) => {
+					console.log(result);
+
+					this.default_country_list = result;
+
+					let selectedOptions: any = [];
+					this.mySelections = [];
+					result.forEach((element: any, index: any) => {
+						selectedOptions.push(element.country_id)
+
+						this.mySelections.push(element.country_id);
+
+
+					});
+
+
+				})
+
 				this.topCountriesChart();
 				this.InformationReport();
 			}
+
+
 
 
 		})
@@ -215,8 +276,8 @@ export class ComparativeResultDetailComponent implements OnInit {
 		})
 
 
-
 	}
+
 
 
 }
