@@ -14,8 +14,8 @@ import { UtilitiesService } from 'src/app/services/utilities.service';
 import { CommonService } from 'src/app/services/common.service';
 import data from 'src/assets/data/network.json';
 import * as echarts from 'echarts';
-import { ComparativeService } from 'src/app/services/comparative.service';
 import { CountriesService } from 'src/app/services/countries.service';
+import { ComparativeService } from 'src/app/services/comparative.service';
 import graph from 'src/assets/data/network2.json';
 
 type EChartsOption = echarts.EChartsOption
@@ -35,39 +35,39 @@ interface GraphNode {
 })
 export class ComparativeResultComponent implements OnInit, AfterViewInit {
     toppings = new FormControl();
-    comparativeresult:any;
-    countriesToShow: any;
-    countriesData: any;
-    selectedYear: any = [];
-    comparitive_countries:any=[];
-    capacityBuilding:any =[];
-    readiness:any=[];
-    pointSeries: any;
-    developmentStrategy:any=[];
-    root: any;
-    chart: any;
-    countries_2021: any;
-    countries_2022: any;
-    selectedCountry: any = [];
-    polygonSeries: any;
-    mySelections: string[] = [];
-    countrySelected: string | null | undefined;
-    oldSelections: string[] = [];
-    comparitiveData: any = [];
-    uniqueCountry: any[] = [];
-    resultArray: any = [];
-    object: any = Object.keys;
-    graph: any;
-    availability:any=[];
+        comparativeresult:any;
+        countriesToShow: any;
+        countriesData: any;
+        selectedYear: any = [];
+        comparitive_countries:any=[];
+        capacityBuilding:any =[];
+        readiness:any=[];
+        pointSeries: any;
+        developmentStrategy:any=[];
+        root: any;
+        chart: any;
+        countries_2021: any;
+        countries_2022: any;
+        selectedCountry: any = [];
+        polygonSeries: any;
+        mySelections: string[] = [];
+        countrySelected: string | null | undefined;
+        oldSelections: string[] = [];
+        comparitiveData: any = [];
+        uniqueCountry: any[] = [];
+        resultArray: any = [];
+        object: any = Object.keys;
+        graph: any;
+        availability:any=[];
+    
 
     @ViewChild('main') main: ElementRef | any;
     @ViewChild('mySelect') mySelect: ElementRef | any;
-
     constructor(
-        private mapService: CountriesService,
-        private utilityService: UtilitiesService,
-        private apiService: CommonService,
-        private comparResult: ComparativeService
+                private mapService: CountriesService,
+                private utilityService: UtilitiesService,
+                private apiService: CommonService,
+                private comparResult: ComparativeService
     ) {}
 
     ngAfterViewInit(): void {
@@ -115,9 +115,10 @@ export class ComparativeResultComponent implements OnInit, AfterViewInit {
         });
     }
 
+   
     setMap() {
         // Create root
-        this.root = am5.Root.new('chartdivcomp');
+        this.root = am5.Root.new('mapChart');
 
         // Set themes
         this.root.setThemes([am5themes_Animated.new(this.root)]);
@@ -139,8 +140,7 @@ export class ComparativeResultComponent implements OnInit, AfterViewInit {
                 exclude: ['AQ'],
             })
         );
-
-        this.polygonSeries.set('fill', am5.color(0xe6e6e6));
+        this.polygonSeries.set('fill', am5.color(0xDDDDDD));
         this.polygonSeries.set('stroke', am5.color(0xffffff));
 
         this.polygonSeries.mapPolygons.template.setAll({
@@ -161,13 +161,13 @@ export class ComparativeResultComponent implements OnInit, AfterViewInit {
             var circle = am5.Circle.new(this.root, {
                 radius: 3,
                 tooltipY: 0,
-                fill: am5.color(0xe6e6e6),
+                fill: am5.color(0xff0000),
                 strokeWidth: 0,
                 strokeOpacity: 0,
                 tooltipHTML: `
-                <div style="width:130px;text-align:center; background:#fff; padding:10px; box-shadow: 0px 5px 10px rgba(111, 111, 111, 0.2); border-radius:4px; border-radius:1px;">
-          <img src="{flag}" width="20px" height="20px" style="border-radius:50%"><br>
-          <span style="color:rgba(0, 0, 0, 0.32);font-size:12px;">{title}</span><div style="text-align:center;width:100%;display: flex;justify-content: center;"></div></div>
+              <div style="text-align:center; background:#fff; padding:10px; width: 120px;color:grey;">
+              <img src="{flag}" width="20px" height="20px"><br>
+              <span style="color:rgba(0, 0, 0, 0.32);font-size:12px;">{title}</span></div>
             `,
             });
 
@@ -176,7 +176,7 @@ export class ComparativeResultComponent implements OnInit, AfterViewInit {
                 scale: 2,
                 strokeWidth: 3,
                 strokeOpacity: 5,
-                stroke: am5.color(0xff7b7b),
+                stroke: am5.color(0x8fb8ff),
             });
 
             circle.events.on('click', (e: any) => {
@@ -205,6 +205,7 @@ export class ComparativeResultComponent implements OnInit, AfterViewInit {
                     localStorage.setItem('country_iso_code',JSON.stringify(country_iso_code));
                     localStorage.setItem('year', JSON.stringify(year));
                 }
+                this.utilityService.showHeaderMenu.next(true);
             });
 
             return am5.Bullet.new(this.root, {
@@ -265,14 +266,12 @@ export class ComparativeResultComponent implements OnInit, AfterViewInit {
         } else {
             if (this.toppings.value.length == 3) {
                 let index = this.toppings.value.indexOf(temp[0]);
-                console.log(index);
-                
                 if (index == 0) {
                     this.toppings.value.pop();
                 } else {
                     this.toppings.value.shift();
                 }
-                this.mySelections = this.toppings.value;                
+                this.mySelections = this.toppings.value;
                 this.oldSelections = this.mySelections;
                 if (this.mySelections.length == 2) {
                     this.countrySelected = this.mySelections.toString();
@@ -294,6 +293,7 @@ export class ComparativeResultComponent implements OnInit, AfterViewInit {
             this.toppings.setValue(this.mySelections);
         }
     }
+
     getComparitive() {
         let data = {
             countries: this.countrySelected,
@@ -305,70 +305,139 @@ export class ComparativeResultComponent implements OnInit, AfterViewInit {
             this.setComparitive();
         });
     }
+
     setComparitive() {
-        let data = {
-            countries: this.countrySelected,
-            developmentId: '1,2',
-            year: this.selectedYear.toString(),
-        };   
-        this.comparResult.getComparative(data).subscribe(res=>{
-            this.comparativeresult = res;
-           console.log(this.comparativeresult);
-           
-           res.filter((item: any) => {                              
-               if (!this.comparitive_countries.includes(item.country)) {
-                   this.comparitive_countries.push(item.country);
-                   console.log(this.comparitive_countries);
-                   
-               }
-               if(item.development_type == "Present Development"){
-                   if(item.ultimate_field == "Availability"){
-                      this.availability.push(item);
-                   }
-                   if(item.ultimate_field == "Readiness"){
-                       this.readiness.push(item);
-                   }
-               }
-               if(item.development_type == "Prospective Development"){
-                   if(item.ultimate_field == "Development Strategy"){
-                       this.developmentStrategy.push(item);
-                          
-                   }
-                   if(item.ultimate_field == "Capacity Building"){
-                       this.capacityBuilding.push(item);
-                   }
-               }
-           });
-          
-       });
-    
+        this.resultArray = [];
+        this.uniqueCountry = [
+            ...new Set(
+                this.comparitiveData.reduce(
+                    (acc: any, curr: any) => [...acc, curr.country],
+                    []
+                )
+            ),
+        ];
+        let developmentType: any = [
+            ...new Set(
+                this.comparitiveData.reduce(
+                    (acc: any, curr: any) => [...acc, curr.development_type],
+                    []
+                )
+            ),
+        ];
+
+        let governanceName: any = [
+            ...new Set(
+                this.comparitiveData.reduce(
+                    (acc: any, curr: any) => [...acc, curr.governance_name],
+                    []
+                )
+            ),
+        ];
+        let ultimateField: any = [
+            ...new Set(
+                this.comparitiveData.reduce(
+                    (acc: any, curr: any) => [...acc, curr.ultimate_field],
+                    []
+                )
+            ),
+        ];
+        function myFunc(obj: any[], prop: string) {
+            return obj.reduce(function (acc, item) {
+                let key = item[prop];
+                if (typeof key === 'string') {
+                    key = key.replace(/\s+/g, '');
+                }
+                if (!acc[key]) {
+                    acc[key] = [];
+                }
+                if (prop == 'q_indicator_id') {
+                    if (
+                        acc[key].findIndex(
+                            (x: { q_indicator_id: any }) =>
+                                x.q_indicator_id === item.q_indicator_id
+                        ) === -1
+                    ) {
+                        acc[key].push(item);
+                    }
+                } else {
+                    acc[key].push(item);
+                }
+                return acc;
+            }, {});
+        }
+
+        let groupByDevelopmentType = myFunc(
+            this.comparitiveData,
+            'development_type'
+        );
+        developmentType.forEach((development: any) => {
+            this.resultArray.push({
+                [development]: [],
+            });
+            let oldDevelopment = development;
+            if (typeof development === 'string') {
+                development = development.replace(/\s+/g, '');
+            }
+            let groupByUltimateField = myFunc(
+                groupByDevelopmentType[development],
+                'ultimate_field'
+            );
+            let groupByGovernanceName: any;
+            ultimateField.forEach((id: any) => {
+                if (typeof id === 'string') {
+                    id = id.replace(/\s+/g, '');
+                }
+                if (groupByUltimateField[id] !== undefined) {
+                    groupByGovernanceName = myFunc(
+                        groupByUltimateField[id],
+                        'governance_name'
+                    );
+                }
+                this.resultArray.forEach(
+                    (element: {
+                        [x: string]: { [x: number]: [string, unknown][] }[];
+                    }) => {
+                        if (
+                            element[oldDevelopment] !== undefined &&
+                            groupByGovernanceName !== undefined
+                        ) {
+                            element[oldDevelopment].push({
+                                [id]: groupByGovernanceName,
+                            });
+                        }
+                    }
+                );
+            });
+        });
+        this.resultArray[0]['Present Development'].splice(2, 2);
+        console.log(this.resultArray);  
     }
 
     barChart() {
-        var chartDom = this.main.nativeElement;
-        var myChart = echarts.init(chartDom);
-            
-        graph.nodes.forEach(function (node: GraphNode) {
-            node.label = {
-            show: node.symbolSize > 30
-            };
-        });
-        option = {
-            tooltip: {},
-            series: [
-            {
-                type: 'graph',
-                layout: 'none',
-                data: graph.nodes,
-                links: graph.links,
-                categories: graph.categories,
-                lineStyle: {
-                color: 'source',
-                curveness: 0.3
-                }
+                var chartDom = this.main.nativeElement;
+                var myChart = echarts.init(chartDom);
+                    
+                graph.nodes.forEach(function (node: GraphNode) {
+                    node.label = {
+                    show: node.symbolSize > 30
+                    };
+                });
+                option = {
+                    tooltip: {},
+                    series: [
+                    {
+                        type: 'graph',
+                        layout: 'none',
+                        data: graph.nodes,
+                        links: graph.links,
+                        categories: graph.categories,
+                        lineStyle: {
+                        color: 'source',
+                        curveness: 0.3
+                        }
+                    }
+                    ]
+                };
+                myChart.setOption(option);
             }
-            ]
-        };
-        myChart.setOption(option);
-    }
 }

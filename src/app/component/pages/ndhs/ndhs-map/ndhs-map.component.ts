@@ -144,8 +144,6 @@ export class NdhsMapComponent implements OnInit, AfterViewInit {
                         localStorage.setItem("year", JSON.stringify(year));
                     }
 
-
-                    this.toDiffrentPage();
                 });
 
                 this.circle.states.create('hover', {
@@ -284,10 +282,6 @@ export class NdhsMapComponent implements OnInit, AfterViewInit {
                         localStorage.setItem("year", JSON.stringify(year));
                     }
 
-
-
-
-                    this.toDiffrentPage();
                 });
 
                 return (this.bullet = am5.Bullet.new(this.root, {
@@ -345,8 +339,6 @@ export class NdhsMapComponent implements OnInit, AfterViewInit {
                         localStorage.setItem("country_iso_code",JSON.stringify(country_iso_code));
                         localStorage.setItem("year", JSON.stringify(year));
                     }
-
-                    this.toDiffrentPage();
                 });
 
                 return (this.bullet = am5.Bullet.new(this.root, {
@@ -403,8 +395,6 @@ export class NdhsMapComponent implements OnInit, AfterViewInit {
                         localStorage.setItem("year", JSON.stringify(year));
                     }
 
-
-                    this.toDiffrentPage();
                 });
 
                 return (this.bullet = am5.Bullet.new(this.root, {
@@ -443,8 +433,4 @@ export class NdhsMapComponent implements OnInit, AfterViewInit {
         }
     }
 
-    public toDiffrentPage() {
-        // this.router.navigate(['ndhs-countries/1']);
-        this.router.navigate(['ndhs-countries']);
-    }
 }
