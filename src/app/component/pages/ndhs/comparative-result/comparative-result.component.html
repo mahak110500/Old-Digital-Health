@@ -79,13 +79,13 @@
                                             <span
                                                 class="circle_badge success"
                                             ></span>
-                                            {{ uniqueCountry[0] }}
+                                            {{ comparitive_countries[0] }}
                                         </li>
                                         <li>
                                             <span
                                                 class="circle_badge danger"
                                             ></span>
-                                            {{ uniqueCountry[1] }}
+                                            {{ comparitive_countries[1] }}
                                         </li>
                                     </ul>
                                 </div>
@@ -104,112 +104,141 @@
                                                 </th>
                                             </tr>
                                         </thead>
-                                        <tbody *ngFor="let data of resultArray">
+                                        <tbody>
                                             <tr>
-                                                <td
-                                                    colspan="3"
-                                                    class="com-data-heading"
-                                                >
-                                                    {{ object(data) }}
+                                                <td colspan="3" class="com-data-heading">Present Development</td>
+                                            </tr>
+                                            <tr class="border-less">
+                                                <td style="width:39%"><span
+                                                        class="circle_badge success"></span>Availability</td>
+                                                <td style="width:35%">
+                                                    <ng-container *ngFor="let available of availability">
+                                                        <span class="square-badge success" *ngIf="available.country == comparitive_countries[0] && available.governance_id == 1">
+                                                            <!-- {{available.percentage | number}}% -->
+                                                            {{available.percentage | number: '1.0-0'}}%
+                                                        </span>
+                                                        <span class="square-badge danger" *ngIf="available.country == comparitive_countries[1] && available.governance_id == 1">
+                                                            {{available.percentage| number: '1.0-0'}}%                                                      
+                                                        </span>
+                                                    </ng-container>
+                                                </td>
+                                                <td style="width:38%">
+                                                    <ng-container *ngFor="let available of availability" >
+                                                        <span *ngIf="available.country == comparitive_countries[0] && available.governance_id == 2"
+                                                            class="square-badge success">
+                                                            {{available.percentage | number: '1.0-0'}}%                                                       
+                                                        </span>
+                                                        <span *ngIf="available.country == comparitive_countries[1] && available.governance_id == 2"  
+                                                        class="square-badge danger">
+                                                            {{available.percentage | number: '1.0-0'}}%                                                       
+                                                        </span>
+                                                    </ng-container>
                                                 </td>
                                             </tr>
-                                            <tr
-                                                class="border-less"
-                                                *ngFor="
-                                                    let uf of data[
-                                                        object(data)
-                                                    ];
-                                                    let i = index
-                                                "
-                                            >
-                                                <td style="width: 39%">
-                                                    <span
-                                                        class="circle_badge success"
-                                                    ></span
-                                                    >{{ object(uf) }}
+                                            <tr>
+                                                <td style="width:39%"><span
+                                                        class="circle_badge success"></span>Readiness</td>
+                                                <td style="width:35%">
+                                                    <ng-container *ngFor="let read of readiness" >
+                                                        <span *ngIf="read.country == comparitive_countries[0] && read.governance_id == 1"
+                                                          
+                                                            class="square-badge success">
+                                                            {{read.percentage| number: '1.0-0'}}%
+                                                        </span>
+                                                        <span *ngIf="read.country == comparitive_countries[1] && read.governance_id == 1"
+                                                            class="square-badge danger">
+                                                            {{read.percentage| number: '1.0-0'}}%
+                                                        </span>
+                                                    </ng-container>
                                                 </td>
-                                                <td
-                                                    style="width: 35%"
-                                                    *ngFor="
-                                                        let item of object(
-                                                            uf[object(uf)]
-                                                        ); let j = index
-                                                    "
-                                                >
-                                                    <ng-container *ngIf=" i == 0" >
-                                                        <span
-                                                            class="square-badge success"
-                                                        >
-                                                        
-                                                            {{
-                                                                uf[object(uf)][
-                                                                    item
-                                                                ][0].percentage | number: '1.0-0'
-                                                            }}%
+                                                <td style="width:38%">
+                                                    <ng-container *ngFor="let read of readiness" >
+                                                        <span *ngIf="read.country == comparitive_countries[0] && read.governance_id ==2"
+                                                            
+                                                            class="square-badge success">
+                                                            {{read.percentage| number: '1.0-0'}}%
                                                         </span>
-                                                        <span
-                                                            class="square-badge danger"
-                                                        >
-                                                            {{
-                                                                uf[object(uf)][
-                                                                    item
-                                                                ][1].percentage | number: '1.0-0'
-                                                            }}%
-                                                        </span>
-                                                    </ng-container>
-                                                    <ng-container *ngIf=" i == 1 && j == 0 ">
-                                                        <span
-                                                            class="square-badge success"
-                                                        >
-                                                        
-                                                            {{
-                                                                uf[object(uf)][
-                                                                object(
-                                                                    uf[object(uf)]
-                                                                )[i]
-                                                                ][0].percentage | number: '1.0-0'
-                                                            }}%
-                                                        </span>
-                                                        <span
-                                                            class="square-badge danger"
-                                                        >
-                                                            {{
-                                                                uf[object(uf)][
-                                                                object(
-                                                                    uf[object(uf)]
-                                                                )[i]
-                                                                ][1].percentage | number: '1.0-0'
-                                                            }}%
-                                                        </span>
-                                                    </ng-container>
-                                                    <ng-container *ngIf=" i == 1 && j == 1 ">
-                                                        <span
-                                                            class="square-badge success"
-                                                        >
-                                                        
-                                                            {{
-                                                                uf[object(uf)][
-                                                                object(
-                                                                    uf[object(uf)]
-                                                                )[0]
-                                                                ][0].percentage | number: '1.0-0'
-                                                            }}%
-                                                        </span>
-                                                        <span
-                                                            class="square-badge danger"
-                                                        >
-                                                            {{
-                                                                uf[object(uf)][
-                                                                object(
-                                                                    uf[object(uf)]
-                                                                )[0]
-                                                                ][1].percentage | number: '1.0-0'
-                                                            }}%
+                                                        <span *ngIf="read.country == comparitive_countries[1] && read.governance_id == 2"
+                                                            
+                                                            class="square-badge danger">
+                                                            {{read.percentage| number: '1.0-0'}}%
                                                         </span>
                                                     </ng-container>
                                                 </td>
                                             </tr>
                                         </tbody>
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="3" class="com-data-heading">Prospective Development</td>
+                                            </tr>
+                                            <tr class="border-less">
+                                                <td style="width:39%"><span class="circle_badge success"></span>Capacity
+                                                    Building</td>
+                                                <td style="width:35%">
+                                                    <ng-container *ngFor="let capacity of capacityBuilding">
+                                                        <span *ngIf="capacity.country == comparitive_countries[0] && capacity.governance_id == 1"
+                                                            
+                                                            class="square-badge success">
+                                                            {{capacity.percentage| number: '1.0-0'}}%
+                                                        </span>
+                                                        <span *ngIf="capacity.country == comparitive_countries[1] && capacity.governance_id == 1"
+                                                           
+                                                            class="square-badge danger">
+                                                            {{capacity.percentage| number: '1.0-0'}}%
+                                                        </span>
+                                                    </ng-container>
+                                                </td>
+                                                <td style="width:38%">
+                                                    <ng-container *ngFor="let capacity of capacityBuilding">
+                                                        <span *ngIf="capacity.country == comparitive_countries[0] && capacity.governance_id == 2"
+                                                          
+                                                            class="square-badge success">
+                                                            {{capacity.percentage| number: '1.0-0'}}%
+                                                        </span>
+                                                        <span
+                                                        *ngIf="capacity.country == comparitive_countries[1] && capacity.governance_id == 2"
+                                                            class="square-badge danger">
+                                                            {{capacity.percentage| number: '1.0-0'}}%
+                                                        </span>
+                                                    </ng-container>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:39%"><span
+                                                        class="circle_badge success"></span>Development Strategy</td>
+                                                <td style="width:35%">
+                                                    <ng-container *ngFor="let development of developmentStrategy">
+                                                        <span                                                        
+                                                         *ngIf="development.country == comparitive_countries[0] && development.governance_id == 1"                                                           
+                                                            class="square-badge success">
+                                                            {{development.percentage| number: '1.0-0'}}%
+                                                        </span>
+                                                        <span
+                                                        *ngIf="development.country == comparitive_countries[1] && development.governance_id == 1"                                                          
+
+                                                            class="square-badge danger">
+                                                            {{development.percentage| number: '1.0-0'}}%
+                                                        </span>
+                                                    </ng-container>
+                                                </td>
+                                                <td style="width:38%">
+                                                    <ng-container *ngFor="let development of developmentStrategy" >
+                                                        <span
+                                                        *ngIf="development.country == comparitive_countries[0] && development.governance_id == 2"                                                          
+                                                            class="square-badge success">
+                                                            {{development.percentage| number: '1.0-0'}}%
+
+                                                        </span>
+                                                        <span
+                                                        *ngIf="development.country == comparitive_countries[1] && development.governance_id == 2"                                                          
+                                                            class="square-badge danger">
+                                                            {{development.percentage| number: '1.0-0'}}%
+                                                        </span>
+                                                    </ng-container>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+
                                     </table>
                                 </div>
                             </div>
