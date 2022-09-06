@@ -161,13 +161,13 @@ export class ComparativeResultComponent implements OnInit, AfterViewInit {
             var circle = am5.Circle.new(this.root, {
                 radius: 3,
                 tooltipY: 0,
-                fill: am5.color(0xff0000),
+                fill: am5.color(0xe6e6e6),
                 strokeWidth: 0,
                 strokeOpacity: 0,
                 tooltipHTML: `
-              <div style="width:130px;text-align:center; background:#fff; padding:10px; box-shadow: 0px 5px 10px rgba(111, 111, 111, 0.2); border-radius:4px; border-radius:1px;">
-              <img src="{flag}" width="20px" height="20px" style="border-radius:50%"><br>
-              <span style="color:rgba(0, 0, 0, 0.32);font-size:12px;">{title}</span><div style="text-align:center;width:100%;display: flex;justify-content: center;"></div></div>
+                <div style="width:130px;text-align:center; background:#fff; padding:10px; box-shadow: 0px 5px 10px rgba(111, 111, 111, 0.2); border-radius:4px; border-radius:1px;">
+          <img src="{flag}" width="20px" height="20px" style="border-radius:50%"><br>
+          <span style="color:rgba(0, 0, 0, 0.32);font-size:12px;">{title}</span><div style="text-align:center;width:100%;display: flex;justify-content: center;"></div></div>
             `,
             });
 
@@ -193,40 +193,18 @@ export class ComparativeResultComponent implements OnInit, AfterViewInit {
                     localStorage.removeItem('year');
                     localStorage.removeItem('country_name');
 
-                    localStorage.setItem(
-                        'country_id',
-                        JSON.stringify(country_id)
-                    );
-                    localStorage.setItem(
-                        'country_flag',
-                        JSON.stringify(country_flag)
-                    );
-                    localStorage.setItem(
-                        'country_name',
-                        JSON.stringify(country_name)
-                    );
-                    localStorage.setItem(
-                        'country_iso_code',
-                        JSON.stringify(country_iso_code)
-                    );
+                    localStorage.setItem('country_id',JSON.stringify(country_id));
+                    localStorage.setItem('country_flag',JSON.stringify(country_flag));
+                    localStorage.setItem('country_name',JSON.stringify(country_name));
+                    localStorage.setItem('country_iso_code',JSON.stringify(country_iso_code));
                     localStorage.setItem('year', JSON.stringify(year));
                 } else {
-                    localStorage.setItem('country_id',JSON.stringify(country_id)                    );
-                    localStorage.setItem(
-                        'country_flag',
-                        JSON.stringify(country_flag)
-                    );
-                    localStorage.setItem(
-                        'country_name',
-                        JSON.stringify(country_name)
-                    );
-                    localStorage.setItem(
-                        'country_iso_code',
-                        JSON.stringify(country_iso_code)
-                    );
+                    localStorage.setItem('country_id',JSON.stringify(country_id));
+                    localStorage.setItem('country_flag',JSON.stringify(country_flag));
+                    localStorage.setItem('country_name',JSON.stringify(country_name));
+                    localStorage.setItem('country_iso_code',JSON.stringify(country_iso_code));
                     localStorage.setItem('year', JSON.stringify(year));
                 }
-                // this.utilityService.header.next(true);
             });
 
             return am5.Bullet.new(this.root, {
@@ -316,7 +294,6 @@ export class ComparativeResultComponent implements OnInit, AfterViewInit {
             this.toppings.setValue(this.mySelections);
         }
     }
-
     getComparitive() {
         let data = {
             countries: this.countrySelected,
@@ -328,20 +305,17 @@ export class ComparativeResultComponent implements OnInit, AfterViewInit {
             this.setComparitive();
         });
     }
-
     setComparitive() {
         let data = {
             countries: this.countrySelected,
             developmentId: '1,2',
             year: this.selectedYear.toString(),
-        };
+        };   
         this.comparResult.getComparative(data).subscribe(res=>{
             this.comparativeresult = res;
            console.log(this.comparativeresult);
            
-           res.filter((item: any) => {
-            console.log(item.country);
-                               
+           res.filter((item: any) => {                              
                if (!this.comparitive_countries.includes(item.country)) {
                    this.comparitive_countries.push(item.country);
                    console.log(this.comparitive_countries);
@@ -365,7 +339,9 @@ export class ComparativeResultComponent implements OnInit, AfterViewInit {
                    }
                }
            });
+          
        });
+    
     }
 
     barChart() {
