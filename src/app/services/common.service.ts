@@ -34,15 +34,17 @@ export class CommonService{
         return this.http.get(this.baseUrl + 'ndhs-master/country-list' );
     }
 
+    getInformationReportData(data:any):Observable<any>{
+        return this.http.post(this.baseUrl + 'ndhs-master/comparative-information', data)
+    }
+
+
     //comparative-result details
     public getTopCountriesData(data: any): Observable<any> {
-        console.log(data);
         return this.http.post(this.baseUrl + 'ndhs-master/top-countries', data);
     }
 
     public getTaxonomyTableData(data: any): Observable<any> {
-        console.log(data);
-        
         return this.http.post(this.baseUrl + 'ndhs-master/table-chart', data);
     }
 
@@ -70,8 +72,9 @@ export class CommonService{
         return this.http.post(this.baseUrl + 'ndhs-master/radar-chart', data);
     }
 
-    public getdefaultCountry(data: any): Observable<any> {
-        return this.http.post(this.baseUrl + 'ndhs-master/countries-with-year', data);
+
+    public getdefaultCountry(data:any): Observable<any> {
+        return this.http.post(this.baseUrl + 'ndhs-master/countries-with-year', data)
     }
 
 }
