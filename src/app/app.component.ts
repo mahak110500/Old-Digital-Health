@@ -12,6 +12,7 @@ export class AppComponent {
     constructor(private _utilities: UtilitiesService){}
 
     ngOnInit(): void {
+        
         var years = ['2021'];
         if(localStorage.getItem("governance_id")) {
             localStorage.removeItem('governance_id');
