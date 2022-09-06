@@ -172,7 +172,7 @@ export class ComparativeResultComponent implements OnInit, AfterViewInit {
                 tooltipHTML: `
               <div style="text-align:center; background:#fff; padding:10px; width: 120px;color:grey;">
               <img src="{flag}" width="20px" height="20px"><br>
-              <span style="color:rgba(0, 0, 0, 0.32);font-size:12px;">{title}</span></div>
+             <span style="color:rgba(0, 0, 0, 0.32);font-size:12px;">{title}</span></div>
             `,
             });
 
@@ -311,111 +311,58 @@ export class ComparativeResultComponent implements OnInit, AfterViewInit {
         });
     }
 
-    setComparitive() {
+    setComparitive() {        
         this.resultArray = [];
-        this.uniqueCountry = [
+        this.comparitive_countries = [
             ...new Set(
                 this.comparitiveData.reduce(
                     (acc: any, curr: any) => [...acc, curr.country],
                     []
                 )
             ),
-        ];
-        let developmentType: any = [
-            ...new Set(
-                this.comparitiveData.reduce(
-                    (acc: any, curr: any) => [...acc, curr.development_type],
-                    []
-                )
-            ),
-        ];
-
-        let governanceName: any = [
-            ...new Set(
-                this.comparitiveData.reduce(
-                    (acc: any, curr: any) => [...acc, curr.governance_name],
-                    []
-                )
-            ),
-        ];
-        let ultimateField: any = [
-            ...new Set(
-                this.comparitiveData.reduce(
-                    (acc: any, curr: any) => [...acc, curr.ultimate_field],
-                    []
-                )
-            ),
-        ];
-        function myFunc(obj: any[], prop: string) {
-            return obj.reduce(function (acc, item) {
-                let key = item[prop];
-                if (typeof key === 'string') {
-                    key = key.replace(/\s+/g, '');
-                }
-                if (!acc[key]) {
-                    acc[key] = [];
-                }
-                if (prop == 'q_indicator_id') {
-                    if (
-                        acc[key].findIndex(
-                            (x: { q_indicator_id: any }) =>
-                                x.q_indicator_id === item.q_indicator_id
-                        ) === -1
-                    ) {
-                        acc[key].push(item);
+        ];      
+        // console.log(this.comparitive_countries);
+        // console.log(this.comparitiveData);
+        this.comparitiveData.filter((item: any) => {   
+            // console.log(item.country);
+            if(this.comparitive_countries[0] == item.country || this.comparitive_countries[1] == item.country){
+                // console.log(item);
+                 if(item.development_type == "Present Development"){
+                    // console.log(item.development_type);
+                    if(item.ultimate_field == "Availability"){
+                    this.availability.push(item);
+                        if(this.availability.length > 5){
+                            this.availability.splice(0, 2);
+                        }                   
                     }
-                } else {
-                    acc[key].push(item);
-                }
-                return acc;
-            }, {});
-        }
-
-        let groupByDevelopmentType = myFunc(
-            this.comparitiveData,
-            'development_type'
-        );
-        developmentType.forEach((development: any) => {
-            this.resultArray.push({
-                [development]: [],
-            });
-            let oldDevelopment = development;
-            if (typeof development === 'string') {
-                development = development.replace(/\s+/g, '');
-            }
-            let groupByUltimateField = myFunc(
-                groupByDevelopmentType[development],
-                'ultimate_field'
-            );
-            let groupByGovernanceName: any;
-            ultimateField.forEach((id: any) => {
-                if (typeof id === 'string') {
-                    id = id.replace(/\s+/g, '');
-                }
-                if (groupByUltimateField[id] !== undefined) {
-                    groupByGovernanceName = myFunc(
-                        groupByUltimateField[id],
-                        'governance_name'
-                    );
-                }
-                this.resultArray.forEach(
-                    (element: {
-                        [x: string]: { [x: number]: [string, unknown][] }[];
-                    }) => {
-                        if (
-                            element[oldDevelopment] !== undefined &&
-                            groupByGovernanceName !== undefined
-                        ) {
-                            element[oldDevelopment].push({
-                                [id]: groupByGovernanceName,
-                            });
-                        }
+                    if(item.ultimate_field == "Readiness"){
+                        this.readiness.push(item);
+                        if(this.readiness.length > 5){
+                            this.readiness.splice(0, 2);
+                        }  
                     }
-                );
-            });
+                 }
+                if(item.development_type == "Prospective Development"){
+                    if(item.ultimate_field == "Development Strategy"){
+                        this.developmentStrategy.push(item);
+                        if(this.developmentStrategy.length > 5){
+                            this.developmentStrategy.splice(0, 2);
+                        } 
+                    }
+                    if(item.ultimate_field == "Capacity Building"){
+                        this.capacityBuilding.push(item);
+                        if(this.capacityBuilding.length > 5){
+                            this.capacityBuilding.splice(0, 2);
+                        } 
+                    }
+                }
+                
+            }           
         });
         this.resultArray[0]['Present Development'].splice(2, 2);
-        console.log(this.resultArray);
+   
+    
+        console.log( this.availability);     
     }
 
     barChart() {
