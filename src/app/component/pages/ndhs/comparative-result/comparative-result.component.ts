@@ -97,7 +97,7 @@ export class ComparativeResultComponent implements OnInit, AfterViewInit {
         //getting countries data
         this.mapService.getCountries().subscribe((data) => {
             let country = data;
-            console.log(country);
+            // console.log(country);
             
             this.countries_2021 = country['2021'];
             this.countries_2022 = country['2022'];
@@ -113,7 +113,7 @@ export class ComparativeResultComponent implements OnInit, AfterViewInit {
                 ...{ '2021': this.countries_2021 },
                 ...{ '2022': this.countries_2022 },
             };
-            console.log(this.countriesData);
+            // console.log(this.countriesData);
             
             this.setCountry();
             this.getComparitive();
@@ -257,8 +257,10 @@ export class ComparativeResultComponent implements OnInit, AfterViewInit {
 
     onSelected() {
         let temp = this.mySelections.filter((obj) => {
+            
             return this.oldSelections.indexOf(obj) == -1;
         });
+        
         if (this.toppings.value.length < 3) {
             this.mySelections = this.toppings.value;
 

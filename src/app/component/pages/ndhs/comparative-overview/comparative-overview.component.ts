@@ -903,7 +903,7 @@ export class ComparativeOverviewComponent implements OnInit {
             
           
             this.taxonomy_indicators = Object.entries(results);
-            console.log(this.taxonomy_indicators);
+            // console.log(this.taxonomy_indicators);
             
         });
     }

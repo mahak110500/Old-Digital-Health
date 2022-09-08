@@ -29,23 +29,29 @@ export class CommonService{
         //return this.http.get<any>('./assets/data/countries.json');
     }
     
-    //api for getting all the countries
+    //api for getting search countries data
     public getAllCountries(): Observable<any> {
         return this.http.get(this.baseUrl + 'ndhs-master/country-list' );
     }
 
+    //Information Report data
     getInformationReportData(data:any):Observable<any>{
         return this.http.post(this.baseUrl + 'ndhs-master/comparative-information', data)
     }
 
 
-    //comparative-result details
+    //Top Countries data
     public getTopCountriesData(data: any): Observable<any> {
         return this.http.post(this.baseUrl + 'ndhs-master/top-countries', data);
     }
 
+    public getComparativeViewDetails(data:any): Observable<any> {
+        return this.http.post(this.baseUrl + 'ndhs-master/overview', data);
+    }
+
     //to get all the exiting countries
     public getExistingCountries(data: any): Observable<any> {
+        
         let selected_years = JSON.parse(localStorage.getItem("selected_years") || "")
         if (selected_years && selected_years.length == 2) {
             return this.http.get(this.baseUrl + 'ndhs-master/country-list?year=2021');

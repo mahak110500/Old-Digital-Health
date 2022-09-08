@@ -19,20 +19,24 @@
                                         <span class="arrow is-triangle is-left"></span>
                                         <div class="tooltip-inner">
                                             <h5>Check out our new feature</h5>
-                                            <p>You can display comparison results by selecting two countries from the list of countries.</p>
+                                            <p>You can display comparison results by selecting two countries from the
+                                                list of countries.</p>
                                             <a href="#">Got it!</a>
                                         </div>
                                     </div>
                                 </div>
-                                <mat-form-field appearance="fill" disableRipple for="flexCheckChecked" mat-raised-button>
+                                <mat-form-field appearance="fill" disableRipple for="flexCheckChecked"
+                                    mat-raised-button>
                                     <mat-label>Search Country</mat-label>
-                                    <mat-select  #mySelect  multiple >
-                                        <mat-option  >
-                                            <!-- {{country.country_name}} -->
+                                    <mat-select #mySelect [(ngModel)]="mySelections" [formControl]="toppings"
+                                        (selectionChange)="onSelected()" multiple>
+                                        <mat-option #selectedMapData *ngFor="let country of countriesToShow"
+                                            [value]="country.country_id">
+                                            {{country.country_name}}
                                         </mat-option>
                                     </mat-select>
                                 </mat-form-field>
-                                <div class="print-btn" >
+                                <div class="print-btn">
                                     <a mat-raised-button><svg xmlns="http://www.w3.org/2000/svg" width="13" height="17"
                                             viewBox="0 0 13 17" fill="none">
                                             <path
@@ -44,7 +48,7 @@
                             <!-- country dropdown End -->
                         </div>
                         <div class="status-badge top-badge">
-                            <ul >
+                            <ul>
                                 <li><span class="circle_badge square success"></span>Yes</li>
                                 <li><span class="circle_badge square danger"></span>No</li>
                                 <li><span class="circle_badge square gray"></span>No Data Available</li>
@@ -63,49 +67,54 @@
                                                 d="M6.49939 1.79798L9.11635 4.17908L6.49939 6.55054C6.30048 6.73078 6.18874 6.97525 6.18874 7.23016C6.18874 7.48507 6.30048 7.72954 6.49939 7.90978C6.6983 8.09003 6.96808 8.19129 7.24937 8.19129C7.53067 8.19129 7.80045 8.09003 7.99936 7.90978L11.3823 4.85388C11.4809 4.7647 11.5591 4.65877 11.6125 4.54215C11.6659 4.42553 11.6934 4.30051 11.6934 4.17426C11.6934 4.04801 11.6659 3.92299 11.6125 3.80637C11.5591 3.68975 11.4809 3.58382 11.3823 3.49464L7.99936 0.438736C7.90087 0.349486 7.78394 0.27869 7.65526 0.230388C7.52658 0.182087 7.38866 0.157227 7.24937 0.157227C7.11009 0.157227 6.97217 0.182087 6.84349 0.230388C6.7148 0.27869 6.59788 0.349486 6.49939 0.438736C6.4009 0.527985 6.32278 0.63394 6.26947 0.75055C6.21617 0.86716 6.18874 0.992142 6.18874 1.11836C6.18874 1.24458 6.21617 1.36956 6.26947 1.48617C6.32278 1.60278 6.4009 1.70874 6.49939 1.79798Z"
                                                 fill="white" fill-opacity="0.8" />
                                         </svg></button>
-                                        <div class="tooltip-main">
-                                            <div class="tooltip-option right">
-                                                <span class="arrow is-triangle is-left"></span>
-                                                <div class="tooltip-inner">
-                                                    <h5>Check out our new feature</h5>
-                                                    <p>You can display comparison results by selecting two countries from the list of countries.</p>
-                                                    <a href="#">Got it!</a>
-                                                </div>
+                                    <div class="tooltip-main">
+                                        <div class="tooltip-option right">
+                                            <span class="arrow is-triangle is-left"></span>
+                                            <div class="tooltip-inner">
+                                                <h5>Check out our new feature</h5>
+                                                <p>You can display comparison results by selecting two countries from
+                                                    the list of countries.</p>
+                                                <a href="#">Got it!</a>
                                             </div>
                                         </div>
+                                    </div>
                                 </div>
 
                                 <div class="tab-nodes-area">
                                     <div class="vertical-tab-tree">
                                         <ul>
                                             <div class="main-li" id="present_development">
-                                                <li class="parent-li" data-tag="one" id="present_deve" 
-                                                   >
-                                                    <a class="toggleSubmenu1">Present Development</a>
+                                                <li class="parent-li" data-tag="one" id="present_deve"
+                                                    (click)="toggle(1)" [ngClass]="{ 'active' : isValue == 1 }">
+                                                    <a class="toggleSubmenu1"
+                                                        (click)="togglePresent('present_development')">Present
+                                                        Development</a>
                                                 </li>
                                                 <ul class="sub-category">
                                                     <li data-tag="two" id="availability">
-                                                        <a class="md-text"
-                                                           >Availability</a>
+                                                        <a class="md-text">Availability</a>
                                                     </li>
                                                     <li data-tag="three">
-                                                        <a class="md-text" >Readiness</a>
+                                                        <a class="md-text"
+                                                            (click)="ultimateSelection(1,2)">Readiness</a>
                                                     </li>
                                                 </ul>
                                             </div>
                                             <div class="main-li" id="prospective_development">
-                                                <li class="parent-li" data-tag="four" 
-                                                    >
-                                                    <a class="toggleSubmenu1" >Prospective Development</a>
+                                                <li class="parent-li" data-tag="four" (click)="toggle(2)"
+                                                    [ngClass]="{ 'active' : isValue == 2 }">
+                                                    <a class="toggleSubmenu1"
+                                                        (click)="toggleProspective('prospective_development')">Prospective
+                                                        Development</a>
 
                                                 </li>
                                                 <ul class="sub-category">
                                                     <li data-tag="five" id="select_Capacity">
-                                                        <a class="md-text" >Capacity
+                                                        <a class="md-text" (click)="ultimateSelection(2,4)">Capacity
                                                             Building</a>
                                                     </li>
                                                     <li data-tag="six">
-                                                        <a class="md-text">Development
+                                                        <a class="md-text" (click)="ultimateSelection(2,3)">Development
                                                             Strategy</a>
                                                     </li>
                                                 </ul>
@@ -122,12 +131,12 @@
                                             <h3>Comparison</h3>
                                         </div>
                                         <mat-accordion>
-                                            <ng-container >
-                                                <mat-expansion-panel 
+                                            <ng-container *ngFor="let taxonomy of availability_details; let i=index;">
+                                                <mat-expansion-panel [expanded]="step === i" (opened)="setStep(i)"
                                                     hideToggle>
                                                     <mat-expansion-panel-header>
                                                         <mat-panel-title>
-                                                            <!-- {{taxonomy.name}} -->
+                                                            {{taxonomy.name}}
                                                         </mat-panel-title>
                                                         <mat-panel-description>
                                                             <mat-icon>arrow_drop_down</mat-icon>
@@ -135,41 +144,51 @@
                                                     </mat-expansion-panel-header>
                                                     <div class="accordion-content">
                                                         <div class="content-row"
-                                                           >
+                                                            *ngFor="let indicator of taxonomy.indicator; let j=index;">
                                                             <mat-accordion>
                                                                 <div class="content-inner">
-                                                                    <mat-expansion-panel 
-                                                                        hideToggle>
+                                                                    <mat-expansion-panel [expanded]="stepinner === j"
+                                                                        (opened)="setStepInner(j)" hideToggle>
                                                                         <mat-expansion-panel-header>
                                                                             <div class="left-content col-md-7">
                                                                                 <mat-panel-title>
-                                                                                    <!-- {{indicator.name}} -->
+                                                                                    {{indicator.name}}
                                                                                 </mat-panel-title>
                                                                             </div>
                                                                             <div class="right-content col-md-5">
                                                                                 <div class="country-1">
                                                                                     <Span>
-                                                                                        <!-- {{indicator.countries[0]}} -->
+                                                                                        {{indicator.countries[0]}}
                                                                                         <mat-icon>arrow_drop_up
                                                                                         </mat-icon>
                                                                                     </Span>
                                                                                     <div class="rating">
-                                                                                        <ng-container >
-                                                                                            <span  class="green"></span>
-                                                                                            <span  class="gray"></span>
+                                                                                        <ng-container
+                                                                                            *ngFor="let dash of dash_array;let i=index">
+                                                                                            <span
+                                                                                                *ngIf=" dash <= indicator.score[0].country_percantag1"
+                                                                                                class="green"></span>
+                                                                                            <span
+                                                                                                *ngIf=" dash > indicator.score[0].country_percantag1"
+                                                                                                class="gray"></span>
                                                                                         </ng-container>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="country-2">
                                                                                     <Span>
-                                                                                        <!-- {{indicator.countries[1]}} -->
+                                                                                        {{indicator.countries[1]}}
                                                                                         <mat-icon>arrow_drop_up
                                                                                         </mat-icon>
                                                                                     </Span>
                                                                                     <div class="rating">
-                                                                                        <ng-container >
-                                                                                            <span  class="blue"></span>
-                                                                                            <span class="gray"></span>
+                                                                                        <ng-container
+                                                                                            *ngFor="let dash of dash_array;">
+                                                                                            <span
+                                                                                                *ngIf=" dash <= indicator.score[0].country_percantag2"
+                                                                                                class="blue"></span>
+                                                                                            <span
+                                                                                                *ngIf=" dash > indicator.score[0].country_percantag2"
+                                                                                                class="gray"></span>
                                                                                         </ng-container>
                                                                                     </div>
                                                                                 </div>
@@ -179,31 +198,38 @@
                                                                             </mat-panel-description>
                                                                         </mat-expansion-panel-header>
                                                                         <div class="content-row"
-                                                                           >
+                                                                            *ngFor="let question of indicator.questions; let k=index;">
                                                                             <div class="query-right-content col-md-12">
                                                                                 <div class="query-name col-md-6">
-                                                                                    <!-- {{question.name}} -->
+                                                                                    {{question.name}}
                                                                                 </div>
                                                                                 <div class="country-1 col-md-3">
                                                                                     <div class="rating">
                                                                                         <span
-                                                                                            
-                                                                                            class="green success"></span>
+                                                                                            *ngIf="question.question_status1 == 'Yes'"
+                                                                                            class="green success">
+                                                                                        </span>
                                                                                         <span
-                                                                                           
-                                                                                            class="alert-red danger"></span>
+                                                                                            *ngIf="question.question_status1 == 'No'"
+                                                                                            class="alert-red danger">
+                                                                                        </span>
                                                                                         <span
-                                                                                            class="gray disable-status"></span>
+                                                                                            *ngIf="question.question_status1 == 'Data not available'"
+                                                                                            class="gray disable-status">
+                                                                                        </span>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="country-2 col-md-3">
                                                                                     <div class="rating">
                                                                                         <span
-                                                                                            class="green success"></span>
-                                                                                        <span
-                                                                                            class="alert-red danger"></span>
-                                                                                        <span
-                                                                                            class="gray disable-status"></span>
+                                                                                        *ngIf="question.question_status2 == 'Yes'"
+                                                                                        class="green success"></span>
+                                                                                    <span
+                                                                                        *ngIf="question.question_status2 == 'No'"
+                                                                                        class="alert-red danger"></span>
+                                                                                    <span
+                                                                                        *ngIf="question.question_status2 == 'Data not available'"
+                                                                                        class="gray disable-status"></span>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -223,54 +249,54 @@
                                             <h3>Comparison</h3>
                                         </div>
                                         <mat-accordion>
-                                            <ng-container >
-                                                <mat-expansion-panel 
-                                                    hideToggle>
+                                            <ng-container *ngFor="let taxonomy of availability_details; let i=index;">
+                                                <mat-expansion-panel [expanded]="step === i" (opened)="setStep(i)"
+                                                hideToggle>
                                                     <mat-expansion-panel-header>
                                                         <mat-panel-title>
-                                                            <!-- {{taxonomy.name}} -->
+                                                            {{taxonomy.name}}
                                                         </mat-panel-title>
                                                         <mat-panel-description>
                                                             <mat-icon>arrow_drop_down</mat-icon>
                                                         </mat-panel-description>
                                                     </mat-expansion-panel-header>
                                                     <div class="accordion-content">
-                                                        <div class="content-row"
-                                                           >
+                                                        <div class="content-row"  *ngFor="let indicator of taxonomy.indicator; let j=index;">
                                                             <mat-accordion>
                                                                 <div class="content-inner">
-                                                                    <mat-expansion-panel 
-                                                                        hideToggle>
+                                                                    <mat-expansion-panel [expanded]="stepinner === j"(opened)="setStepInner(j)" hideToggle>
                                                                         <mat-expansion-panel-header>
                                                                             <div class="left-content col-md-7">
                                                                                 <mat-panel-title>
-                                                                                    <!-- {{indicator.name}} -->
+                                                                                    {{indicator.name}}
                                                                                 </mat-panel-title>
                                                                             </div>
                                                                             <div class="right-content col-md-5">
                                                                                 <div class="country-1">
                                                                                     <Span>
-                                                                                        <!-- {{indicator.countries[0]}} -->
+                                                                                        {{indicator.countries[0]}}
                                                                                         <mat-icon>arrow_drop_up
                                                                                         </mat-icon>
                                                                                     </Span>
                                                                                     <div class="rating">
-                                                                                        <ng-container>
-                                                                                            <span class="green"></span>
-                                                                                            <span class="gray"></span>
+                                                                                        <ng-container *ngFor="let dash of dash_array;let i=index">
+                                                                                            <span *ngIf=" dash <= indicator.score[0].country_percantag1" class="green">
+                                                                                            </span>
+                                                                                            <span *ngIf=" dash > indicator.score[0].country_percantag1" class="gray">
+                                                                                            </span>
                                                                                         </ng-container>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="country-2">
                                                                                     <Span>
-                                                                                        <!-- {{indicator.countries[1]}} -->
+                                                                                        {{indicator.countries[1]}}
                                                                                         <mat-icon>arrow_drop_up
                                                                                         </mat-icon>
                                                                                     </Span>
                                                                                     <div class="rating">
-                                                                                        <ng-container>
-                                                                                            <span  class="blue"></span>
-                                                                                            <span  class="gray"></span>
+                                                                                        <ng-container *ngFor="let dash of dash_array;let i=index">
+                                                                                            <span *ngIf=" dash <= indicator.score[0].country_percantag2" class="blue"></span>
+                                                                                            <span *ngIf=" dash > indicator.score[0].country_percantag2" class="gray"></span>
                                                                                         </ng-container>
                                                                                     </div>
                                                                                 </div>
@@ -279,31 +305,35 @@
                                                                                 <mat-icon>arrow_drop_down</mat-icon>
                                                                             </mat-panel-description>
                                                                         </mat-expansion-panel-header>
-                                                                        <div class="content-row"
-                                                                            >
+                                                                        <div class="content-row" *ngFor="let question of indicator.questions; let k=index;">
                                                                             <div class="query-right-content col-md-12">
                                                                                 <div class="query-name col-md-6">
-                                                                                    <!-- {{question.name}} -->
+                                                                                    {{question.name}}
                                                                                 </div>
                                                                                 <div class="country-1 col-md-3">
                                                                                     <div class="rating">
                                                                                         <span
-                                                                                          
+                                                                                            *ngIf="question.question_status1 == 'Yes'"
                                                                                             class="green success"></span>
                                                                                         <span
+                                                                                            *ngIf="question.question_status1 == 'No'"
                                                                                             class="alert-red danger"></span>
                                                                                         <span
-                                                                                             class="gray disable-status"></span>
+                                                                                            *ngIf="question.question_status1 == 'Data not available'"
+                                                                                            class="gray disable-status"></span>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="country-2 col-md-3">
                                                                                     <div class="rating">
                                                                                         <span
-                                                                                          class="green success"></span>
-                                                                                        <span
-                                                                                           class="alert-red danger"></span>
-                                                                                        <span
-                                                                                            class="gray disable-status"></span>
+                                                                                        *ngIf="question.question_status2 == 'Yes'"
+                                                                                        class="green success"></span>
+                                                                                    <span
+                                                                                        *ngIf="question.question_status2 == 'No'"
+                                                                                        class="alert-red danger"></span>
+                                                                                    <span
+                                                                                        *ngIf="question.question_status2 == 'Data not available'"
+                                                                                        class="gray disable-status"></span>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -323,54 +353,52 @@
                                             <h3>Comparison</h3>
                                         </div>
                                         <mat-accordion>
-                                            <ng-container >
-                                                <mat-expansion-panel 
-                                                    hideToggle>
+                                            <ng-container *ngFor="let taxonomy of readiness_details; let i=index;">
+                                                <mat-expansion-panel [expanded]="step === i" (opened)="setStep(i)"
+                                                hideToggle>
                                                     <mat-expansion-panel-header>
                                                         <mat-panel-title>
-                                                            <!-- {{taxonomy.name}} -->
+                                                            {{taxonomy.name}}
                                                         </mat-panel-title>
                                                         <mat-panel-description>
                                                             <mat-icon>arrow_drop_down</mat-icon>
                                                         </mat-panel-description>
                                                     </mat-expansion-panel-header>
                                                     <div class="accordion-content">
-                                                        <div class="content-row"
-                                                           >
+                                                        <div class="content-row" *ngFor="let indicator of taxonomy.indicator; let j=index;">
                                                             <mat-accordion>
                                                                 <div class="content-inner">
-                                                                    <mat-expansion-panel 
-                                                                         hideToggle>
+                                                                    <mat-expansion-panel [expanded]="stepinner === j"(opened)="setStepInner(j)" hideToggle>
                                                                         <mat-expansion-panel-header>
                                                                             <div class="left-content col-md-7">
                                                                                 <mat-panel-title>
-                                                                                    <!-- {{indicator.name}} -->
+                                                                                    {{indicator.name}}
                                                                                 </mat-panel-title>
                                                                             </div>
                                                                             <div class="right-content col-md-5">
                                                                                 <div class="country-1">
                                                                                     <Span>
-                                                                                        <!-- {{indicator.countries[0]}} -->
+                                                                                        {{indicator.countries[0]}}
                                                                                         <mat-icon>arrow_drop_up
                                                                                         </mat-icon>
                                                                                     </Span>
                                                                                     <div class="rating">
-                                                                                        <ng-container>
-                                                                                            <span class="green"></span>
-                                                                                            <span  class="gray"></span>
+                                                                                        <ng-container *ngFor="let dash of dash_array;let i=index">
+                                                                                            <span *ngIf=" dash <= indicator.score[0].country_percantag1" class="green"></span>
+                                                                                            <span *ngIf=" dash > indicator.score[0].country_percantag1" class="gray"></span>
                                                                                         </ng-container>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="country-2">
                                                                                     <Span>
-                                                                                        <!-- {{indicator.countries[1]}} -->
+                                                                                        {{indicator.countries[1]}}
                                                                                         <mat-icon>arrow_drop_up
                                                                                         </mat-icon>
                                                                                     </Span>
                                                                                     <div class="rating">
-                                                                                        <ng-container >
-                                                                                            <span  class="blue"></span>
-                                                                                            <span  class="gray"></span>
+                                                                                        <ng-container *ngFor="let dash of dash_array;let i=index">
+                                                                                            <span *ngIf=" dash <= indicator.score[0].country_percantag1" class="blue"></span>
+                                                                                            <span *ngIf=" dash > indicator.score[0].country_percantag1" class="gray"></span>
                                                                                         </ng-container>
                                                                                     </div>
                                                                                 </div>
@@ -379,34 +407,39 @@
                                                                                 <mat-icon>arrow_drop_down</mat-icon>
                                                                             </mat-panel-description>
                                                                         </mat-expansion-panel-header>
-                                                                        <div class="content-row">
-                                                                        <div class="query-right-content col-md-12">
-                                                                            <div class="query-name col-md-6">
-                                                                                <!-- {{question.name}} -->
-                                                                            </div>
-                                                                            <div class="country-1 col-md-3">
-                                                                                <div class="rating">
-                                                                                    <span
-                                                                                       
-                                                                                        class="green success"></span>
-                                                                                    <span
-                                                                                        class="alert-red danger"></span>
-                                                                                    <span
-                                                                                        class="gray disable-status"></span>
+                                                                        <div class="content-row" *ngFor="let question of indicator.questions; let k=index;">
+                                                                            <div class="query-right-content col-md-12">
+                                                                                <div class="query-name col-md-6">
+                                                                                    {{question.name}}
                                                                                 </div>
-                                                                            </div>
-                                                                            <div class="country-2 col-md-3">
-                                                                                <div class="rating">
-                                                                                    <span
+                                                                                <div class="country-1 col-md-3">
+                                                                                    <div class="rating">
+                                                                                        <span
+                                                                                        *ngIf="question.question_status1 == 'Yes'"
                                                                                         class="green success"></span>
                                                                                     <span
+                                                                                        *ngIf="question.question_status1 == 'No'"
                                                                                         class="alert-red danger"></span>
                                                                                     <span
+                                                                                        *ngIf="question.question_status1 == 'Data not available'"
                                                                                         class="gray disable-status"></span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="country-2 col-md-3">
+                                                                                    <div class="rating">
+                                                                                        <span
+                                                                                        *ngIf="question.question_status2 == 'Yes'"
+                                                                                        class="green success"></span>
+                                                                                    <span
+                                                                                        *ngIf="question.question_status2 == 'No'"
+                                                                                        class="alert-red danger"></span>
+                                                                                    <span
+                                                                                        *ngIf="question.question_status2 == 'Data not available'"
+                                                                                        class="gray disable-status"></span>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
                                                                     </mat-expansion-panel>
                                                                 </div>
                                                             </mat-accordion>
@@ -422,54 +455,52 @@
                                             <h3>Comparison</h3>
                                         </div>
                                         <mat-accordion>
-                                            <ng-container >
-                                                <mat-expansion-panel 
-                                                    hideToggle>
+                                            <ng-container *ngFor="let taxonomy of capacity_building; let i=index;">
+                                                <mat-expansion-panel [expanded]="step === i" (opened)="setStep(i)"
+                                                hideToggle>
                                                     <mat-expansion-panel-header>
                                                         <mat-panel-title>
-                                                            <!-- {{taxonomy.name}} -->
+                                                            {{taxonomy.name}}
                                                         </mat-panel-title>
                                                         <mat-panel-description>
                                                             <mat-icon>arrow_drop_down</mat-icon>
                                                         </mat-panel-description>
                                                     </mat-expansion-panel-header>
                                                     <div class="accordion-content">
-                                                        <div class="content-row"
-                                                            >
+                                                        <div class="content-row" *ngFor="let indicator of taxonomy.indicator; let j=index;">
                                                             <mat-accordion>
                                                                 <div class="content-inner">
-                                                                    <mat-expansion-panel 
-                                                                      hideToggle>
+                                                                    <mat-expansion-panel [expanded]="stepinner === j"(opened)="setStepInner(j)" hideToggle>
                                                                         <mat-expansion-panel-header>
                                                                             <div class="left-content col-md-7">
                                                                                 <mat-panel-title>
-                                                                                    <!-- {{indicator.name}} -->
+                                                                                    {{indicator.name}}
                                                                                 </mat-panel-title>
                                                                             </div>
                                                                             <div class="right-content col-md-5">
                                                                                 <div class="country-1">
                                                                                     <Span>
-                                                                                        <!-- {{indicator.countries[0]}} -->
+                                                                                        {{indicator.countries[0]}}
                                                                                         <mat-icon>arrow_drop_up
                                                                                         </mat-icon>
                                                                                     </Span>
                                                                                     <div class="rating">
-                                                                                        <ng-container >
-                                                                                            <span  class="green"></span>
-                                                                                            <span  class="gray"></span>
+                                                                                        <ng-container *ngFor="let dash of dash_array;let i=index">
+                                                                                            <span *ngIf=" dash <= indicator.score[0].country_percantag1" class="green"></span>
+                                                                                            <span *ngIf=" dash >= indicator.score[0].country_percantag1" class="gray"></span>
                                                                                         </ng-container>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="country-2">
                                                                                     <Span>
-                                                                                        <!-- {{indicator.countries[1]}} -->
+                                                                                        {{indicator.countries[1]}}
                                                                                         <mat-icon>arrow_drop_up
                                                                                         </mat-icon>
                                                                                     </Span>
                                                                                     <div class="rating">
-                                                                                        <ng-container >
-                                                                                            <span  class="blue"></span>
-                                                                                            <span  class="gray"></span>
+                                                                                        <ng-container *ngFor="let dash of dash_array;let i=index">
+                                                                                            <span *ngIf=" dash <= indicator.score[0].country_percantag1" class="blue"></span>
+                                                                                            <span *ngIf=" dash > indicator.score[0].country_percantag1" class="gray"></span>
                                                                                         </ng-container>
                                                                                     </div>
                                                                                 </div>
@@ -478,29 +509,34 @@
                                                                                 <mat-icon>arrow_drop_down</mat-icon>
                                                                             </mat-panel-description>
                                                                         </mat-expansion-panel-header>
-                                                                        <div class="content-row"
-                                                                           >
+                                                                        <div class="content-row"  *ngFor="let question of indicator.questions; let k=index;">
                                                                             <div class="query-right-content col-md-12">
                                                                                 <div class="query-name col-md-6">
-                                                                                    <!-- {{question.name}} -->
+                                                                                    {{question.name}}
                                                                                 </div>
                                                                                 <div class="country-1 col-md-3">
                                                                                     <div class="rating">
                                                                                         <span
+                                                                                            *ngIf="question.question_status1 == 'Yes'"
                                                                                             class="green success"></span>
                                                                                         <span
+                                                                                            *ngIf="question.question_status1 == 'No'"
                                                                                             class="alert-red danger"></span>
                                                                                         <span
+                                                                                            *ngIf="question.question_status1 == 'Data not available'"
                                                                                             class="gray disable-status"></span>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="country-2 col-md-3">
                                                                                     <div class="rating">
                                                                                         <span
+                                                                                            *ngIf="question.question_status2 == 'Yes'"
                                                                                             class="green success"></span>
                                                                                         <span
+                                                                                            *ngIf="question.question_status2 == 'No'"
                                                                                             class="alert-red danger"></span>
                                                                                         <span
+                                                                                            *ngIf="question.question_status2 == 'Data not available'"
                                                                                             class="gray disable-status"></span>
                                                                                     </div>
                                                                                 </div>
@@ -521,54 +557,52 @@
                                             <h3>Comparison</h3>
                                         </div>
                                         <mat-accordion>
-                                            <ng-container >
-                                                <mat-expansion-panel 
-                                                    hideToggle>
+                                            <ng-container *ngFor="let taxonomy of capacity_building; let i=index;">
+                                                <mat-expansion-panel [expanded]="step === i" (opened)="setStep(i)"
+                                                hideToggle>
                                                     <mat-expansion-panel-header>
                                                         <mat-panel-title>
-                                                            <!-- {{taxonomy.name}} -->
+                                                            {{taxonomy.name}}
                                                         </mat-panel-title>
                                                         <mat-panel-description>
                                                             <mat-icon>arrow_drop_down</mat-icon>
                                                         </mat-panel-description>
                                                     </mat-expansion-panel-header>
                                                     <div class="accordion-content">
-                                                        <div class="content-row"
-                                                           >
+                                                        <div class="content-row" *ngFor="let indicator of taxonomy.indicator; let j=index;">
                                                             <mat-accordion>
                                                                 <div class="content-inner">
-                                                                    <mat-expansion-panel 
-                                                                         hideToggle>
+                                                                    <mat-expansion-panel [expanded]="stepinner === j"(opened)="setStepInner(j)" hideToggle>
                                                                         <mat-expansion-panel-header>
                                                                             <div class="left-content col-md-7">
                                                                                 <mat-panel-title>
-                                                                                    <!-- {{indicator.name}} -->
+                                                                                    {{indicator.name}}
                                                                                 </mat-panel-title>
                                                                             </div>
                                                                             <div class="right-content col-md-5">
                                                                                 <div class="country-1">
                                                                                     <Span>
-                                                                                        <!-- {{indicator.countries[0]}} -->
+                                                                                        {{indicator.countries[0]}}
                                                                                         <mat-icon>arrow_drop_up
                                                                                         </mat-icon>
                                                                                     </Span>
                                                                                     <div class="rating">
-                                                                                        <ng-container >
-                                                                                            <span  class="green"></span>
-                                                                                            <span  class="gray"></span>
+                                                                                        <ng-container  *ngFor="let dash of dash_array;let i=index">
+                                                                                            <span *ngIf=" dash <= indicator.score[0].country_percantag1" class="green"></span>
+                                                                                            <span *ngIf=" dash >= indicator.score[0].country_percantag1" class="gray"></span>
                                                                                         </ng-container>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="country-2">
                                                                                     <Span>
-                                                                                        <!-- {{indicator.countries[1]}} -->
+                                                                                        {{indicator.countries[1]}}
                                                                                         <mat-icon>arrow_drop_up
                                                                                         </mat-icon>
                                                                                     </Span>
                                                                                     <div class="rating">
-                                                                                        <ng-container>
-                                                                                            <span  class="blue"></span>
-                                                                                            <span  class="gray"></span>
+                                                                                        <ng-container *ngFor="let dash of dash_array;let i=index">
+                                                                                            <span *ngIf=" dash <= indicator.score[0].country_percantag1" class="blue"></span>
+                                                                                            <span *ngIf=" dash > indicator.score[0].country_percantag1" class="gray"></span>
                                                                                         </ng-container>
                                                                                     </div>
                                                                                 </div>
@@ -577,35 +611,39 @@
                                                                                 <mat-icon>arrow_drop_down</mat-icon>
                                                                             </mat-panel-description>
                                                                         </mat-expansion-panel-header>
-                                                                        <div class="content-row"
-                                                                      >
-                                                                        <div class="query-right-content col-md-12">
-                                                                            <div class="query-name col-md-6">
-                                                                                <!-- {{question.name}} -->
-                                                                            </div>
-                                                                            <div class="country-1 col-md-3">
-                                                                                <div class="rating">
-                                                                                    <span
-                                                                                      
+                                                                        <div class="content-row" *ngFor="let question of indicator.questions; let k=index;">
+                                                                            <div class="query-right-content col-md-12">
+                                                                                <div class="query-name col-md-6">
+                                                                                    {{question.name}}
+                                                                                </div>
+                                                                                <div class="country-1 col-md-3">
+                                                                                    <div class="rating">
+                                                                                        <span
+                                                                                        *ngIf="question.question_status1 == 'Yes'"
                                                                                         class="green success"></span>
                                                                                     <span
+                                                                                        *ngIf="question.question_status1 == 'No'"
                                                                                         class="alert-red danger"></span>
                                                                                     <span
-                                                                                          class="gray disable-status"></span>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="country-2 col-md-3">
-                                                                                <div class="rating">
-                                                                                    <span
-                                                                                          class="green success"></span>
-                                                                                    <span
-                                                                                        class="alert-red danger"></span>
-                                                                                    <span
+                                                                                        *ngIf="question.question_status1 == 'Data not available'"
                                                                                         class="gray disable-status"></span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="country-2 col-md-3">
+                                                                                    <div class="rating">
+                                                                                        <span
+                                                                                        *ngIf="question.question_status2 == 'Yes'"
+                                                                                        class="green success"></span>
+                                                                                    <span
+                                                                                        *ngIf="question.question_status2 == 'No'"
+                                                                                        class="alert-red danger"></span>
+                                                                                    <span
+                                                                                        *ngIf="question.question_status2 == 'Data not available'"
+                                                                                        class="gray disable-status"></span>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
                                                                     </mat-expansion-panel>
                                                                 </div>
                                                             </mat-accordion>
@@ -621,54 +659,52 @@
                                             <h3>Comparison</h3>
                                         </div>
                                         <mat-accordion>
-                                            <ng-container>
-                                                <mat-expansion-panel 
-                                                    hideToggle>
+                                            <ng-container *ngFor="let taxonomy of development_strategy; let i=index;">
+                                                <mat-expansion-panel [expanded]="step === i" (opened)="setStep(i)"
+                                                hideToggle>
                                                     <mat-expansion-panel-header>
                                                         <mat-panel-title>
-                                                            <!-- {{taxonomy.name}} -->
+                                                            {{taxonomy.name}}
                                                         </mat-panel-title>
                                                         <mat-panel-description>
                                                             <mat-icon>arrow_drop_down</mat-icon>
                                                         </mat-panel-description>
                                                     </mat-expansion-panel-header>
                                                     <div class="accordion-content">
-                                                        <div class="content-row"
-                                                            >
+                                                        <div class="content-row" *ngFor="let indicator of taxonomy.indicator; let j=index;">
                                                             <mat-accordion>
                                                                 <div class="content-inner">
-                                                                    <mat-expansion-panel 
-                                                                         hideToggle>
+                                                                    <mat-expansion-panel [expanded]="stepinner === j" (opened)="setStepInner(j)" hideToggle>
                                                                         <mat-expansion-panel-header>
                                                                             <div class="left-content col-md-7">
                                                                                 <mat-panel-title>
-                                                                                    <!-- {{indicator.name}} -->
+                                                                                    {{indicator.name}}
                                                                                 </mat-panel-title>
                                                                             </div>
                                                                             <div class="right-content col-md-5">
                                                                                 <div class="country-1">
                                                                                     <Span>
-                                                                                        <!-- {{indicator.countries[0]}} -->
+                                                                                        {{indicator.countries[0]}}
                                                                                         <mat-icon>arrow_drop_up
                                                                                         </mat-icon>
                                                                                     </Span>
                                                                                     <div class="rating">
-                                                                                        <ng-container>
-                                                                                            <span class="green"></span>
-                                                                                            <span  class="gray"></span>
+                                                                                        <ng-container *ngFor="let dash of dash_array;let i=index">
+                                                                                             <span *ngIf=" dash <= indicator.score[0].country_percantag1" class="green"></span>
+                                                                                            <span *ngIf=" dash > indicator.score[0].country_percantag1" class="gray"></span>
                                                                                         </ng-container>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="country-2">
                                                                                     <Span>
-                                                                                        <!-- {{indicator.countries[1]}} -->
+                                                                                        {{indicator.countries[1]}}
                                                                                         <mat-icon>arrow_drop_up
                                                                                         </mat-icon>
                                                                                     </Span>
                                                                                     <div class="rating">
-                                                                                        <ng-container >
-                                                                                            <span  class="blue"></span>
-                                                                                            <span  class="gray"></span>
+                                                                                        <ng-container *ngFor="let dash of dash_array;let i=index">
+                                                                                            <span *ngIf=" dash <= indicator.score[0].country_percantag1" class="blue"></span>
+                                                                                            <span *ngIf=" dash > indicator.score[0].country_percantag1" class="gray"></span>
                                                                                         </ng-container>
                                                                                     </div>
                                                                                 </div>
@@ -677,35 +713,39 @@
                                                                                 <mat-icon>arrow_drop_down</mat-icon>
                                                                             </mat-panel-description>
                                                                         </mat-expansion-panel-header>
-                                                                        <div class="content-row"
-                                                                       >
-                                                                        <div class="query-right-content col-md-12">
-                                                                            <div class="query-name col-md-6">
-                                                                                <!-- {{question.name}} -->
-                                                                            </div>
-                                                                            <div class="country-1 col-md-3">
-                                                                                <div class="rating">
-                                                                                    <span
-                                                                                       
-                                                                                        class="green success"></span>
-                                                                                    <span
-                                                                                        class="alert-red danger"></span>
-                                                                                    <span
-                                                                                        class="gray disable-status"></span>
+                                                                        <div class="content-row" *ngFor="let question of indicator.questions; let k=index;">
+                                                                            <div class="query-right-content col-md-12">
+                                                                                <div class="query-name col-md-6">
+                                                                                    {{question.name}}
                                                                                 </div>
-                                                                            </div>
-                                                                            <div class="country-2 col-md-3">
-                                                                                <div class="rating">
-                                                                                    <span
+                                                                                <div class="country-1 col-md-3">
+                                                                                    <div class="rating">
+                                                                                        <span
+                                                                                        *ngIf="question.question_status1 == 'Yes'"
                                                                                         class="green success"></span>
                                                                                     <span
+                                                                                        *ngIf="question.question_status1 == 'No'"
                                                                                         class="alert-red danger"></span>
                                                                                     <span
+                                                                                        *ngIf="question.question_status1 == 'Data not available'"
                                                                                         class="gray disable-status"></span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="country-2 col-md-3">
+                                                                                    <div class="rating">
+                                                                                        <span
+                                                                                        *ngIf="question.question_status2 == 'Yes'"
+                                                                                        class="green success"></span>
+                                                                                    <span
+                                                                                        *ngIf="question.question_status2 == 'No'"
+                                                                                        class="alert-red danger"></span>
+                                                                                    <span
+                                                                                        *ngIf="question.question_status2 == 'Data not available'"
+                                                                                        class="gray disable-status"></span>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
                                                                     </mat-expansion-panel>
                                                                 </div>
                                                             </mat-accordion>
@@ -725,8 +765,8 @@
             </div>
             <div class="col-md-4 col-sm-12 col-xs-12">
                 <div class="back-btn">
-                    <a mat-stroked-button ><svg xmlns="http://www.w3.org/2000/svg" width="24"
-                            height="20" viewBox="0 0 24 20" fill="none">
+                    <a mat-stroked-button (click)="previousPage()"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="20"
+                            viewBox="0 0 24 20" fill="none">
                             <path
                                 d="M6 10L5.35982 10.7682L4.43795 10L5.35982 9.23178L6 10ZM11.3598 15.7682L5.35982 10.7682L6.64018 9.23178L12.6402 14.2318L11.3598 15.7682ZM5.35982 9.23178L11.3598 4.23178L12.6402 5.76822L6.64018 10.7682L5.35982 9.23178Z"
                                 fill="#C4C4C4" />
@@ -754,12 +794,15 @@
                                 </div>
                                 <!-- progress row start -->
                                 <div class="progress-row" *ngFor="let comparative of comparative_report;let i = index;">
-                                    <div class="progress-heading" *ngIf="i % 2 === 0"> <span (click)="topCityChart(comparative.taxonomy_id)">{{comparative.taxonomy}}</span></div>
+                                    <div class="progress-heading" *ngIf="i % 2 === 0"> <span
+                                            (click)="topCityChart(comparative.taxonomy_id)">{{comparative.taxonomy}}</span>
+                                    </div>
                                     <div class="progress-bar-lable">{{comparative.country}}</div>
                                     <div class="progress-line">
                                         <div [ngClass]="i % 2 === 0 ? 'progress green' : 'progress blue'">
                                             <div class="progress-bar" [ngClass]="i % 2 === 0 ? 'bg-success' : 'bg-info'"
-                                                role="progressbar" style="width: {{comparative.percentage}}%"aria-valuenow="comparative.score" aria-valuemin="0" aria-valuemax="100">
+                                                role="progressbar" style="width: {{comparative.percentage}}%"
+                                                aria-valuenow="comparative.score" aria-valuemin="0" aria-valuemax="100">
                                             </div>
                                         </div>
                                         <Span>{{comparative.percentage | number: '1.0-0'}}%</Span>
@@ -778,11 +821,12 @@
                             <div class="table-details-heading">
                                 <h5>Top Countries</h5>
                                 <div class="status-table">
-                                     <h5>{{ultimate_field}}</h5> 
+                                    <h5>{{ultimate_field}}</h5>
                                 </div>
                             </div>
                             <div class="table-com">
-                                <div echarts [options]="BarChartOptions" class="demo-chart" style="height:50vh;width:100%;"></div>
+                                <div echarts [options]="BarChartOptions" class="demo-chart"
+                                    style="height:50vh;width:100%;"></div>
                             </div>
                         </div>
                     </div>
