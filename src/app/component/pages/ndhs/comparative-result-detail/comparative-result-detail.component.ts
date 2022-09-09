@@ -415,26 +415,16 @@ export class ComparativeResultDetailComponent implements OnInit {
 			countries: this.countries,
 			governanceId: this.governance,
 		}
-		console.log(data);
 		
 
 		this.common.getComparativeViewDetails(data).subscribe((res) => {
 
 			this.entries = Object.entries(res);
-			console.log(this.entries);
-
 			let present_detail = this.formate_data(this.entries[0]);
-			console.log(present_detail);
-
 			let prospective_detail = this.formate_data(this.entries[1]);
-			console.log(prospective_detail);
-
 			this.present_details.push(present_detail);
-			console.log(this.present_details);
 
 			this.prospective_details.push(prospective_detail);
-			console.log(this.prospective_details);
-
 			this.availability_details = this.present_details[0].ultimates[0].taxonomy;
 			this.readiness_details = this.present_details[0].ultimates[1].taxonomy;
 			this.capacity_building = this.prospective_details[0].ultimates[0].taxonomy;
@@ -445,7 +435,7 @@ export class ComparativeResultDetailComponent implements OnInit {
 	}
 
 	formate_data(data: any) {
-
+		
 		let viewDeatils: any;
 		let development_type: any;
 		let entries = [];
@@ -461,6 +451,7 @@ export class ComparativeResultDetailComponent implements OnInit {
 		let countries: any = [];
 		let indicator_score: any = [];
 		entries.push(data);
+		
 
 		entries.forEach(function (element: any, index: any) {
 			element.forEach(function (element1: any, index1: any) {
@@ -475,7 +466,6 @@ export class ComparativeResultDetailComponent implements OnInit {
 								if (index3 == 0) {
 									ultimate_type = element3,
 										viewDeatils = { ...viewDeatils, development_type: development_type }
-										
 
 								} else {
 									Object.entries(element3).forEach(function (element4: any, index4: any) {
@@ -486,6 +476,7 @@ export class ComparativeResultDetailComponent implements OnInit {
 											} else {
 												indicators = [];
 												Object.entries(element5).forEach(function (element6: any, index6: any) {
+													
 													questions = [];
 													indicator = element6[0];
 													countries = [];
@@ -507,23 +498,18 @@ export class ComparativeResultDetailComponent implements OnInit {
 																question_name = element8;
 															} else {
 																element8.forEach(function (element9: any, index9: any) {
-																	// console.log(element9);
 
 																	if (index9 == 0) {
 																		question_status1 = element9.status;
 
 																		actual_score1 = element9.actual_score;
-																		// console.log(element9.actual_score);
-																		// console.log(actual_score1);
 
 																		indicator_score1 = element9.indicator_score;
 
 
 																	} else {
 																		question_status2 = element9.status;
-
 																		actual_score2 = element9.actual_score;
-
 																		indicator_score2 = element9.indicator_score;
 
 																	}
@@ -554,7 +540,7 @@ export class ComparativeResultDetailComponent implements OnInit {
 														indicator_score2: indicator_score2,
 														actual_score2: actual_score2,
 														country_percantag1: country_percantag1,
-														country_percantag2: country_percantag2
+														country_percantag2: country_percantag2,
 													}
 													indicator_score.push(score);
 													// console.log(indicator_score);
@@ -688,6 +674,7 @@ export class ComparativeResultDetailComponent implements OnInit {
 				}
 			});
 		});
+		
 		return viewDeatils;
 
 	}
