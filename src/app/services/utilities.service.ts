@@ -7,8 +7,8 @@ import { BehaviorSubject, Subject } from 'rxjs';
 })
 export class UtilitiesService {
     defaultCountry = {
-        countries: localStorage.getItem('selected_country'),
-        year:  JSON.parse(localStorage.getItem('year') || ''),
+        countries: localStorage.getItem("selected_country"),
+        // year:JSON.parse(localStorage.getItem("year") || "")
     };
     constructor(private http: HttpClient) {}
 

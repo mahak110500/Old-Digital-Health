@@ -6,7 +6,7 @@ import { PieChart3D } from '@amcharts/amcharts4/charts';
 import { CommonService } from 'src/app/services/common.service';
 import { asapScheduler, mapTo, Observable } from 'rxjs';
 import { UtilitiesService } from 'src/app/services/utilities.service';
-import { isPlatformBrowser } from '@angular/common';
+import { getLocaleFirstDayOfWeek, isPlatformBrowser } from '@angular/common';
 
 
 am4core.useTheme(am4themes_animated);
@@ -53,16 +53,14 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
 
 
     ngOnInit(): void {
-        // this.common.getNdhsCountriesDetails()
-        //     .subscribe((result) => {
-        //         console.log(result);
-        //     })
 
 
         this.utilities.showHeaderMenu.next(true);
 
 
         this.utilities.governanceTypeSource.subscribe((governanceId) => {
+
+
             this.dataNew = [];
             this.health_taxonomies_prospective = [];
             this.health_taxonomies_present = [];
@@ -70,6 +68,7 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
             this.digital_taxonomies_prospective = [];
 
             if (this.triggerInit) {
+                console.log(governanceId);
                 this.getNdhsCountriesDetails(governanceId);
             }
 
@@ -77,7 +76,8 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
 
 
         //to get all countries name and flag
-        this.common.getAllCountries().subscribe((res) => {
+        this.common.getAllCountries().subscribe((res) => {  console.log(res);
+
             this.country_list = res;
         })
 
@@ -99,11 +99,14 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
 
         this.governance_id = JSON.parse(localStorage.getItem('governance_id') || '');
         this.currentYear = JSON.parse(localStorage.getItem('year') || '');
+        console.log(governanceId, this.country_id, this.currentYear);
 
-        
 
-        this.common.getNdhsCountriesDetails(governanceId,this.country_id,this.currentYear)
+
+        this.common.getNdhsCountriesDetails(governanceId, this.country_id, this.currentYear)
             .subscribe((result) => {
+                console.log(result);
+
                 this.ndhsDetails = result;
                 //console.log(this.ndhsDetails);  //array for present and prospective development
 
@@ -114,13 +117,16 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
                     presentDevelopment.forEach(
                         (element: any) => {
 
+
                             Object.keys(element).forEach((key) => {
                                 let readiness_score = parseInt(
                                     element[key][0].score
                                 );
+
                                 let availability_score = parseInt(
                                     element[key][1].score
                                 );
+
                                 let readiness_percentage = Math.round(
                                     this.getPercantage(readiness_score)
                                 );
@@ -151,6 +157,7 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
                                 };
 
                                 this.dataNew.push(details);
+
 
                                 this.health_taxonomies_present.push(details);
                             });
@@ -206,7 +213,7 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
                     let presentD = [this.ndhsDetails['Present Development']];
                     presentD.forEach(
                         (element: any) => {
-                            
+
                             Object.keys(element).forEach((key) => {
                                 let readiness_score = parseInt(
                                     element[key][0].score
@@ -243,11 +250,8 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
                                     prefix: 'digital_present',
                                 };
                                 this.dataNew.push(details);
-                                // console.log(this.dataNew);
 
                                 this.digital_taxonomies_present.push(details);
-                                // console.log(this.digital_taxonomies_present);
-
                             });
                         }
                     );
@@ -290,7 +294,7 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
                                         element[key][0].governance_id,
                                     prefix: 'digital_prospective',
                                 };
-                                
+
                                 this.dataNew.push(details);
                                 this.digital_taxonomies_prospective.push(details);
                             });
@@ -406,8 +410,8 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
                 //HEALTH TEXANOMY PROSPECTIVE
                 this.health_taxonomies_prospective.forEach(
                     (taxonomy: any, index: number) => {
-                        
-                        
+
+
                         let i = 1;
                         this.chart = am4core.create(
                             'chartdiv_health_prospective' + (i + index),
@@ -501,7 +505,7 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
                             'chartdiv_digital_present' + (i + index),
                             am4charts.PieChart3D
                         );
-                        
+
                         this.title = taxonomy.title;
                         this.availability_score = taxonomy.availability_score;
                         this.readiness_score = taxonomy.readiness_score;
@@ -676,7 +680,7 @@ export class NdhsCountriesComponent implements OnInit, AfterViewInit {
 
 
     getSelectedCountry(country: any) {
-        
+
         if (country) {
 
             this.country_id = country.country_id;

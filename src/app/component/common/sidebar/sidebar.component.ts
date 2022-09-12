@@ -35,7 +35,7 @@ export class SidebarComponent implements OnInit {
     isValue: number = 0;
 
     toggle(num: number) {
-        console.log(num);
+        // console.log(num);
 
         if (num == 1) {
             this.expanded = this.expanded ? false : true;

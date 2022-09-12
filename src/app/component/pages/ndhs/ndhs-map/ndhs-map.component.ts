@@ -34,7 +34,6 @@ export class NdhsMapComponent implements OnInit, AfterViewInit {
 
     ngOnInit(): void {
             this.countriesService.getCountries().subscribe(result => {
-                    console.log(result);   
                     this.data2021 = result[2021];
                     this.data2022 = result[2022];
                     for (var i = 0; i < this.data2021.length; i++) {
@@ -142,7 +141,10 @@ export class NdhsMapComponent implements OnInit, AfterViewInit {
                         localStorage.setItem("country_name", JSON.stringify(country_name));
                         localStorage.setItem("country_iso_code",JSON.stringify(country_iso_code));
                         localStorage.setItem("year", JSON.stringify(year));
+                        
                     }
+
+                    this.redirectToNdhsMap();
 
                 });
 
@@ -253,8 +255,8 @@ export class NdhsMapComponent implements OnInit, AfterViewInit {
                 });
 
                 this.circle.events.on('click', (element:any) => {
+                    
                     let selected_years = element.target.dataItem.dataContext.selected_years;
-                    console.log(selected_years);
                     
                     let country_id = element.target.dataItem.dataContext.country_id;
                     let country_flag = element.target.dataItem.dataContext.flagImage;
@@ -280,7 +282,10 @@ export class NdhsMapComponent implements OnInit, AfterViewInit {
                         localStorage.setItem("country_name", JSON.stringify(country_name));
                         localStorage.setItem("country_iso_code",JSON.stringify(country_iso_code));
                         localStorage.setItem("year", JSON.stringify(year));
-                    }
+                    } 
+                    
+
+                    this.redirectToNdhsMap();
 
                 });
 
@@ -313,7 +318,7 @@ export class NdhsMapComponent implements OnInit, AfterViewInit {
                 });
 
                 this.circle.events.on('click', (element:any) => {
-
+                    
                     let country_id = element.target.dataItem.dataContext.country_id;
                     let country_flag = element.target.dataItem.dataContext.flagImage;
                     let country_iso_code = element.target.dataItem.dataContext.iso_code;
@@ -431,6 +436,10 @@ export class NdhsMapComponent implements OnInit, AfterViewInit {
                 country.circleTemplate
             );
         }
+    }
+
+    redirectToNdhsMap(){
+        this.router.navigate(['ndhs-countries']);
     }
 
 }

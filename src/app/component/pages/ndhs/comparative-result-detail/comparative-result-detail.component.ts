@@ -72,7 +72,7 @@ export class ComparativeResultDetailComponent implements OnInit {
 		private utilities: UtilitiesService,
 		private mapService: CountriesService,
 		private location: Location
-	) { }
+	) {}
 
 	public ngOnInit() {
 		this.utilities.showHeaderMenu.next(true);
@@ -100,7 +100,11 @@ export class ComparativeResultDetailComponent implements OnInit {
 				this.dash_array = [1, 2, 3, 4, 5];
 
 				this.ultimateId = environment.default_ultimate_id;
+				console.log(this.ultimateId);
+				
 				this.developmentId = environment.default_development_id;
+				console.log(this.developmentId);
+				
 
 				this.common.getAllCountries().subscribe((data) => (this.countriesToShow = data));
 
@@ -224,7 +228,6 @@ export class ComparativeResultDetailComponent implements OnInit {
 	}
 
 	topCityChart(taxonomy_id: number) {
-		console.log(taxonomy_id);
 
 		this.taxonomy_id = taxonomy_id;
 		this.topCountriesChart();
@@ -373,6 +376,7 @@ export class ComparativeResultDetailComponent implements OnInit {
 		$('#present_development li:first').addClass('active');
 		$('#present_development ul li:first').addClass('activelink');
 		this.ultimateSelection(1, 2);
+		
 	}
 
 	toggleProspective(event: any) {
@@ -391,9 +395,11 @@ export class ComparativeResultDetailComponent implements OnInit {
 	}
 
 	isValue: number = 0;
+	
 
 	toggle(num: number) {
-		this.isValue = num;
+		this.isValue = num; //1 & 2
+		
 	}
 
 	//GO BACK
